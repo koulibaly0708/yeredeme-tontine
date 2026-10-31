@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Adhérent · Yèrèdèmè Tontine</title>
+<style>
+:root{--g:#0b4a1a;--g2:#e6f0e4;--y:#f9b908;--bg:#fff;--tx:#14210f;--bd:#cfdccb;--mu:#5d6f58;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--g:#6fcf7f;--g2:#16281a;--bg:#0e170f;--tx:#e8f1e5;--bd:#2c4230;--mu:#9fb59a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Trebuchet MS",Verdana,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.15;margin:0 0 .5em}
+.w{max-width:960px;margin:auto;padding:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-bottom:3px solid var(--y)}
+.logo{font:700 22px Georgia,serif;color:var(--g);text-decoration:none}.logo small{display:block;font:14px "Trebuchet MS",sans-serif;color:var(--mu)}
+.btn{border:0;border-radius:8px;padding:12px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--g);color:#fff;text-decoration:none;display:inline-block}
+.btn.y{background:var(--y);color:#2a2000}.btn.o{background:transparent;color:var(--g);border:2px solid var(--g)}.btn.s{padding:7px 10px;font-size:14px}.btn.r{background:#b3261e}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--bd)}
+.tabs button{white-space:nowrap;border:0;background:var(--g2);color:var(--tx);padding:9px 13px;border-radius:20px;font:inherit;cursor:pointer}
+.tabs button.on{background:var(--g);color:#fff}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.st div{background:var(--g2);padding:12px;border-left:5px solid var(--y)}.st b{display:block;font-size:22px;color:var(--g)}
+input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;font:inherit;background:var(--bg);color:var(--tx);margin:4px 0 10px}
+label{font-size:14px;color:var(--mu)}
+.tb{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:left;font-size:14px;white-space:nowrap}
+.mo{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}
+.bx{background:var(--bg);border-radius:12px;padding:18px;max-width:440px;width:100%;max-height:90vh;overflow:auto}
+.f31{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0}
+.f31 i{font-style:normal;text-align:center;padding:8px 0;border:1px solid var(--bd);border-radius:4px;font-size:13px}
+.f31 i.p{background:#1f8a3a;color:#fff;border-color:#1f8a3a}
+.card{border:2px solid var(--g);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;background:var(--g2)}
+.card img,.card .ph{width:72px;height:72px;border-radius:8px;object-fit:cover;background:var(--bd)}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;background:var(--y);color:#2a2000;font-size:12px}
+.mu{color:var(--mu);font-size:14px}.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+@media print{.np{display:none!important}.mo{position:static;background:none}}
+</style></head><body>
+<div id="app"></div>
+<script>
+const $=id=>document.getElementById(id),T=()=>new Date().toISOString().slice(0,10),F=n=>Math.round(n).toLocaleString('fr-FR')+' GNF';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let D={users:[],mem:[],dep:[],ret:[],grp:[],set:{com:1}};
+try{D=Object.assign(D,JSON.parse(localStorage.getItem('yt')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('yt',JSON.stringify(D))}catch(e){alert("Enregistrement impossible : espace plein.")}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const tot=m=>D.dep.filter(d=>d.mid==m.id).reduce((a,d)=>a+d.montant,0),carr=m=>Math.min(31,Math.floor(tot(m)/m.mise)),
+stt=m=>m.statut=='normal'?'Clôturé normal':m.statut=='interrompu'?'Clôturé interrompu':'En cours';
+let S={u:null,tab:'',m:null,day:T(),per:'j',photo:'',mode:'in'};
+function login(R,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+R))||null}catch(e){}S.tab=start;S.u?dash():authView()}
+function authView(){const up=S.mode=='up';$('app').innerHTML=`<div class="bar"><a class="logo" href="index.html">Yèrèdèmè<small>Tontine</small></a></div><div class="w" style="max-width:420px"><h2>${R=='g'?'Espace gestionnaire':'Espace adhérent'}</h2>
+<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>
+${up?'<label>Nom complet</label><input id="an">':''}<label>Téléphone</label><input id="at" inputmode="tel"><label>Mot de passe</label><input id="ap" type="password">
+<button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre gestionnaire pour voir vos tontines.</p>':''}</div>`}
+function go(){const t=$('at').value.trim(),p=$('ap').value;if(!t||!p)return alert('Renseignez téléphone et mot de passe.');let u=D.users.find(x=>x.tel==t&&x.role==R);
+if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');u={id:uid(),role:R,nom:n,tel:t,pwd:p};D.users.push(u);save()}
+else if(!u||u.pwd!=p)return alert('Téléphone ou mot de passe incorrect.');
+try{localStorage.setItem('yt_'+R,u.id)}catch(e){}S.u=u;dash()}
+function out(){try{localStorage.removeItem('yt_'+R)}catch(e){}location.href='index.html'}
+function dash(){const tabs=TABS;$('app').innerHTML=`<div class="bar np"><a class="logo" href="index.html">Yèrèdèmè<small>${esc(S.u.nom)}</small></a><button class="btn o s" onclick="out()">Déconnexion</button></div>
+<div class="w"><div class="tabs np">${tabs.map(t=>`<button class="${S.tab==t[0]&&!S.m?'on':''}" onclick="S.tab='${t[0]}';S.m=null;dash()">${t[1]}</button>`).join('')}</div><div id="v"></div></div>`;$('v').innerHTML=S.m?detail():V[S.tab]()}
+const mine=()=>R=='g'?D.mem.filter(m=>m.mgr==S.u.id):D.mem.filter(m=>m.tel==S.u.tel);
+const dps=()=>{const ids=mine().map(m=>m.id);return D.dep.filter(d=>ids.includes(d.mid))};
+const recList=a=>`<div class="tb"><table><tr><th>Date</th><th>Montant</th><th></th></tr>${a.sort((x,y)=>y.date>x.date?1:-1).map(d=>`<tr><td>${d.date}</td><td>${F(d.montant)}</td><td><button class="btn s" onclick="rec('${d.id}')">Reçu</button></td></tr>`).join('')||'<tr><td colspan=3>Aucun reçu.</td></tr>'}</table></div>`;
+function box(h){const mo=document.createElement('div');mo.className='mo';mo.id='mo';mo.innerHTML=`<div class="bx">${h}<div class="row np"><button class="btn s" onclick="window.print()">Imprimer / PDF</button><button class="btn s o" onclick="mo.remove();dash()">Fermer</button></div></div>`;document.body.append(mo)}
+function rec(id){const d=D.dep.find(x=>x.id==id),m=D.mem.find(x=>x.id==d.mid);box(`<h3>Reçu de mise</h3><p>N° ${d.id.slice(-6).toUpperCase()}<br>Date : ${d.date}<br>Adhérent : <b>${esc(m.prenom+' '+m.nom)}</b><br>Montant : <b>${F(d.montant)}</b><br>Cumul : ${F(tot(m))} (${carr(m)}/31 cases)</p>`)}
+function tick(id){const m=D.mem.find(x=>x.id==id);box(`<h3>Ticket de tontine</h3><p><b>${esc(m.prenom+' '+m.nom)}</b><br>${esc(m.tel)}<br>Mise : ${F(m.mise)} par jour<br>Cases payées : ${carr(m)}/31<br>Collecté : ${F(tot(m))}<br>État : ${stt(m)}</p>`)}
+function detail(){const m=D.mem.find(x=>x.id==S.m),c=carr(m);return`<button class="btn s o np" onclick="S.m=null;dash()">Retour</button><h3 style="margin-top:12px">${esc(m.prenom+' '+m.nom)}</h3>
+<div class="card">${m.photo?`<img src="${m.photo}" alt="">`:'<div class="ph"></div>'}<div><b>Carte de tontine</b><br>${esc(m.prenom+' '+m.nom)}<br>${esc(m.tel)} · ${esc(m.q)}<br>Mise : ${F(m.mise)} · <span class="tag">${stt(m)}</span></div></div>
+<h3 style="margin-top:14px">Fiche : ${c}/31 cases</h3><div class="f31">${Array.from({length:31},(_,i)=>`<i class="${i<c?'p':''}">${i+1}</i>`).join('')}</div><p>Total collecté : <b>${F(tot(m))}</b></p>${recList(D.dep.filter(d=>d.mid==m.id))}
+<div class="row np"><button class="btn s o" onclick="tick('${m.id}')">Ticket</button><button class="btn s o" onclick="window.print()">Imprimer carte / PDF</button>${R=='g'&&m.statut=='cours'?`<button class="btn s y" onclick="clo('${m.id}','normal')">Clôturer (normal)</button><button class="btn s r" onclick="clo('${m.id}','interrompu')">Interrompre</button>`:''}</div>`}
+function rapport(){const a=dps(),k={j:'journalier',m:'mensuel',a:'annuel'}[S.per],n=S.per=='j'?10:S.per=='m'?7:4,ids=mine().map(m=>m.id),r=D.ret.filter(x=>ids.includes(x.mid)&&x.date.slice(0,n)==S.day.slice(0,n));
+const dd=a.filter(d=>d.date.slice(0,n)==S.day.slice(0,n)),sd=dd.reduce((s,d)=>s+d.montant,0),sr=r.reduce((s,x)=>s+x.montant,0),sc=r.reduce((s,x)=>s+x.com,0);
+return`<div class="row np"><select style="width:auto" onchange="S.per=this.value;dash()">${[['j','Journalier'],['m','Mensuel'],['a','Annuel']].map(o=>`<option value="${o[0]}" ${S.per==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()"></div>
+<h3>Rapport ${k} (${S.day.slice(0,n)})</h3><div class="st"><div><b>${dd.length}</b>Mises</div><div><b>${F(sd)}</b>Total déposé</div><div><b>${F(sr)}</b>Retraits remis</div>${R=='g'?`<div><b>${F(sc)}</b>Commissions</div>`:''}</div>
+<div class="row np">${R=='g'?'<button class="btn s" onclick="csv()">Exporter CSV (Excel)</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
+const R='a',TABS=[['pr','Profil'],['mt','Mes tontines'],['rc','Mes reçus'],['rp','Rapport']];
+const V={pr(){return`<h3>${esc(S.u.nom)}</h3><p class="mu">Téléphone : ${esc(S.u.tel)}</p>`},
+mt(){return`<h3>Mes tontines</h3>${mine().map(m=>`<div class="card" style="margin-bottom:8px"><div style="flex:1"><b>${esc(m.prenom+' '+m.nom)}</b><br><span class="tag">${stt(m)}</span><br><span class="mu">${carr(m)}/31 cases · ${F(tot(m))}</span></div><button class="btn s" onclick="S.m='${m.id}';dash()">Carte et fiche</button></div>`).join('')||'<p class="mu">Aucune tontine liée à votre numéro. Demandez à votre gestionnaire d\'utiliser le même numéro.</p>'}`},
+rc(){return`<h3>Mes reçus</h3>${recList(dps())}`},rp:rapport};
+login('a','pr');
+</script></body></html>
