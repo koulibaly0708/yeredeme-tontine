@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Administrateur de tontine · Yèrèdèmè Tontine</title>
+<style>
+:root{--g:#0b4a1a;--g2:#e6f0e4;--y:#f9b908;--bg:#fff;--tx:#14210f;--bd:#cfdccb;--mu:#5d6f58;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--g:#6fcf7f;--g2:#16281a;--bg:#0e170f;--tx:#e8f1e5;--bd:#2c4230;--mu:#9fb59a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Trebuchet MS",Verdana,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.15;margin:0 0 .5em}
+.w{max-width:960px;margin:auto;padding:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-bottom:3px solid var(--y)}
+.logo{font:700 22px Georgia,serif;color:var(--g);text-decoration:none}.logo small{display:block;font:14px "Trebuchet MS",sans-serif;color:var(--mu)}
+.btn{border:0;border-radius:8px;padding:12px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--g);color:#fff;text-decoration:none;display:inline-block}
+.btn.y{background:var(--y);color:#2a2000}.btn.o{background:transparent;color:var(--g);border:2px solid var(--g)}.btn.s{padding:7px 10px;font-size:14px}.btn.r{background:#b3261e}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--bd)}
+.tabs button{white-space:nowrap;border:0;background:var(--g2);color:var(--tx);padding:9px 13px;border-radius:20px;font:inherit;cursor:pointer}
+.tabs button.on{background:var(--g);color:#fff}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.st div{background:var(--g2);padding:12px;border-left:5px solid var(--y)}.st b{display:block;font-size:22px;color:var(--g)}
+input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;font:inherit;background:var(--bg);color:var(--tx);margin:4px 0 10px}
+label{font-size:14px;color:var(--mu)}
+.tb{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:left;font-size:14px;white-space:nowrap}
+.mo{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}
+.bx{background:var(--bg);border-radius:12px;padding:18px;max-width:440px;width:100%;max-height:90vh;overflow:auto}
+.f31{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0}
+.f31 i{font-style:normal;text-align:center;padding:8px 0;border:1px solid var(--bd);border-radius:4px;font-size:13px}
+.f31 i.p{background:#1f8a3a;color:#fff;border-color:#1f8a3a}
+.card{border:2px solid var(--g);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;background:var(--g2)}
+.card img,.card .ph{width:72px;height:72px;border-radius:8px;object-fit:cover;background:var(--bd)}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;background:var(--y);color:#2a2000;font-size:12px}
+.mu{color:var(--mu);font-size:14px}.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+@media print{.np{display:none!important}.mo{position:static;background:none}}
+.nv-g{background:var(--g2);border:1px solid var(--bd);border-radius:18px;padding:14px 14px 16px;margin-top:14px}.nv-g:first-child{margin-top:0}
+.nv-gt{display:flex;align-items:center;gap:8px;margin:0 0 10px;font:700 13px "Trebuchet MS",sans-serif;color:var(--mu)}.nv-gt::before{content:"";width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--g),var(--y))}
+.nv-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.nv-tile{display:flex;align-items:center;gap:10px;min-height:58px;padding:8px 12px 8px 8px;border:0;border-radius:14px;background:var(--bg);color:var(--tx);font:600 14px/1.25 "Trebuchet MS",sans-serif;text-align:left;cursor:pointer;box-shadow:0 0 0 1px var(--bd);transition:transform .15s,box-shadow .15s}
+.nv-tile:hover{transform:translateY(-2px);box-shadow:0 0 0 2px var(--g)}.nv-tile:active{transform:scale(.97)}
+.nv-ti{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--g2);font-size:19px;box-shadow:inset 0 0 0 1.5px var(--bd)}
+.nv-nav{position:sticky;top:0;z-index:15;background:var(--bg);padding:6px 0 4px;margin-bottom:12px}
+.nv-bar{display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 0;border-bottom:1px solid var(--bd)}
+.nv-b{flex:none;border:0;border-radius:10px;padding:8px 13px;font:600 13px "Trebuchet MS",sans-serif;cursor:pointer;background:var(--g);color:#fff}.nv-b.m{background:var(--g2);color:var(--tx);box-shadow:inset 0 0 0 1.5px var(--bd)}
+.nv-t{flex:1;min-width:0;margin:0;font-size:17px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nv-mnu{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;padding:4px 12px 14px;background:var(--bg);border-radius:0 0 16px 16px;box-shadow:0 14px 28px #0004,0 0 0 1px var(--bd)}
+.nv-mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px}
+.nv-mi{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 5px;border:0;border-radius:10px;background:transparent;color:var(--tx);font:500 14px "Trebuchet MS",sans-serif;text-align:left;cursor:pointer}
+.nv-mi:hover{background:var(--g2)}.nv-mi[aria-selected=true]{background:var(--g);color:#fff}.nv-mi .nv-ti{width:28px;height:28px;font-size:15px}
+@media(min-width:900px){.nv-tiles{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}.nv-tile{min-height:92px;gap:14px;padding:14px 18px 14px 14px;font-size:16px;border-radius:18px}.nv-ti{width:52px;height:52px;font-size:26px}}
+.au{position:relative;isolation:isolate;min-height:calc(100vh - 72px);padding:24px 16px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
+.au::before{content:"";position:absolute;inset:0;background:url(fond.jpg) center/cover no-repeat;opacity:.2;z-index:-1}
+.af{width:100%;max-width:420px;text-align:center}.af label{display:block;text-align:left}.af .row{justify-content:center}.af .mu{text-align:left}.af .btn:not(.s){width:100%}
+.lgw{width:min(140px,40vw);aspect-ratio:1;margin:0 auto 14px;border-radius:50%;background:#fff;border:3px solid var(--y);overflow:hidden;display:flex;align-items:center;justify-content:center}.lgw img{width:100%;height:auto;display:block}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg)}
+.pz{display:none}
+@media print{body.pzon>*:not(.pz){display:none!important}body.pzon .pz{display:block;--bg:#fff;--tx:#000;--bd:#888;--mu:#333;--g:#0b4a1a;--g2:#e6f0e4;background:#fff;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.pz.a6{font-size:12px}.pz.a4 .f31 i{padding:16px 0;font-size:17px}.pz .f31 i.p{background:#1f8a3a!important;color:#fff!important}}
+</style></head><body>
+<div id="app"></div>
+<script>
+const $=id=>document.getElementById(id),T=()=>new Date().toISOString().slice(0,10),F=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00A0')+' GNF',num=v=>+String(v).replace(/\D/g,'')||0,fmtI=e=>{const d=e.value.replace(/\D/g,'');e.value=d.replace(/\B(?=(\d{3})+(?!\d))/g,'\u00A0')};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let D={users:[],mem:[],dep:[],ret:[],grp:[],set:{com:1},cfg:{},app:[],abo:[],rem:[]};
+try{D=Object.assign(D,JSON.parse(localStorage.getItem('yt')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('yt',JSON.stringify(D))}catch(e){alert("Enregistrement impossible : espace plein.")}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const tot=m=>D.dep.filter(d=>d.mid==m.id).reduce((a,d)=>a+d.montant,0),carr=m=>Math.min(31,Math.floor(tot(m)/m.mise)),
+stt=m=>m.statut=='normal'?'Clôturé normal':m.statut=='interrompu'?'Clôturé interrompu':m.statut=='attente'?'Clôture en attente de validation':'En cours';
+let S={u:null,view:'h',menu:false,tab:'',m:null,day:T(),per:'j',photo:'',mode:'in'};
+const TTL={g:'Espace collecteur',a:'Espace adhérent',ad:'Administrateur de tontine',sa:'Administrateur du logiciel'};
+const adm=u=>D.users.find(x=>x.id==u.adm);
+function msgU(u){if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?"Abonnement expiré. Contactez l'administrateur du logiciel.":'';
+if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';const a=adm(u);return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}return''}
+function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u))S.u=null;S.tab=start;S.view='h';S.u?dash():authView()}
+function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu)S.mode='in';if(setup)S.mode='up';const up=S.mode=='up';
+$('app').innerHTML=`<div class="bar"><a class="logo" href="${R=='sa'?'#':'index.html'}">Yèrèdèmè<small>Tontine</small></a></div><div class="au"><div class="af"><div class="lgw"><img src="logo.png" alt="Yèrèdèmè Tontine"></div><h2>${TTL[R]}</h2>
+${setup?'<p class="mu">Première utilisation : créez le compte administrateur du logiciel.</p>':cu?`<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>`:''}
+${up?'<label>Nom complet</label><input id="an">':''}<label>Téléphone</label><input id="at" inputmode="tel"><label>Mot de passe</label><input id="ap" type="password">
+<button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre collecteur pour voir vos tontines.</p>':''}${up&&R=='ad'?'<p class="mu">Votre compte sera utilisable après activation de votre abonnement.</p>':''}${R=='g'?'<p class="mu">Votre compte est créé par votre administrateur de tontine.</p>':''}</div></div>`}
+function go(){const t=$('at').value.trim(),p=$('ap').value;if(!t||!p)return alert('Renseignez téléphone et mot de passe.');let u=D.users.find(x=>x.tel==t&&x.role==R);
+if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
+u={id:uid(),role:R,nom:n,tel:t,pwd:p};if(R=='ad'){u.actif=false;u.exp=''}D.users.push(u);save();
+if(R=='ad'){alert("Compte créé. Il sera utilisable après activation de votre abonnement par l'administrateur du logiciel.");S.mode='in';return authView()}}
+else{if(!u||u.pwd!=p)return alert('Téléphone ou mot de passe incorrect.');const m=msgU(u);if(m)return alert(m)}
+try{localStorage.setItem('yt_'+R,u.id)}catch(e){}S.u=u;dash()}
+function out(){try{localStorage.removeItem('yt_'+R)}catch(e){}location.href=R=='sa'?'admin-logiciel.html':'index.html'}
+function dash(){const TL=Object.fromEntries(TABS),I=TI,G=TG,
+bar=`<div class="bar np"><a class="logo" href="${R=='sa'?'#':'index.html'}">Yèrèdèmè<small>${esc(S.u.nom)}</small></a><button class="btn o s" onclick="out()">Déconnexion</button></div>`;
+if(S.view=='h'){$('app').innerHTML=bar+`<div class="w">${G.map(([g,ids])=>`<section class="nv-g"><h3 class="nv-gt">${g}</h3><div class="nv-tiles">${ids.map(k=>`<button class="nv-tile" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span><span>${TL[k]}</span></button>`).join('')}</div></section>`).join('')}</div>`;return}
+$('app').innerHTML=bar+`<div class="w"><div class="nv-nav np"><div class="nv-bar"><button class="nv-b" onclick="navHome()">← Accueil</button><h2 class="nv-t">${TL[S.tab]}</h2><button class="nv-b m" aria-expanded="${S.menu}" onclick="S.menu=!S.menu;dash()">Menu ▾</button></div>
+${S.menu?`<nav class="nv-mnu">${G.map(([g,ids])=>`<h3 class="nv-gt">${g}</h3><div class="nv-mg">${ids.map(k=>`<button class="nv-mi" aria-selected="${k==S.tab}" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span>${TL[k]}</button>`).join('')}</div>`).join('')}</nav>`:''}</div><div id="v"></div></div>`;
+$('v').innerHTML=S.m?detail():V[S.tab]()}
+function nav(k){if(S.view!='t')history.pushState({t:1},'');S.view='t';S.tab=k;S.m=null;S.menu=false;dash();scrollTo(0,0)}
+function navHome(){if(history.state&&history.state.t)history.back();else{S.view='h';S.m=null;S.menu=false;dash()}}
+addEventListener('popstate',()=>{S.view='h';S.m=null;S.menu=false;if(S.u)dash()});
+const cfg=a=>(D.cfg&&D.cfg[a])||{com:1};
+const colls=()=>R=='ad'?D.users.filter(u=>u.role=='g'&&u.adm==S.u.id):[];
+const mine=()=>R=='g'?D.mem.filter(m=>m.mgr==S.u.id):R=='ad'?D.mem.filter(m=>colls().some(c=>c.id==m.mgr)):R=='sa'?[]:D.mem.filter(m=>m.tel==S.u.tel);
+const dps=()=>{const ids=mine().map(m=>m.id);return D.dep.filter(d=>ids.includes(d.mid))};
+const jour=(c,d)=>{const ids=D.mem.filter(m=>m.mgr==c.id).map(m=>m.id),ap=D.app.filter(x=>x.col==c.id&&x.date==d).reduce((a,x)=>a+x.montant,0),mi=D.dep.filter(x=>ids.includes(x.mid)&&x.date==d).reduce((a,x)=>a+x.montant,0);return{ap,mi,so:ap-mi}};
+const remDe=(c,d)=>D.rem.find(r=>r.col==c.id&&r.date==d);
+const recList=a=>`<div class="tb"><table><tr><th>Date</th><th>Mises</th><th>Montant</th><th></th></tr>${a.sort((x,y)=>y.date>x.date?1:-1).map(d=>`<tr><td>${d.date}</td><td>${d.n||Math.round(d.montant/(D.mem.find(m=>m.id==d.mid)||{mise:1}).mise)}</td><td>${F(d.montant)}</td><td><button class="btn s" onclick="rec('${d.id}')">Reçu</button></td></tr>`).join('')||'<tr><td colspan=4>Aucun reçu.</td></tr>'}</table></div>`;
+let PH='',PS='A6';
+function printDoc(h,size){let st=$('pgst');if(!st){st=document.createElement('style');st.id='pgst';document.head.append(st)}st.textContent=`@page{size:${size};margin:${size=='A6'?'6mm':'12mm'}}`;
+const d=document.createElement('div');d.className='pz '+size.toLowerCase();d.innerHTML=h;document.body.append(d);document.body.classList.add('pzon');
+const done=()=>{d.remove();document.body.classList.remove('pzon');removeEventListener('afterprint',done)};addEventListener('afterprint',done);window.print();setTimeout(done,60000)}
+function box(h,sz){PH=h;PS=sz||'A6';const mo=document.createElement('div');mo.className='mo';mo.id='mo';mo.innerHTML=`<div class="bx">${h}<div class="row np"><button class="btn s" onclick="printDoc(PH,PS)">Imprimer (${PS})</button><button class="btn s o" onclick="mo.remove();dash()">Fermer</button></div></div>`;document.body.append(mo)}
+const LG='<div style="text-align:center"><img src="logo.png" alt="" style="height:46px"></div>';
+function rec(id){const d=D.dep.find(x=>x.id==id),m=D.mem.find(x=>x.id==d.mid);box(`${LG}<h3 style="text-align:center;margin:4px 0">Reçu de mise</h3><p>N° ${d.id.slice(-6).toUpperCase()}<br>Date : ${d.date}<br>Adhérent : <b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)}<br>Nombre de mises : <b>${d.n||Math.round(d.montant/m.mise)}</b> × ${F(m.mise)}<br>Montant : <b>${F(d.montant)}</b><br>Cumul : ${F(tot(m))} (${carr(m)}/31 cases)</p>`,'A6')}
+function tick(id){const m=D.mem.find(x=>x.id==id);box(`${LG}<h3 style="text-align:center;margin:4px 0">Ticket de tontine</h3><p><b>${esc(m.prenom+' '+m.nom)}</b><br>${esc(m.tel)}<br>Mise : ${F(m.mise)} par jour<br>Cases payées : ${carr(m)}/31<br>Collecté : ${F(tot(m))}<br>État : ${stt(m)}</p>`,'A6')}
+const f31=c=>`<div class="f31">${Array.from({length:31},(_,i)=>`<i class="${i<c?'p':''}">${i+1}</i>`).join('')}</div>`;
+const ficheHTML=id=>{const m=D.mem.find(x=>x.id==id),c=carr(m);return`${LG.replace('46px','70px')}<h2 style="text-align:center;margin:6px 0 12px">Fiche de tontine</h2><p><b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)}<br>Mise journalière : ${F(m.mise)} · Ouverte le ${m.date}<br>État : ${stt(m)}</p>${f31(c)}<p>Cases payées : <b>${c}/31</b><br>Total collecté : <b>${F(tot(m))}</b></p>`};
+function detail(){const m=D.mem.find(x=>x.id==S.m),c=carr(m);return`<button class="btn s o np" onclick="S.m=null;dash()">Retour</button><h3 style="margin-top:12px">${esc(m.prenom+' '+m.nom)}</h3>
+<div class="card">${m.photo?`<img src="${m.photo}" alt="">`:'<div class="ph"></div>'}<div><b>Carte de tontine</b><br>${esc(m.prenom+' '+m.nom)}<br>${esc(m.tel)} · ${esc(m.q)}<br>Mise : ${F(m.mise)} · <span class="tag">${stt(m)}</span></div></div>
+<h3 style="margin-top:14px">Fiche : ${c}/31 cases</h3>${f31(c)}<p>Total collecté : <b>${F(tot(m))}</b></p>${recList(D.dep.filter(d=>d.mid==m.id))}
+<div class="row np"><button class="btn s o" onclick="tick('${m.id}')">Ticket (A6)</button><button class="btn s o" onclick="printDoc(ficheHTML('${m.id}'),'A4')">Imprimer la fiche (A4)</button>
+${R=='g'&&m.statut=='cours'?`<button class="btn s y" onclick="clo('${m.id}','normal')">Demander la clôture (normal)</button><button class="btn s r" onclick="clo('${m.id}','interrompu')">Interrompre</button>`:''}
+${R=='ad'&&m.statut=='attente'?`<button class="btn s y" onclick="val('${m.id}')">Valider et payer</button><button class="btn s r" onclick="rej('${m.id}')">Rejeter</button>`:''}</div>`}
+function val(id){const m=D.mem.find(x=>x.id==id),cm=cfg(S.u.id).com*m.mise,tt=tot(m),pay=Math.max(0,tt-cm);
+if(!confirm(`Valider la clôture ${m.dem=='normal'?'normale':'interrompue'} : collecté ${F(tt)}, commission ${F(cm)}. Montant à payer : ${F(pay)}. Confirmer le paiement ?`))return;
+m.statut=m.dem;D.ret.push({id:uid(),mid:id,date:T(),montant:pay,com:Math.min(cm,tt),type:m.dem,adm:S.u.id});delete m.dem;save();dash()}
+function rej(id){const m=D.mem.find(x=>x.id==id);if(!confirm('Rejeter la demande ? La tontine reste en cours.'))return;m.statut='cours';delete m.dem;save();dash()}
+function rapport(){const a=dps(),k={j:'journalier',m:'mensuel',a:'annuel'}[S.per],n=S.per=='j'?10:S.per=='m'?7:4,ids=mine().map(m=>m.id),r=D.ret.filter(x=>ids.includes(x.mid)&&x.date.slice(0,n)==S.day.slice(0,n));
+const dd=a.filter(d=>d.date.slice(0,n)==S.day.slice(0,n)),sd=dd.reduce((s,d)=>s+d.montant,0),sr=r.reduce((s,x)=>s+x.montant,0),sc=r.reduce((s,x)=>s+x.com,0);
+return`<div class="row np"><select style="width:auto" onchange="S.per=this.value;dash()">${[['j','Journalier'],['m','Mensuel'],['a','Annuel']].map(o=>`<option value="${o[0]}" ${S.per==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()"></div>
+<h3>Rapport ${k} (${S.day.slice(0,n)})</h3><div class="st"><div><b>${dd.length}</b>Mises</div><div><b>${F(sd)}</b>Total déposé</div><div><b>${F(sr)}</b>Retraits remis</div>${R!='a'?`<div><b>${F(sc)}</b>Commissions</div>`:''}</div>
+<div class="row np">${R!='a'?'<button class="btn s" onclick="csv()">Exporter CSV (Excel)</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
+const R='ad',TABS=[['ap','Aperçu'],['co','Collecteurs'],['av','Approvisionnement'],['cl','Clôtures'],['am','Adhérents'],['rp','Rapport'],['pa','Paramètres']];
+const TI={ap:'📊',co:'🧑‍💼',av:'💵',cl:'✅',am:'👥',rp:'📈',pa:'⚙️'},TG=[['Pilotage',['ap','rp']],['Collecteurs',['co','av']],['Tontines',['cl','am']],['Réglages',['pa']]];
+const nmC=id=>{const u=D.users.find(x=>x.id==id);return u?esc(u.nom):'?'};
+const copts=()=>colls().filter(c=>c.actif!==false).map(c=>`<option value="${c.id}">${esc(c.nom)}</option>`).join('');
+const V={
+ap(){const cs=colls(),ms=mine(),att=ms.filter(m=>m.statut=='attente').length,tc=ms.reduce((a,m)=>a+tot(m),0),sc=D.rem.filter(r=>r.adm==S.u.id).reduce((a,r)=>a+r.ecart,0);
+return`<div class="st"><div><b>${cs.length}</b>Collecteurs</div><div><b>${ms.filter(m=>m.statut=='cours').length}</b>Adhérents actifs</div><div><b>${F(tc)}</b>Total collecté</div><div><b>${att}</b>Clôtures à valider</div><div><b>${F(sc)}</b>Écarts cumulés (manquants)</div></div><p class="mu">Abonnement actif jusqu'au ${S.u.exp}.</p>`},
+co(){return`<h3>Nouveau collecteur</h3><label>Nom complet</label><input id="cn"><label>Téléphone</label><input id="ct" inputmode="tel"><label>Mot de passe</label><input id="cp"><button class="btn" onclick="addC()">Créer le collecteur</button>
+<h3 style="margin-top:22px">Mes collecteurs</h3>${colls().map(c=>{const k=D.rem.filter(r=>r.col==c.id).reduce((a,r)=>a+r.ecart,0);return`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(c.nom)}</b> <span class="tag">${c.actif===false?'Suspendu':'Actif'}</span><p class="mu">Tél : ${esc(c.tel)} · ${D.mem.filter(m=>m.mgr==c.id).length} adhérent(s) · Écart cumulé : ${F(k)}</p>
+<div class="row"><button class="btn s o" onclick="togC('${c.id}')">${c.actif===false?'Réactiver':'Suspendre'}</button><button class="btn s o" onclick="pwC('${c.id}')">Changer le mot de passe</button></div></div>`}).join('')||'<p class="mu">Aucun collecteur. Créez le premier ci-dessus.</p>'}`},
+av(){const cs=colls();return`<h3>Approvisionner en UV (début de journée)</h3><label>Collecteur</label><select id="ac">${copts()}</select><label>Montant UV (GNF)</label><input id="aa" inputmode="numeric" placeholder="Ex. 500 000" oninput="fmtI(this)"><label>Date</label><input id="adt" type="date" value="${T()}"><button class="btn" onclick="addA()">Attribuer l'UV</button>
+<h3 style="margin-top:22px">Situation du jour</h3><input type="date" value="${S.day}" onchange="S.day=this.value;dash()">${cs.map(c=>{const j=jour(c,S.day),r=remDe(c,S.day);return`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(c.nom)}</b> <span class="tag">${r?'Remis':'Journée ouverte'}</span><p class="mu">UV attribué : ${F(j.ap)} · Mises : ${F(j.mi)}<br>Solde UV chez le collecteur : <b>${F(j.so)}</b><br>Espèces attendues : <b>${F(j.mi)}</b>${r?`<br>Reçu : espèces ${F(r.cash)} + UV restitué ${F(r.uv)} · Écart : <b>${F(r.ecart)}</b>`:''}</p>${!r&&j.ap?`<button class="btn s y" onclick="remForm('${c.id}')">Réceptionner la remise</button>`:''}</div>`}).join('')||'<p class="mu">Aucun collecteur.</p>'}
+<h3 style="margin-top:22px">Historique des UV attribués</h3><div class="tb"><table><tr><th>Date</th><th>Collecteur</th><th>UV</th></tr>${D.app.filter(x=>x.adm==S.u.id).sort((x,y)=>y.date>x.date?1:-1).map(x=>`<tr><td>${x.date}</td><td>${nmC(x.col)}</td><td>${F(x.montant)}</td></tr>`).join('')||'<tr><td colspan=3>Aucune attribution.</td></tr>'}</table></div>`},
+cl(){const ms=mine(),at=ms.filter(m=>m.statut=='attente'),ids=ms.map(m=>m.id),h=D.ret.filter(r=>ids.includes(r.mid));
+return`<h3>Clôtures à valider</h3>${at.map(m=>{const cm=cfg(S.u.id).com*m.mise,tt=tot(m);return`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(m.prenom+' '+m.nom)}</b> <span class="tag">${m.dem=='normal'?'Normale':'Interrompue'}</span><p class="mu">Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)} · Collecteur : ${nmC(m.mgr)} · Collecté : ${F(tt)} · Commission : ${F(cm)}<br>À payer : <b>${F(Math.max(0,tt-cm))}</b></p>
+<div class="row"><button class="btn s y" onclick="val('${m.id}')">Valider et payer</button><button class="btn s r" onclick="rej('${m.id}')">Rejeter</button><button class="btn s o" onclick="S.m='${m.id}';dash()">Voir la fiche</button></div></div>`}).join('')||'<p class="mu">Aucune clôture en attente.</p>'}
+<h3 style="margin-top:22px">Paiements validés</h3><div class="tb"><table><tr><th>Date</th><th>Adhérent</th><th>Type</th><th>Payé</th><th>Commission</th></tr>${h.map(r=>{const m=D.mem.find(x=>x.id==r.mid);return`<tr><td>${r.date}</td><td>${esc(m.prenom+' '+m.nom)}</td><td>${r.type=='normal'?'Normal':'Interrompu'}</td><td>${F(r.montant)}</td><td>${F(r.com)}</td></tr>`}).join('')||'<tr><td colspan=5>Aucun paiement.</td></tr>'}</table></div>`},
+am(){return`<h3>Adhérents de mes collecteurs</h3><div class="tb"><table><tr><th>Nom</th><th>Téléphone</th><th>Quartier</th><th>Collecteur</th><th>Mise</th><th>État</th><th></th></tr>${mine().map(m=>`<tr><td>${esc(m.prenom+' '+m.nom)}</td><td>${esc(m.tel)}</td><td>${esc(m.q)}</td><td>${nmC(m.mgr)}</td><td>${F(m.mise)}</td><td>${stt(m)}</td><td><button class="btn s" onclick="S.m='${m.id}';dash()">Ouvrir</button></td></tr>`).join('')||'<tr><td colspan=7>Aucun adhérent.</td></tr>'}</table></div>`},
+rp:rapport,
+pa(){return`<h3>Paramètres</h3><label>Commission : nombre de mises retenues à la clôture</label><input id="cm" type="number" min="0" step="0.5" value="${cfg(S.u.id).com}"><button class="btn" onclick="D.cfg=D.cfg||{};D.cfg[S.u.id]={com:+$('cm').value||0};save();alert('Paramètres enregistrés.')">Enregistrer</button><p class="mu">Abonnement actif jusqu'au ${S.u.exp}.</p>`}};
+function addC(){const n=$('cn').value.trim(),t=$('ct').value.trim(),p=$('cp').value;if(!n||!t||!p)return alert('Nom, téléphone et mot de passe sont obligatoires.');if(D.users.some(u=>u.role=='g'&&u.tel==t))return alert('Ce numéro est déjà utilisé par un collecteur.');D.users.push({id:uid(),role:'g',nom:n,tel:t,pwd:p,adm:S.u.id,actif:true});save();dash()}
+function togC(id){const u=D.users.find(x=>x.id==id);u.actif=(u.actif===false);save();dash()}
+function pwC(id){const p=prompt('Nouveau mot de passe du collecteur :');if(p){D.users.find(x=>x.id==id).pwd=p;save();alert('Mot de passe modifié.')}}
+function addA(){const c=$('ac').value,a=num($('aa').value);if(!c||!a)return alert('Choisissez un collecteur et un montant.');D.app.push({id:uid(),col:c,adm:S.u.id,date:$('adt').value||T(),montant:a});save();dash()}
+function csv(){const ids=mine().map(m=>m.id),L=['Date;Adhérent;Montant'];D.dep.filter(d=>ids.includes(d.mid)).forEach(d=>{const m=D.mem.find(x=>x.id==d.mid);L.push(`${d.date};${m.prenom} ${m.nom};${d.montant}`)});
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+L.join('\n')],{type:'text/csv'}));a.download='mises.csv';a.click()}
+const nf=n=>String(Math.max(0,n)).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00A0');
+function remForm(cid){const c=D.users.find(x=>x.id==cid),j=jour(c,S.day),mo=document.createElement('div');mo.className='mo';mo.id='mo';
+mo.innerHTML=`<div class="bx"><h3>Remise de ${esc(c.nom)}</h3><p class="mu">UV attribué ${F(j.ap)} · Mises ${F(j.mi)}</p><label>Espèces reçues (GNF)</label><input id="rc" inputmode="numeric" value="${nf(j.mi)}" oninput="fmtI(this)"><label>UV restitué (GNF)</label><input id="ru" inputmode="numeric" value="${nf(j.so)}" oninput="fmtI(this)"><div class="row"><button class="btn s" onclick="saveRem('${cid}')">Enregistrer</button><button class="btn s o" onclick="mo.remove()">Annuler</button></div></div>`;document.body.append(mo)}
+function saveRem(cid){const j=jour(D.users.find(x=>x.id==cid),S.day),cash=num($('rc').value),uv=num($('ru').value);D.rem.push({id:uid(),adm:S.u.id,col:cid,date:S.day,appro:j.ap,mises:j.mi,cash,uv,ecart:j.ap-cash-uv});save();mo.remove();dash()}
+login('ad','ap');
+</script></body></html>
