@@ -2,7 +2,7 @@
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 const st=document.createElement('style');
 st.textContent=':root{--nb:0px}body{padding-top:calc(var(--nb) - env(safe-area-inset-top,0px))}.bar,.nv-nav{top:var(--nb)!important}'
-+'#tb{position:fixed;top:0;left:0;right:0;z-index:99;padding-top:env(safe-area-inset-top,0px);font:600 14px/1.3 "Trebuchet MS",Verdana,sans-serif}'
++'#tb{position:fixed;top:0;left:0;right:0;z-index:99;padding-top:env(safe-area-inset-top,0px);font:700 15.5px/1.35 "Trebuchet MS",Verdana,sans-serif}'
 +'#tb>div{display:none;align-items:center;justify-content:center;gap:10px;min-height:38px;padding:6px 12px;color:#fff;text-align:center}#tb>div.on{display:flex}'
 +'#net.off{background:#b3261e}#net.ok{background:#1f8a3a}#inst{background:#0b4a1a}'
 +'#inst button{border:0;border-radius:16px;padding:6px 12px;font:inherit;cursor:pointer}#inst .go{background:#f9b908;color:#2a2000}#inst .x{background:transparent;color:#fff;font-size:16px;padding:6px 8px}'

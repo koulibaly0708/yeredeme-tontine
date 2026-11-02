@@ -1,4 +1,4 @@
-const V='yt-v5',PRE=['index.html','collecteur.html','adherent.html','admin-tontine.html','icon-192.png','icon-512.png','manifest.webmanifest','pwa.js'],
+const V='yt-v6',PRE=['index.html','collecteur.html','adherent.html','admin-tontine.html','icon-192.png','icon-512.png','manifest.webmanifest','pwa.js'],
 CDN='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(async c=>{await Promise.all(PRE.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})));await c.add(new Request(CDN,{mode:'no-cors'})).catch(()=>{});await c.add(new Request('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',{mode:'no-cors'})).catch(()=>{})}));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
