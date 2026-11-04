@@ -74,6 +74,33 @@ th,td{font-size:15.5px;padding:10px 8px}th{font-weight:700}
 .nv-b{font-size:15px}.nv-t{font-size:19px}.nv-tile{font-size:16px;font-weight:700}.nv-mi{font-size:16px;font-weight:600}.nv-gt{font-size:14px;font-weight:700}
 .un b{font-weight:700}.un small{font-size:13.5px;font-weight:600}
 .hero p{font-size:18px;color:var(--tx)}.sv div{font-size:16.5px}.sv b{font-size:18px}
+
+.pf{max-width:520px;margin:auto;text-align:center}
+.pf-av{width:88px;height:88px;border-radius:50%;background:var(--g);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:6px auto 10px;box-shadow:0 0 0 4px var(--bg),0 0 0 6px var(--g)}
+.pf-h{margin:6px 0 4px}.pf-s{color:var(--mu);margin:0 0 6px;font-size:14px}
+.pf-sec{text-align:left;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--mu);margin:18px 6px 8px}
+.pf-card{text-align:left;background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:6px 16px 12px}
+.pf-card label{display:block;font-weight:700;margin:12px 0 4px}
+.pf-f{display:flex;align-items:center;gap:10px;border:2px solid var(--bd);border-radius:999px;padding:0 14px;background:var(--bg)}
+.pf-f span{font-size:18px;opacity:.7}
+.pf-f input{border:0;margin:0;background:transparent;padding:12px 0;outline:0;min-width:0}
+.pf-f.ro{background:var(--g2)}
+.pf-ok{width:24px;height:24px;border-radius:50%;background:var(--g);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.pf-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf-g button{border-radius:999px;padding:14px;font:inherit;font-weight:700;background:var(--g2);color:var(--tx);cursor:pointer;border:2px solid transparent}
+.pf-g button.on{background:var(--g);color:var(--bg);border-color:var(--g)}
+.pf-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf-b{width:100%;border-radius:999px;padding:16px;margin:18px 0 24px;font-size:17px}
+
+.ph{display:flex;gap:8px;margin:4px 0 10px}
+.ph .cc{display:flex;align-items:center;gap:6px;padding:0 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-weight:700;white-space:nowrap}
+.ph .cc svg{width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+.ph input{margin:0;flex:1;min-width:0}
+.pw{position:relative;margin:4px 0 10px}
+.pw input{margin:0;padding-right:46px}
+.pw input::placeholder{color:var(--mu);opacity:.6;letter-spacing:1px}
+.pw .eye{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--mu);cursor:pointer;display:grid;place-items:center;padding:0}
+.pw .eye svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="pwa.js" defer></script></head><body>
 <div id="app"></div>
 <script>
@@ -105,13 +132,23 @@ const adm=u=>D.users.find(x=>x.id==u.adm);
 function msgU(u){if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?"Abonnement expiré. Contactez l'administrateur du logiciel.":'';
 if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';const a=adm(u);return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}return''}
 function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u))S.u=null;S.tab=start;S.view='h';S.u?dash():authView()}
+/* ===== Champs de connexion : téléphone +224 et mot de passe ===== */
+const FLAG='<svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#CE1126"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#009460"/></svg>',
+EYE1='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+EYE0='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 4.2-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+PWP={a:'••••',g:'••••',ad:'•••••• (6 minimum)',sa:'•••••••• (8 minimum)'};
+const pwErr=p=>(R=='a'||R=='g')?(/^\d{4}$/.test(p)?'':'Le mot de passe doit comporter exactement 4 chiffres.'):R=='ad'?(p.length>=6?'':'Le mot de passe doit comporter au moins 6 caractères.'):(p.length>=8?'':'Le mot de passe doit comporter au moins 8 caractères.');
+function pwBox(id,o){o=o||{};const num=(R=='a'||R=='g')&&!o.txt;return`<div class="pw"><input id="${id}" type="password" placeholder="${o.ph||PWP[R]}" autocomplete="${o.ac||'current-password'}"${num?' inputmode="numeric"':''}${num&&o.fix?` maxlength="4" oninput="this.value=this.value.replace(/\\D/g,'')"`:''}><button type="button" class="eye" onclick="pwToggle(this)" aria-label="Afficher le mot de passe">${EYE1}</button></div>`}
+function pwToggle(b){const i=b.parentNode.querySelector('input'),h=i.type=='password';i.type=h?'text':'password';b.innerHTML=h?EYE0:EYE1;b.setAttribute('aria-label',h?'Masquer le mot de passe':'Afficher le mot de passe')}
+function pwKb(){if(R!='a'&&R!='g')return;const el=$('ap');if(!el)return;if(S.mode=='up'){el.inputMode='numeric';return}const u=D.users.find(x=>x.tel==ph($('at').value)&&x.role==R);el.inputMode=(u&&!/^\d{4}$/.test(u.pwd||''))?'text':'numeric'}
+function authFields(up){return`<label>Numéro de téléphone</label><div class="ph"><span class="cc">${FLAG}<span>+224</span></span><input id="at" inputmode="tel" placeholder="6X XXX XX XX" autocomplete="tel-national" oninput="pwKb()"></div><label>Mot de passe</label>${pwBox('ap',{fix:up,ac:up?'new-password':'current-password'})}`}
 function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu)S.mode='in';if(setup)S.mode='up';const up=S.mode=='up';
 $('app').innerHTML=`<div class="bar"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a></div><div class="au"><div class="af"><div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>${TTL[R]}</h2>
 ${setup?'<p class="mu">Première utilisation : créez le compte administrateur du logiciel.</p>':cu?`<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>`:''}
-${up?'<label>Nom complet</label><input id="an">'+(R!='sa'?'<label>Genre</label><select id="ag"><option value="m">Homme</option><option value="f">Femme</option></select>':''):''}<label>Téléphone (sans +224)</label><input id="at" inputmode="tel" placeholder="6XX XX XX XX"><label>Mot de passe</label><input id="ap" type="password">
+${up?'<label>Nom complet</label><input id="an">'+(R!='sa'?'<label>Genre</label><select id="ag"><option value="m">Homme</option><option value="f">Femme</option></select>':''):''}${authFields(up)}
 <button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre collecteur pour voir vos tontines.</p>':''}${up&&R=='ad'?'<p class="mu">Votre compte sera utilisable après activation de votre abonnement.</p>':''}${R=='g'?'<p class="mu">Votre compte est créé par votre administrateur de tontine.</p>':''}</div></div>`}
 function go(){const t=ph($('at').value),p=$('ap').value;if(!t||!p)return alert('Renseignez téléphone et mot de passe.');let u=D.users.find(x=>x.tel==t&&x.role==R);
-if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
+if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');const pe=pwErr(p);if(pe)return alert(pe);if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
 u={id:uid(),role:R,nom:n,tel:t,pwd:p,sx:($('ag')||{}).value||'m'};if(R=='ad'){u.actif=false;u.exp=''}D.users.push(u);save();
 if(R=='ad'){alert("Compte créé. Il sera utilisable après activation de votre abonnement par l'administrateur du logiciel.");S.mode='in';return authView()}}
 else{if(!u||u.pwd!=p)return alert('Téléphone ou mot de passe incorrect.');const m=msgU(u);if(m)return alert(m)}
@@ -205,7 +242,31 @@ return`<div class="row np"><select style="width:auto" onchange="S.per=this.value
 <div class="row np">${R!='a'?'<button class="btn s" onclick="csv()">Exporter CSV (Excel)</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
 const R='a',TABS=[['pr','Profil'],['mt','Mes tontines'],['pt','Mes prêts'],['rc','Mes reçus'],['rp','Rapport']];
 const TI={pr:'👤',mt:'📒',pt:'🤝',rc:'🧾',rp:'📈'},TG=[['Mon espace',['pr','mt','pt']],['Documents',['rc','rp']]];
-const V={pr(){return`<h3>${esc(S.u.nom)}</h3><p class="mu">Téléphone : ${esc(S.u.tel)}</p>`},
+/* ===== Profil client ===== */
+function profilSplit(u){const p=String(u.nom||'').trim().split(/\s+/).filter(Boolean);return{pn:u.pn!=null?u.pn:(p[0]||''),nm:u.nm!=null?u.nm:p.slice(1).join(' ')}}
+function profilDone(u){return !!(u.dn&&u.sx&&u.nat&&u.adr&&u.vil&&u.reg&&u.pn!=null)}
+function profilView(){const u=S.u,n=profilSplit(u),ini=((n.pn[0]||'')+(n.nm[0]||'')).toUpperCase()||'?',done=profilDone(u),g=u.sx||'';window.PG=g;
+return`<div class="pf"><div class="pf-av">${esc(ini)}</div><h2 class="pf-h">${done?'Mon profil':'Complétez votre profil'}</h2>${done?'':'<p class="pf-s">Ces informations sont nécessaires pour utiliser votre portefeuille</p>'}
+<div class="pf-sec">IDENTITÉ</div><div class="pf-card">
+<label>Prénom</label><div class="pf-f"><span>👤</span><input id="pf_pn" value="${esc(n.pn)}" autocomplete="given-name"></div>
+<label>Nom</label><div class="pf-f"><span>👤</span><input id="pf_nm" value="${esc(n.nm)}" autocomplete="family-name"></div>
+<label>Téléphone</label><div class="pf-f ro"><span>📞</span><input value="+224${esc(u.tel)}" readonly><b class="pf-ok">✓</b></div>
+<label>Date de naissance</label><div class="pf-f"><span>📅</span><input id="pf_dn" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA (ex : 15/05/1992)" value="${esc(u.dn||'')}" oninput="pfDate(this)"></div>
+<label>Genre</label><div class="pf-g"><button type="button" id="pf_gm" class="${g=='m'?'on':''}" onclick="pfGen('m')">♂ Homme</button><button type="button" id="pf_gf" class="${g=='f'?'on':''}" onclick="pfGen('f')">♀ Femme</button></div></div>
+<div class="pf-sec">ADRESSE</div><div class="pf-card">
+<label>Nationalité</label><div class="pf-f"><span>🏳️</span><input id="pf_nat" value="${esc(u.nat||'Guinéenne')}"></div>
+<label>Adresse</label><div class="pf-f"><span>📍</span><input id="pf_adr" placeholder="Quartier, rue..." value="${esc(u.adr||'')}"></div>
+<div class="pf-2"><div><label>Ville</label><div class="pf-f"><input id="pf_vil" value="${esc(u.vil||'Conakry')}"></div></div><div><label>Région</label><div class="pf-f"><input id="pf_reg" value="${esc(u.reg||'Conakry')}"></div></div></div></div>
+<button class="btn pf-b" onclick="pfSave()">Mettre à jour le profil</button></div>`}
+function pfGen(g){window.PG=g;$('pf_gm').classList.toggle('on',g=='m');$('pf_gf').classList.toggle('on',g=='f')}
+function pfDate(el){let d=el.value.replace(/\D/g,'').slice(0,8),o=d;if(d.length>4)o=d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4);else if(d.length>2)o=d.slice(0,2)+'/'+d.slice(2);el.value=o}
+function pfSave(){const g=id=>$(id).value.trim(),pn=g('pf_pn'),nm=g('pf_nm'),dn=g('pf_dn');
+if(!pn||!nm)return alert('Renseignez votre prénom et votre nom.');
+if(dn){const m=dn.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return alert('Date de naissance invalide. Format : JJ/MM/AAAA.');const d=+m[1],mo=+m[2],y=+m[3],t=new Date(y,mo-1,d);if(t.getFullYear()!=y||t.getMonth()!=mo-1||t.getDate()!=d||t>new Date()||y<1900)return alert('Date de naissance invalide.')}
+if(!window.PG)return alert('Choisissez votre genre.');
+const u=S.u;Object.assign(u,{pn,nm,nom:(pn+' '+nm).trim(),dn,sx:window.PG,nat:g('pf_nat'),adr:g('pf_adr'),vil:g('pf_vil'),reg:g('pf_reg')});
+const i=D.users.findIndex(x=>x.id==u.id);if(i>=0)D.users[i]=u;save();alert('Profil mis à jour.');dash()}
+const V={pr(){return profilView()},
 mt(){return`<h3>Mes tontines</h3>${mine().map(m=>`<div class="card" style="margin-bottom:8px"><div style="flex:1"><b>${esc(m.prenom+' '+m.nom)}</b> (${m.sn})<br>${tg(m)}<br><span class="mu">${carr(m)}/31 cases · ${F(tot(m))}</span></div><button class="btn s" onclick="S.m='${m.id}';dash()">Carte et fiche</button></div>`).join('')||'<p class="mu">Aucune tontine liée à votre numéro. Demandez à votre gestionnaire d\'utiliser le même numéro.</p>'}`},
 pt(){const ids=mine().map(m=>m.id),ps=D.pret.filter(p=>ids.includes(p.mid));ps.forEach(p=>{if(p.statut!='demande')p.vu=true});save();return`<h3>Mes prêts</h3>${ps.sort((a,b)=>b.dateDem>a.dateDem?1:-1).map(pCard).join('')||'<p class="mu">Aucun prêt pour le moment. Pour demander un prêt, adressez-vous à votre collecteur.</p>'}`},
 rc(){return`<h3>Mes reçus</h3>${recList(dps())}`},rp:rapport};

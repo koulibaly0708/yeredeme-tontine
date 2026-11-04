@@ -78,6 +78,19 @@ th,td{font-size:15.5px;padding:10px 8px}th{font-weight:700}
 .nv-b{font-size:15px}.nv-t{font-size:19px}.nv-tile{font-size:16px;font-weight:700}.nv-mi{font-size:16px;font-weight:600}.nv-gt{font-size:14px;font-weight:700}
 .un b{font-weight:700}.un small{font-size:13.5px;font-weight:600}
 .hero p{font-size:18px;color:var(--tx)}.sv div{font-size:16.5px}.sv b{font-size:18px}
+
+.tag.crit{background:#c0392b;color:#fff}
+.bdg{display:inline-block;background:#c0392b;color:#fff;border-radius:10px;padding:1px 7px;font-size:12px;margin-left:6px;vertical-align:middle}
+
+.ph{display:flex;gap:8px;margin:4px 0 10px}
+.ph .cc{display:flex;align-items:center;gap:6px;padding:0 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-weight:700;white-space:nowrap}
+.ph .cc svg{width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+.ph input{margin:0;flex:1;min-width:0}
+.pw{position:relative;margin:4px 0 10px}
+.pw input{margin:0;padding-right:46px}
+.pw input::placeholder{color:var(--mu);opacity:.6;letter-spacing:1px}
+.pw .eye{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--mu);cursor:pointer;display:grid;place-items:center;padding:0}
+.pw .eye svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style><script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="pwa.js" defer></script></head><body>
 <div id="app"></div>
 <script>
@@ -109,13 +122,23 @@ const adm=u=>D.users.find(x=>x.id==u.adm);
 function msgU(u){if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?"Abonnement expiré. Contactez l'administrateur du logiciel.":'';
 if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';const a=adm(u);return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}return''}
 function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u))S.u=null;S.tab=start;S.view='h';S.u?dash():authView()}
+/* ===== Champs de connexion : téléphone +224 et mot de passe ===== */
+const FLAG='<svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#CE1126"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#009460"/></svg>',
+EYE1='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+EYE0='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 4.2-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+PWP={a:'••••',g:'••••',ad:'•••••• (6 minimum)',sa:'•••••••• (8 minimum)'};
+const pwErr=p=>(R=='a'||R=='g')?(/^\d{4}$/.test(p)?'':'Le mot de passe doit comporter exactement 4 chiffres.'):R=='ad'?(p.length>=6?'':'Le mot de passe doit comporter au moins 6 caractères.'):(p.length>=8?'':'Le mot de passe doit comporter au moins 8 caractères.');
+function pwBox(id,o){o=o||{};const num=(R=='a'||R=='g')&&!o.txt;return`<div class="pw"><input id="${id}" type="password" placeholder="${o.ph||PWP[R]}" autocomplete="${o.ac||'current-password'}"${num?' inputmode="numeric"':''}${num&&o.fix?` maxlength="4" oninput="this.value=this.value.replace(/\\D/g,'')"`:''}><button type="button" class="eye" onclick="pwToggle(this)" aria-label="Afficher le mot de passe">${EYE1}</button></div>`}
+function pwToggle(b){const i=b.parentNode.querySelector('input'),h=i.type=='password';i.type=h?'text':'password';b.innerHTML=h?EYE0:EYE1;b.setAttribute('aria-label',h?'Masquer le mot de passe':'Afficher le mot de passe')}
+function pwKb(){if(R!='a'&&R!='g')return;const el=$('ap');if(!el)return;if(S.mode=='up'){el.inputMode='numeric';return}const u=D.users.find(x=>x.tel==ph($('at').value)&&x.role==R);el.inputMode=(u&&!/^\d{4}$/.test(u.pwd||''))?'text':'numeric'}
+function authFields(up){return`<label>Numéro de téléphone</label><div class="ph"><span class="cc">${FLAG}<span>+224</span></span><input id="at" inputmode="tel" placeholder="6X XXX XX XX" autocomplete="tel-national" oninput="pwKb()"></div><label>Mot de passe</label>${pwBox('ap',{fix:up,ac:up?'new-password':'current-password'})}`}
 function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu)S.mode='in';if(setup)S.mode='up';const up=S.mode=='up';
 $('app').innerHTML=`<div class="bar"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a></div><div class="au"><div class="af"><div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>${TTL[R]}</h2>
 ${setup?'<p class="mu">Première utilisation : créez le compte administrateur du logiciel.</p>':cu?`<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>`:''}
-${up?'<label>Nom complet</label><input id="an">'+(R!='sa'?'<label>Genre</label><select id="ag"><option value="m">Homme</option><option value="f">Femme</option></select>':''):''}<label>Téléphone (sans +224)</label><input id="at" inputmode="tel" placeholder="6XX XX XX XX"><label>Mot de passe</label><input id="ap" type="password">
+${up?'<label>Nom complet</label><input id="an">'+(R!='sa'?'<label>Genre</label><select id="ag"><option value="m">Homme</option><option value="f">Femme</option></select>':''):''}${authFields(up)}
 <button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre collecteur pour voir vos tontines.</p>':''}${up&&R=='ad'?'<p class="mu">Votre compte sera utilisable après activation de votre abonnement.</p>':''}${R=='g'?'<p class="mu">Votre compte est créé par votre administrateur de tontine.</p>':''}</div></div>`}
 function go(){const t=ph($('at').value),p=$('ap').value;if(!t||!p)return alert('Renseignez téléphone et mot de passe.');let u=D.users.find(x=>x.tel==t&&x.role==R);
-if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
+if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');const pe=pwErr(p);if(pe)return alert(pe);if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
 u={id:uid(),role:R,nom:n,tel:t,pwd:p,sx:($('ag')||{}).value||'m'};if(R=='ad'){u.actif=false;u.exp=''}D.users.push(u);save();
 if(R=='ad'){alert("Compte créé. Il sera utilisable après activation de votre abonnement par l'administrateur du logiciel.");S.mode='in';return authView()}}
 else{if(!u||u.pwd!=p)return alert('Téléphone ou mot de passe incorrect.');const m=msgU(u);if(m)return alert(m)}
@@ -123,7 +146,7 @@ try{localStorage.setItem('yt_'+R,u.id)}catch(e){}S.u=u;dash()}
 function out(){try{localStorage.removeItem('yt_'+R)}catch(e){}location.href=R=='sa'?'admin-logiciel.html':'index.html'}
 function dash(){const TL=Object.fromEntries(TABS),I=TI,hid=pretVis()?[]:({ad:['pr'],g:['pt'],a:['pt']}[R]||[]),G=TG.map(([g,ids])=>[g,ids.filter(k=>!hid.includes(k))]).filter(x=>x[1].length),
 bar=`<div class="bar np"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a><div class="usr"><div class="un"><b>${esc(S.u.nom)}</b><small>${roleLbl(S.u)}</small></div><button class="btn o s" onclick="out()">Déconnexion</button></div></div>`;
-if(S.view=='h'){$('app').innerHTML=bar+`<div class="w">${R=='a'?noticeP():''}${G.map(([g,ids])=>`<section class="nv-g"><h3 class="nv-gt">${g}</h3><div class="nv-tiles">${ids.map(k=>`<button class="nv-tile" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span><span>${TL[k]}</span></button>`).join('')}</div></section>`).join('')}</div>`;return}
+if(S.view=='h'){$('app').innerHTML=bar+`<div class="w">${R=='a'?noticeP():''}${G.map(([g,ids])=>`<section class="nv-g"><h3 class="nv-gt">${g}</h3><div class="nv-tiles">${ids.map(k=>`<button class="nv-tile" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span><span>${TL[k]}${bdg(k)}</span></button>`).join('')}</div></section>`).join('')}</div>`;return}
 $('app').innerHTML=bar+`<div class="w"><div class="nv-nav np"><div class="nv-bar"><button class="nv-b" onclick="navHome()">← Accueil</button><h2 class="nv-t">${TL[S.tab]}</h2><button class="nv-b m" aria-expanded="${S.menu}" onclick="S.menu=!S.menu;dash()">Menu ▾</button></div>
 ${S.menu?`<nav class="nv-mnu">${G.map(([g,ids])=>`<h3 class="nv-gt">${g}</h3><div class="nv-mg">${ids.map(k=>`<button class="nv-mi" aria-selected="${k==S.tab}" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span>${TL[k]}</button>`).join('')}</div>`).join('')}</nav>`:''}</div>${typeof EX!=='undefined'&&EX[S.tab]&&!S.m?`<div class="row np"><button class="btn s y" onclick="exportTab()">⬇ Exporter Excel</button></div>`:''}<div id="v"></div></div>`;
 $('v').innerHTML=S.m?detail():V[S.tab]()}
@@ -207,17 +230,163 @@ const dd=a.filter(d=>d.date.slice(0,n)==S.day.slice(0,n)),sd=dd.reduce((s,d)=>s+
 return`<div class="row np"><select style="width:auto" onchange="S.per=this.value;dash()">${[['j','Journalier'],['m','Mensuel'],['a','Annuel']].map(o=>`<option value="${o[0]}" ${S.per==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()"></div>
 <h3>Rapport ${k} (${S.day.slice(0,n)})</h3><div class="st"><div><b>${nm}</b>Mises</div><div><b>${F(sd)}</b>Total déposé</div><div><b>${F(sr)}</b>Retraits remis</div><div><b>${F(mine().filter(m=>m.statut=='attente').reduce((s,m)=>s+owed(m),0))}</b>Reste à payer</div>${pretVis()?`<div><b>${F(dd.reduce((s,d)=>s+(d.rp||0),0))}</b>Remboursements de prêts</div><div><b>${F(D.pret.filter(p=>p.statut=='accepte'&&mine().some(m=>m.id==p.mid)).reduce((s,p)=>s+due(p),0))}</b>Prêts à rembourser</div>`:''}${R=='g'?`<div><b>${F(scc)}</b>Ma commission</div>`:R=='ad'?`<div><b>${F(sc)}</b>Commissions</div><div><b>${F(scc)}</b>Part collecteurs</div><div><b>${F(sc-scc)}</b>Ma part</div>`:''}</div>
 <div class="row np">${R!='a'?'<button class="btn s" onclick="csv()">Exporter CSV</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
-const R='ad',TABS=[['ap','Aperçu'],['co','Collecteurs'],['av','Approvisionnement'],['cl','Clôtures'],['am','Clients'],['pr','Prêts'],['rp','Rapport'],['cx','Commissions'],['tr','Trésorerie'],['pa','Paramètres']];
-const TI={ap:'📊',co:'🧑‍💼',av:'💵',cl:'✅',am:'👥',pr:'🤝',rp:'📈',cx:'💸',tr:'🏦',pa:'⚙️'},TG=[['Pilotage',['ap','rp','cx','tr']],['Collecteurs',['co','av']],['Tontines',['cl','am','pr']],['Réglages',['pa']]];
+const R='ad',TABS=[['ap','Aperçu'],['co','Collecteurs'],['av','Approvisionnement'],['cl','Clôtures'],['am','Clients'],['pr','Prêts'],['rp','Rapport'],['cx','Commissions'],['tr','Trésorerie'],['pa','Paramètres'],['an','Anomalies et alertes'],['sv','Sauvegarde']];
+const TI={an:'🚨',sv:'💾',ap:'📊',co:'🧑‍💼',av:'💵',cl:'✅',am:'👥',pr:'🤝',rp:'📈',cx:'💸',tr:'🏦',pa:'⚙️'},TG=[['Pilotage',['ap','rp','cx','tr']],['Collecteurs',['co','av']],['Tontines',['cl','am','pr']],['Réglages',['pa']],['Contrôle',['an','sv']]];
 const nmC=id=>{const u=D.users.find(x=>x.id==id);return u?esc(u.nom):'?'};
 const copts=()=>colls().filter(c=>c.actif!==false).map(c=>`<option value="${c.id}">${esc(c.nom)}</option>`).join('');
 const cmFilter=()=>{const ids=mine().map(m=>m.id),n={j:10,m:7,a:4}[S.cper];return D.ret.filter(r=>ids.includes(r.mid)&&(!n||r.date.slice(0,n)==S.day.slice(0,n)))};
 const cmBar=()=>`<div class="row np"><select style="width:auto" onchange="S.cper=this.value;dash()">${[['all','Tout'],['j','Jour'],['m','Mois'],['a','Année']].map(o=>`<option value="${o[0]}" ${S.cper==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>${S.cper!='all'?`<input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()">`:''}</div>`;
 const memOf=x=>D.mem.find(k=>k.id==x.mid);
-const V={
+
+/* ===== Anomalies, alertes et sauvegarde ===== */
+const jd=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5),nz=v=>typeof v=='number'&&isFinite(v),bkKey=()=>'ytbk_'+(R=='sa'?'sa':S.u.id);
+function scp(){const sa=R=='sa',id=S.u.id,
+adms=D.users.filter(u=>u.role=='ad'&&(sa||u.id==id)),
+cols=D.users.filter(u=>u.role=='g'&&(sa||u.adm==id)),ci=cols.map(u=>u.id),
+mem=D.mem.filter(m=>sa||ci.includes(m.mgr)),mi=mem.map(m=>m.id),tels=new Set(mem.map(m=>m.tel)),
+cli=D.users.filter(u=>u.role=='a'&&(sa||tels.has(u.tel))),
+users=sa?D.users.slice():[].concat(adms,cols,cli),
+dep=D.dep.filter(d=>sa||mi.includes(d.mid)),
+ret=D.ret.filter(r=>sa||r.adm==id||mi.includes(r.mid)),
+mn=x=>sa||x.adm==id;
+return{sa,id,adms,cols,mem,cli,users,dep,ret,pret:D.pret.filter(mn),app:D.app.filter(mn),rem:D.rem.filter(mn),rtu:(D.rtu||[]).filter(mn),abo:D.abo.filter(mn),pcom:(D.pcom||[]).filter(mn)}}
+function anom(){const s=scp(),L=[],td=T(),A=(n,c,t,w)=>L.push({n,c,t,w:w||''}),
+uN=id=>{const u=D.users.find(x=>x.id==id);return u?u.nom:'(introuvable)'},
+mL=m=>m?String(m.sn||'?')+' · '+((m.prenom||'')+' '+(m.nom||'')).trim():'(introuvable)',
+RL={a:'Client',g:'Collecteur',ad:'Admin de tontine',sa:'Admin du logiciel'},
+CA='Comptes',CT='Tontines',CP='Prêts',CU='UV et remises',CD='Dysfonctionnements';
+/* --- Comptes --- */
+const seen={},dupDone={};D.users.forEach(u=>{const k=u.role+'|'+u.tel;seen[k]=(seen[k]||0)+1});
+s.users.forEach(u=>{const rl=RL[u.role],w=(rl||'Rôle inconnu')+' : '+(u.nom||'sans nom')+(u.tel?' ('+u.tel+')':'');
+if(!rl)A('r',CA,'Rôle de compte inconnu',w);
+if(!u.nom)A('o',CA,'Compte sans nom',w);
+if(!u.tel)A('r',CA,'Compte sans numéro de téléphone : connexion impossible',w);
+else{if(!/^\d{9}$/.test(u.tel))A('o',CA,'Numéro de téléphone inhabituel ('+String(u.tel).length+' chiffres au lieu de 9)',w);
+const k=u.role+'|'+u.tel;if(seen[k]>1&&!dupDone[k]){dupDone[k]=1;A('r',CA,'Numéro utilisé par '+seen[k]+' comptes de même rôle',w)}}
+if(!u.pwd)A('r',CA,'Compte sans mot de passe',w);
+if(u.role=='ad'){
+if(!u.actif&&!u.exp)A('o',CA,"En attente d'activation de l'abonnement",w);
+else if(!u.actif)A('o',CA,"Compte suspendu (abonnement jusqu'au "+u.exp+')',w);
+else if(!u.exp)A('r',CA,"Compte actif sans date d'expiration d'abonnement",w);
+else if(u.exp<td)A('r',CA,'Abonnement expiré le '+u.exp,w);
+else{const j=jd(td,u.exp);if(j<=7)A('o',CA,'Abonnement expirant dans '+j+' jour(s), le '+u.exp,w)}
+if(s.sa&&u.actif&&!D.abo.some(x=>x.adm==u.id))A('o',CA,"Compte actif sans aucun paiement d'abonnement enregistré",w)}
+if(u.role=='g'){
+if(!D.users.some(a=>a.id==u.adm&&a.role=='ad'))A('r',CA,'Collecteur rattaché à un administrateur introuvable',w);
+if(u.actif===false){const n=D.mem.filter(m=>m.mgr==u.id&&!isCl(m)).length;if(n)A('o',CA,'Collecteur suspendu avec '+n+' tontine(s) non clôturée(s)',w)}}});
+if(s.sa){const n=s.cli.filter(u=>!D.mem.some(m=>m.tel==u.tel)).length;if(n)A('o',CA,n+" compte(s) client sans tontine liée à leur numéro (le client ne voit rien dans son espace)")}
+/* --- Tontines --- */
+const sn={};s.mem.forEach(m=>{(sn[m.sn]=sn[m.sn]||[]).push(m)});
+s.mem.forEach(m=>{const w='Tontine '+mL(m),t=tot(m),pays=s.ret.filter(r=>r.mid==m.id);
+if(!D.users.some(u=>u.id==m.mgr&&u.role=='g'))A('r',CT,'Client rattaché à un collecteur introuvable',w);
+if(!nz(m.mise)||m.mise<=0)A('r',CT,'Mise invalide (montant nul ou non numérique)',w);
+if(!m.tel)A('o',CT,"Client sans numéro de téléphone : il ne verra pas sa tontine dans son espace",w);
+else if(!/^\d{9}$/.test(m.tel))A('o',CT,'Numéro de téléphone du client inhabituel ('+String(m.tel).length+' chiffres au lieu de 9)',w);
+if(sn[m.sn]&&sn[m.sn].length>1&&sn[m.sn][0]===m)A('r',CT,'Numéro de tontine en double ('+m.sn+') : '+sn[m.sn].length+' tontines',w);
+if(m.date&&m.date>td)A('o',CT,'Tontine créée avec une date dans le futur ('+m.date+')',w);
+if(nz(m.mise)&&m.mise>0){if(!isCl(m)&&t>31*m.mise)A('o',CT,'Total collecté supérieur à 31 mises ('+F(t)+')',w);
+if(m.statut=='normal'&&carr(m)<31)A('o',CT,'Clôture « normale » avec seulement '+carr(m)+'/31 cases',w)}
+if(isCl(m)&&!pays.length)A('r',CT,'Tontine clôturée sans paiement enregistré',w);
+if(!isCl(m)&&pays.length)A('r',CT,"Paiement enregistré alors que la tontine n'est pas clôturée",w);
+if(pays.length>1)A('r',CT,'Double paiement : '+pays.length+' paiements pour la même tontine',w);
+if(m.statut=='attente')A('o',CT,'Clôture en attente de validation',w)});
+if(s.sa){const ms=new Set(D.mem.map(m=>m.id)),n=s.dep.filter(d=>!ms.has(d.mid)).length;if(n)A('r',CT,n+' mise(s) rattachée(s) à une tontine introuvable')}
+{const bad=s.dep.filter(d=>!nz(d.montant)||d.montant<0).length;if(bad)A('r',CT,bad+' mise(s) de montant invalide (négatif ou non numérique)');
+const fut=s.dep.filter(d=>d.date>td).length;if(fut)A('o',CT,fut+' mise(s) datée(s) dans le futur');
+const dk={};s.dep.forEach(d=>{const k=[d.mid,d.date,d.montant,d.rp||0,d.n||0,d.pid||''].join('|');(dk[k]=dk[k]||[]).push(d)});
+Object.keys(dk).forEach(k=>{const g=dk[k];if(g.length>1){const d=g[0];A('o',CT,g.length+' mises identiques le même jour ('+F(d.montant)+') : doublon possible',mL(D.mem.find(x=>x.id==d.mid))+' · '+d.date)}})}
+s.ret.forEach(r=>{const m=D.mem.find(x=>x.id==r.mid),w=mL(m)+' · '+(r.date||'');
+if(!m)A('r',CT,'Paiement de clôture rattaché à une tontine introuvable',w);
+if(!nz(r.montant)||r.montant<0)A('r',CT,'Paiement de montant invalide',w);
+if((r.comCol||0)>(r.com||0))A('r',CT,'Part du collecteur supérieure à la commission',w)});
+/* --- Prêts --- */
+const ps={};s.pret.forEach(p=>{(ps[p.sn]=ps[p.sn]||[]).push(p)});
+s.pret.forEach(p=>{const m=D.mem.find(x=>x.id==p.mid),w='Prêt '+p.sn+' · '+mL(m),reste=(p.total||0)+(p.pen||0)-(p.rembourse||0);
+if(!m)A('r',CP,'Prêt rattaché à une tontine introuvable',w);
+if(ps[p.sn].length>1&&ps[p.sn][0]===p)A('r',CP,'Numéro de prêt en double ('+p.sn+')',w);
+if(nz(p.total)&&nz(p.rembourse)&&p.rembourse>p.total+(p.pen||0)+0.5)A('r',CP,'Montant remboursé ('+F(p.rembourse)+') supérieur au total dû ('+F(p.total)+')',w);
+if(p.statut=='accepte'){const fin=p.fin||p.ech;
+if(reste>0&&fin&&fin<td)A('r',CP,'Prêt en retard depuis le '+fin+' : reste '+F(reste),w);
+if(reste<=0&&p.total>0)A('o',CP,'Prêt entièrement remboursé mais non marqué « soldé »',w);
+if(m&&isCl(m)&&reste>0)A('o',CP,'Prêt non soldé alors que la tontine est clôturée : vérifier le paiement',w)}
+if(p.statut=='demande'&&p.dateDem){const j=jd(p.dateDem,td);if(j>=2)A('o',CP,'Demande de prêt en attente de décision depuis '+j+' jour(s)',w)}});
+/* --- UV et remises --- */
+s.app.forEach(x=>{const w=uN(x.col)+' · '+(x.date||'');
+if(!nz(x.montant)||x.montant<=0)A('r',CU,"Approvisionnement de montant invalide",w);
+if(!D.users.some(u=>u.id==x.col))A('r',CU,'Approvisionnement attribué à un collecteur introuvable',w);
+if(x.date>td)A('o',CU,'Approvisionnement daté dans le futur',w)});
+s.cols.forEach(c=>{const ids=D.mem.filter(m=>m.mgr==c.id).map(m=>m.id),ds=new Set([].concat(D.app.filter(x=>x.col==c.id).map(x=>x.date),D.dep.filter(x=>ids.includes(x.mid)).map(x=>x.uvd||x.date),(D.rtu||[]).filter(x=>x.col==c.id&&x.statut=='ok').map(x=>x.date))),neg=[],nr=[];
+ds.forEach(d=>{const j=jour(c,d);if(j.so<0)neg.push(d);if(d<td&&(j.ap>0||j.mi>0)&&!remDe(c,d))nr.push(d)});
+neg.sort();nr.sort();
+if(neg.length)A('r',CU,"Solde UV négatif sur "+neg.length+" journée(s) (dernière : "+neg[neg.length-1]+") : mises enregistrées au-delà de l'UV attribué",c.nom);
+if(nr.length)A('o',CU,nr.length+" journée(s) passée(s) sans remise de fin de journée (dernière : "+nr[nr.length-1]+")",c.nom)});
+s.rem.forEach(r=>{if(!D.users.some(u=>u.id==r.col))A('r',CU,'Remise rattachée à un collecteur introuvable',r.date);
+else if(r.ecart)A(r.ecart>0?'r':'o',CU,'Écart de remise du '+r.date+' : '+(r.ecart>0?'manquant ':'excédent ')+F(Math.abs(r.ecart)),uN(r.col))});
+s.rtu.filter(x=>x.statut=='attente'&&x.date<td).forEach(x=>A('o',CU,'Retour UV de '+F(x.montant)+' en attente depuis le '+x.date,uN(x.col)));
+s.pcom.forEach(x=>{if(!D.users.some(u=>u.id==x.col))A('r',CU,'Paiement de commission rattaché à un collecteur introuvable',x.date)});
+if(s.sa)s.abo.forEach(x=>{const w=uN(x.adm)+' · '+(x.date||'');
+if(!D.users.some(u=>u.id==x.adm&&u.role=='ad'))A('r',CA,"Paiement d'abonnement rattaché à un administrateur introuvable",w);
+if(!nz(x.montant)||x.montant<=0)A('o',CA,"Paiement d'abonnement de montant nul ou invalide",w)});
+/* --- Dysfonctionnements --- */
+try{const n=(localStorage.getItem('yt')||'').length,pc=Math.round(n/5242880*100);
+if(pc>=90)A('r',CD,"Espace de stockage presque plein ("+pc+" %) : risque d'échec d'enregistrement. Faites une sauvegarde Excel et allégez les photos.");
+else if(pc>=70)A('o',CD,"Espace de stockage utilisé à "+pc+" % : pensez à sauvegarder et à alléger les photos.")}
+catch(e){A('r',CD,"Stockage du navigateur inaccessible : les enregistrements ne sont plus conservés")}
+if(!window.XLSX)A('o',CD,"Module Excel non chargé (connexion internet nécessaire) : sauvegarde et exports Excel indisponibles");
+if(!window.jspdf)A('o',CD,"Module PDF non chargé (connexion internet nécessaire) : tickets et reçus PDF indisponibles");
+if(typeof navigator!='undefined'&&navigator.onLine===false)A('o',CD,"Appareil hors connexion : les modules externes et la synchronisation peuvent être indisponibles");
+try{const bk=localStorage.getItem(bkKey());
+if(!bk)A('o',CD,'Aucune sauvegarde Excel effectuée sur cet appareil');
+else{const j=jd(bk,td);if(j>=7)A('o',CD,'Dernière sauvegarde Excel il y a '+j+' jour(s) ('+bk+')')}}catch(e){}
+L.sort((a,b)=>(a.n=='r'?0:1)-(b.n=='r'?0:1));return L}
+function anEx(){let L=[];try{L=anom()}catch(e){L=[{n:'r',c:'Dysfonctionnements',t:'Contrôle impossible : '+e.message,w:''}]}
+return[{n:'Anomalies',rows:[['Niveau','Catégorie','Anomalie','Concerné']].concat(L.map(x=>[x.n=='r'?'Critique':'À surveiller',x.c,x.t,x.w]))}]}
+const bdg=k=>{if(k!='an')return'';try{const n=anom().filter(x=>x.n=='r').length;return n?` <b class="bdg">${n}</b>`:''}catch(e){return' <b class="bdg">!</b>'}};
+function anView(){let L;try{L=anom()}catch(e){return`<h3>Anomalies et alertes</h3><div class="card" style="display:block;border-color:#c0392b"><span class="tag crit">Dysfonctionnement</span> <b>Le contrôle automatique a échoué</b><p class="mu">${esc(e.message)}. Les données contiennent probablement un enregistrement corrompu.</p></div>`}
+const r=L.filter(x=>x.n=='r').length,CT=['Comptes','Tontines','Prêts','UV et remises','Dysfonctionnements'],
+card=x=>`<div class="card" style="display:block;margin-bottom:8px;border-color:${x.n=='r'?'#c0392b':'var(--y)'}"><span class="tag ${x.n=='r'?'crit':''}">${x.n=='r'?'Critique':'À surveiller'}</span> <b>${esc(x.t)}</b>${x.w?`<p class="mu" style="margin:4px 0 0">${esc(x.w)}</p>`:''}</div>`;
+return`<h3>Anomalies et alertes</h3><p class="mu">Contrôle automatique des comptes, des tontines et du fonctionnement ${R=='sa'?'de toute la plateforme':'de votre tontine'}.</p><div class="st"><div><b>${L.length}</b>Signalements</div><div><b>${r}</b>Critiques</div><div><b>${L.length-r}</b>À surveiller</div></div>
+${L.length?CT.map(c=>{const l=L.filter(x=>x.c==c);return l.length?`<h3 style="margin-top:18px">${c} (${l.length})</h3>${l.slice(0,60).map(card).join('')}${l.length>60?`<p class="mu">… et ${l.length-60} autre(s). Exportez en Excel pour la liste complète.</p>`:''}`:''}).join(''):'<div class="card" style="display:block"><b>✅ Aucune anomalie détectée.</b></div>'}
+<div class="row np"><button class="btn s o" onclick="dash()">↻ Relancer le contrôle</button></div><p class="mu">Contrôle du ${T()} à ${new Date().toTimeString().slice(0,5)}.</p>`}
+function svView(){const s=scp(),last=(()=>{try{return localStorage.getItem(bkKey())||''}catch(e){return''}})(),
+rows=[['Comptes',s.users.length],['Tontines (clients)',s.mem.length],['Mises',s.dep.length],['Clôtures et paiements',s.ret.length],['Prêts',s.pret.length],['UV attribués',s.app.length],['Remises de fin de journée',s.rem.length],['Retours UV',s.rtu.length],['Paiements de commissions',s.pcom.length],['Abonnements',s.abo.length]];
+return`<h3>Sauvegarde</h3><p class="mu">${R=='sa'?'Toutes les données de la plateforme':'Toutes les données de votre tontine'} dans un seul fichier Excel, une feuille par rubrique. Les mots de passe et les photos ne sont pas exportés.</p>
+<div class="tb"><table><tr><th>Rubrique</th><th>Enregistrements</th></tr>${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table></div>
+<p class="mu">Dernière sauvegarde sur cet appareil : <b>${last||'aucune'}</b></p><div class="row np"><button class="btn" onclick="backup()">⬇ Télécharger la sauvegarde Excel</button></div>
+<p class="mu">Gardez le fichier en lieu sûr, hors de cet appareil (e-mail, clé USB, autre téléphone). Pour l'instant, le logiciel ne propose pas de réimporter ce fichier : il sert d'archive et de contrôle.</p>`}
+function backup(){if(!window.XLSX)return alert("Module Excel non chargé. Vérifiez votre connexion internet puis réessayez.");
+const s=scp(),td=T(),mm=id=>D.mem.find(x=>x.id==id)||{},uN=id=>{const u=D.users.find(x=>x.id==id);return u?u.nom:''},cn=m=>((m.prenom||'')+' '+(m.nom||'')).trim(),
+st=m=>m.statut=='normal'?'Clôturé normal':m.statut=='interrompu'?'Clôturé interrompu':m.statut=='attente'?'Clôture en attente de validation':'En cours',
+RL={a:'Client',g:'Collecteur',ad:'Admin de tontine',sa:'Admin du logiciel'},
+cs=u=>u.role=='ad'?(!u.actif?(u.exp?'Suspendu':"En attente d'activation"):(u.exp||'')<td?'Abonnement expiré':'Actif'):u.role=='g'?(u.actif===false?'Suspendu':'Actif'):'Actif',
+PS={demande:'En attente',accepte:'Accepté',refuse:'Refusé',solde:'Soldé'},RS={attente:'En attente',ok:'Validé',refuse:'Refusé'},
+pr=[['Administrateur','Rubrique','Paramètre','Valeur']];
+s.adms.forEach(a=>{const o=(D.org||{})[a.id]||{},c=(D.cfg||{})[a.id]||{};[['nom','Nom'],['adr','Adresse'],['tel','Téléphone'],['mail','E-mail']].forEach(k=>{if(o[k[0]])pr.push([a.nom,'Tontine',k[1],o[k[0]]])});
+Object.keys(c).forEach(k=>{if(c[k]!==null&&typeof c[k]!='object')pr.push([a.nom,'Réglage',k,c[k]])})});
+let an=[];try{an=anom()}catch(e){}
+const sh=[
+{n:'Comptes',rows:[['Rôle','Nom','Téléphone','Genre','Statut du compte','Abonnement jusqu\'au','Administrateur rattaché','Date de naissance','Nationalité','Adresse','Ville','Région']].concat(s.users.map(u=>[RL[u.role]||u.role,u.nom||'',u.tel||'',u.sx=='f'?'Femme':u.sx=='m'?'Homme':'',cs(u),u.exp||'',u.role=='g'?uN(u.adm):'',u.dn||'',u.nat||'',u.adr||'',u.vil||'',u.reg||'']))},
+{n:'Tontines',rows:[['N° tontine','Prénom','Nom','Téléphone','Quartier','Collecteur','Mise (GNF)','État','Date de création','Nombre de mises','Cases remplies','Collecté (GNF)']].concat(s.mem.map(m=>[m.sn||'',m.prenom||'',m.nom||'',m.tel||'',m.q||'',uN(m.mgr),m.mise,st(m),m.date||'',mises(m),carr(m),tot(m)]))},
+{n:'Mises',rows:[['Date','Date UV','N° tontine','Client','Collecteur','Nombre de mises','Montant (GNF)','Remboursement prêt (GNF)']].concat(s.dep.map(d=>{const m=mm(d.mid);return[d.date||'',d.uvd||'',m.sn||'',cn(m),uN(m.mgr),d.n||'',d.montant,d.rp||0]}))},
+{n:'Clôtures et paiements',rows:[['Date','N° tontine','Client','Type','Payé (GNF)','Commission (GNF)','Part collecteur (GNF)']].concat(s.ret.map(r=>{const m=mm(r.mid);return[r.date||'',m.sn||'',cn(m),r.type||'',r.montant,r.com||0,r.comCol||0]}))},
+{n:'Prêts',rows:[['N° prêt','N° tontine','Client','Collecteur','Date demande','Montant','Intérêt','Total','Remboursé','Reste','Échéance','État','Avis']].concat(s.pret.map(p=>{const m=mm(p.mid);return[p.sn||'',m.sn||'',cn(m),uN(m.mgr),p.dateDem||'',p.montant,p.interet||0,p.total||0,p.rembourse||0,(p.total||0)-(p.rembourse||0),p.fin||p.ech||'',PS[p.statut]||p.statut||'',p.avis||'']}))},
+{n:'UV attribués',rows:[['Date','Collecteur','Montant UV (GNF)']].concat(s.app.map(x=>[x.date||'',uN(x.col),x.montant]))},
+{n:'Remises',rows:[['Date','Collecteur','UV attribué','Espèces','UV restitué','Écart']].concat(s.rem.map(x=>[x.date||'',uN(x.col),x.appro,x.cash,x.uv,x.ecart]))},
+{n:'Retours UV',rows:[['Date','Collecteur','Montant UV (GNF)','État','Date de validation']].concat(s.rtu.map(x=>[x.date||'',uN(x.col),x.montant,RS[x.statut]||x.statut||'',x.dateValid||'']))},
+{n:'Paiements commissions',rows:[['Date','Mois','Collecteur','Montant (GNF)']].concat(s.pcom.map(x=>[x.date||'',x.mois||'',uN(x.col),x.montant]))},
+{n:'Abonnements',rows:[['Date','Administrateur','Mois','Montant (GNF)']].concat(s.abo.map(x=>[x.date||'',uN(x.adm),x.mois,x.montant]))},
+{n:'Paramètres',rows:pr},
+{n:'Anomalies',rows:[['Niveau','Catégorie','Anomalie','Concerné']].concat(an.map(x=>[x.n=='r'?'Critique':'À surveiller',x.c,x.t,x.w]))}],
+lab=R=='sa'?'Toute la plateforme (administrateur du logiciel)':(((D.org||{})[S.u.id]||{}).nom||S.u.nom),
+res={n:'Résumé',rows:[['Sauvegarde ClickTontine'],['Date',td],['Périmètre',lab],[],['Rubrique','Enregistrements']].concat(sh.map(x=>[x.n,x.rows.length-1]))},
+slug=R=='sa'?'plateforme':String(lab).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'tontine';
+xl([res].concat(sh),'sauvegarde-clicktontine-'+slug+'-'+td);
+try{localStorage.setItem(bkKey(),td)}catch(e){}dash()}
+
+const V={an:anView,sv:svView,
 ap(){const cs=colls(),ms=mine(),att=ms.filter(m=>m.statut=='attente').length,tc=ms.reduce((a,m)=>a+tot(m),0),sc=D.rem.filter(r=>r.adm==S.u.id).reduce((a,r)=>a+r.ecart,0);
 return`<div class="st"><div><b>${cs.length}</b>Collecteurs</div><div><b>${ms.filter(m=>m.statut=='cours').length}</b>Clients actifs</div><div><b>${F(tc)}</b>Total collecté</div><div><b>${att}</b>Clôtures à valider</div>${pretOn(S.u.id)?`<div><b>${D.pret.filter(p=>p.adm==S.u.id&&p.statut=='demande').length}</b>Prêts à valider</div>`:''}<div><b>${F(sc)}</b>Écarts cumulés (manquants)</div></div><p class="mu">Abonnement actif jusqu'au ${S.u.exp}.</p>`},
-co(){return`<h3>Nouveau collecteur</h3><label>Nom complet</label><input id="cn"><label>Téléphone (sans +224)</label><input id="ct" inputmode="tel"><label>Genre</label><select id="cg"><option value="m">Homme</option><option value="f">Femme</option></select><label>Mot de passe</label><input id="cp"><button class="btn" onclick="addC()">Créer le collecteur</button>
+co(){return`<h3>Nouveau collecteur</h3><label>Nom complet</label><input id="cn"><label>Téléphone (sans +224)</label><input id="ct" inputmode="tel"><label>Genre</label><select id="cg"><option value="m">Homme</option><option value="f">Femme</option></select><label>Mot de passe du collecteur (4 chiffres)</label><input id="cp" inputmode="numeric" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/\\D/g,'')"><button class="btn" onclick="addC()">Créer le collecteur</button>
 <h3 style="margin-top:22px">Mes collecteurs</h3>${colls().map(c=>{const k=D.rem.filter(r=>r.col==c.id).reduce((a,r)=>a+r.ecart,0);return`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(c.nom)}</b> <span class="tag">${c.actif===false?'Suspendu':'Actif'}</span><p class="mu">Tél : ${esc(c.tel)} · ${D.mem.filter(m=>m.mgr==c.id).length} client(s) · Écart cumulé : ${F(k)}</p>
 <div class="row"><button class="btn s o" onclick="togC('${c.id}')">${c.actif===false?'Réactiver':'Suspendre'}</button></div></div>`}).join('')||'<p class="mu">Aucun collecteur. Créez le premier ci-dessus.</p>'}`},
 av(){const cs=colls();return`<h3>Approvisionner en UV (début de journée)</h3><label>Collecteur</label><select id="ac">${copts()}</select><label>Montant UV (GNF)</label><input id="aa" inputmode="numeric" placeholder="Ex. 500 000" oninput="fmtI(this)"><label>Date</label><input id="adt" type="date" value="${T()}"><button class="btn" onclick="addA()">Attribuer l'UV</button>
@@ -284,13 +453,13 @@ am:()=>[{n:'Clients',rows:[['N° tontine','Nom','Prénom','Téléphone','Quartie
 pr:()=>[{n:'Prêts',rows:[['N° prêt','N° tontine','Client','Collecteur','Date demande','Montant','Intérêt','Total','Remboursé','Reste','Échéance','État','Avis']].concat(D.pret.filter(p=>p.adm==S.u.id).map(p=>{const m=D.mem.find(x=>x.id==p.mid);return[p.sn,m.sn,m.prenom+' '+m.nom,nm2(m.mgr),p.dateDem,p.montant,p.interet,p.total,p.rembourse,p.total-p.rembourse,p.ech||'',p.statut,p.avis||'']}))}],
 rp:()=>[{n:'Mises',rows:[['Date','N° tontine','Client','Collecteur','Nombre de mises','Montant (GNF)','Remboursement prêt (GNF)']].concat(dps().filter(d=>rpIn(d.date)).map(d=>{const m=memOf(d);return[d.date,m.sn,m.prenom+' '+m.nom,nm2(m.mgr),d.n||Math.round(d.montant/m.mise),d.montant,d.rp||0]}))}],
 cx:()=>[{n:'Commissions',rows:[['Date','N° tontine','Client','Collecteur','Commission (GNF)','Part collecteur (GNF)','Ma part (GNF)']].concat(cmFilter().map(x=>{const m=memOf(x);return[x.date,m.sn,m.prenom+' '+m.nom,nm2(m.mgr),x.com,x.comCol||0,x.com-(x.comCol||0)]}))},{n:'Paiements commissions',rows:[['Date','Mois','Collecteur','Montant (GNF)']].concat(D.pcom.filter(x=>x.adm==S.u.id).map(x=>[x.date,x.mois,nm2(x.col),x.montant]))}],
-tr:comptaSheets};
+tr:comptaSheets};EX.an=anEx;
 function decP(id,ok){const p=D.pret.find(x=>x.id==id),m=D.mem.find(x=>x.id==p.mid),av=$('av'+id).value.trim();if(!av)return alert("Saisissez votre avis avant de valider ou de refuser.");
 const c=cfg(S.u.id),mi=p.mise||m.mise,du=p.dur||1,t=lnTerms(S.u.id,mi,p.montant,du);
 if(ok){if(mises(m)<c.pmin)return alert("Ce client n'a effectué que "+mises(m)+" mise(s) : "+c.pmin+" minimum avant de bénéficier d'un prêt.");if(p.montant>t.max)return alert('Montant supérieur au maximum pour cette durée ('+F(t.max)+').');if(du>c.pdur)return alert('Durée supérieure au maximum autorisé ('+c.pdur+' mois).')}
 if(!confirm(ok?`Accepter le prêt ${p.sn} : ${F(p.montant)} sur ${du} mois, net remis ${F(t.net)}, total à rembourser ${F(t.total)} en ${t.nb} échéances de ${F(mi)} ?`:`Refuser le prêt ${p.sn} ?`))return;
 p.statut=ok?'accepte':'refuse';if(ok)Object.assign(p,{fg:t.fg,net:t.net,serv:t.serv,interet:t.interet,total:t.total,nb:t.nb,mise:mi,k:0,pen:0,fin:plusMois(T(),du)});p.avis=av;p.dateDec=T();p.vu=false;save();dash()}
-function addC(){const n=$('cn').value.trim(),t=ph($('ct').value),p=$('cp').value;if(!n||!t||!p)return alert('Nom, téléphone et mot de passe sont obligatoires.');if(D.users.some(u=>u.role=='g'&&u.tel==t))return alert('Ce numéro est déjà utilisé par un collecteur.');D.users.push({id:uid(),role:'g',nom:n,tel:t,pwd:p,adm:S.u.id,actif:true,sx:$('cg').value});save();dash()}
+function addC(){const n=$('cn').value.trim(),t=ph($('ct').value),p=$('cp').value;if(!n||!t||!p)return alert('Nom, téléphone et mot de passe sont obligatoires.');if(!/^\d{4}$/.test(p))return alert('Le mot de passe du collecteur doit comporter exactement 4 chiffres.');if(D.users.some(u=>u.role=='g'&&u.tel==t))return alert('Ce numéro est déjà utilisé par un collecteur.');D.users.push({id:uid(),role:'g',nom:n,tel:t,pwd:p,adm:S.u.id,actif:true,sx:$('cg').value});save();dash()}
 function togC(id){const u=D.users.find(x=>x.id==id);u.actif=(u.actif===false);save();dash()}
 function rtuHtml(){const L=(D.rtu||[]).filter(x=>x.adm==S.u.id).sort((x,y)=>y.date>x.date?1:-1),att=L.filter(x=>x.statut=='attente'),st={attente:'En attente',ok:'Validé',refuse:'Refusé'};return`<h3 style="margin-top:22px">Retours UV demandés par les collecteurs</h3>${att.map(x=>`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(nm2(x.col))}</b> <span class="tag">En attente</span><p class="mu">Date : ${x.date} · UV à retirer : <b>${F(x.montant)}</b></p><div class="row"><button class="btn s" onclick="valRtu('${x.id}',true)">Valider le retrait</button><button class="btn s o" onclick="valRtu('${x.id}',false)">Refuser</button></div></div>`).join('')||'<p class="mu">Aucun retour UV en attente.</p>'}${L.filter(x=>x.statut!='attente').length?`<div class="tb"><table><tr><th>Date</th><th>Collecteur</th><th>UV</th><th>État</th></tr>${L.filter(x=>x.statut!='attente').slice(0,10).map(x=>`<tr><td>${x.date}</td><td>${esc(nm2(x.col))}</td><td>${F(x.montant)}</td><td>${st[x.statut]||x.statut}</td></tr>`).join('')}</table></div>`:''}`}
 function valRtu(id,ok){const x=D.rtu.find(r=>r.id==id);if(!x||x.statut!='attente')return;const c=D.users.find(u=>u.id==x.col);if(ok){if(remDe(c,x.date))return alert('Cette journée est déjà remise : retrait impossible.');const j=jour(c,x.date);if(x.montant>j.so)return alert('Retrait impossible : le solde UV du collecteur ('+F(j.so)+') est inférieur au montant demandé.');if(!confirm('Valider le retrait de '+F(x.montant)+' UV chez '+c.nom+' ?'))return;x.statut='ok'}else{if(!confirm('Refuser ce retour UV ?'))return;x.statut='refuse'}x.dateValid=T();x.valBy=S.u.id;save();dash()}
