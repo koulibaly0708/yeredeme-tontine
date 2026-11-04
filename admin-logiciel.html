@@ -87,6 +87,42 @@ th,td{font-size:15.5px;padding:10px 8px}th{font-weight:700}
 .pw input::placeholder{color:var(--mu);opacity:.6;letter-spacing:1px}
 .pw .eye{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--mu);cursor:pointer;display:grid;place-items:center;padding:0}
 .pw .eye svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pf{max-width:520px;margin:auto;text-align:center}
+.pf-av{position:relative;width:88px;height:88px;border-radius:50%;background:var(--g);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:6px auto 6px;box-shadow:0 0 0 4px var(--bg),0 0 0 6px var(--g);cursor:pointer}
+.pf-av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.pf-cam{position:absolute;right:-4px;bottom:-2px;width:30px;height:30px;border-radius:50%;background:var(--y);display:grid;place-items:center;font-size:15px;box-shadow:0 1px 4px #0005}
+.pf-h{margin:8px 0 4px}.pf-s{color:var(--mu);margin:0 0 6px;font-size:14px}
+.pf-sec{text-align:left;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--mu);margin:18px 6px 8px}
+.pf-card{text-align:left;background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:6px 16px 12px}
+.pf-card label{display:block;font-weight:700;margin:12px 0 4px}
+.pf-f{display:flex;align-items:center;gap:10px;border:2px solid var(--bd);border-radius:999px;padding:0 14px;background:var(--bg)}
+.pf-f span{font-size:18px;opacity:.7}
+.pf-f input{border:0;margin:0;background:transparent;padding:12px 0;outline:0;min-width:0}
+.pf-f.ro{background:var(--g2)}
+.pf-ok{width:24px;height:24px;border-radius:50%;background:var(--g);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.pf-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf-g button{border-radius:999px;padding:14px;font:inherit;font-weight:700;background:var(--g2);color:var(--tx);cursor:pointer;border:2px solid transparent}
+.pf-g button.on{background:var(--g);color:var(--bg);border-color:var(--g)}
+.pf-2,.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf-b{width:100%;border-radius:999px;padding:16px;margin:18px 0 24px;font-size:17px}
+.lnk{background:none;border:0;color:var(--g);font:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:4px}
+textarea.ta{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--bd);border-radius:8px;font:inherit;background:var(--bg);color:var(--tx);margin:4px 0 10px;resize:vertical}
+.ck{display:flex;align-items:center;gap:8px;margin:8px 0}.ck input{width:auto;margin:0}
+.bell{position:relative;flex:none;width:40px;height:40px;display:grid;place-items:center;background:none;border:0;color:var(--g);cursor:pointer;padding:0}
+.bell svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bell b{position:absolute;top:2px;right:0;min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#c0392b;color:#fff;font-size:11px;line-height:18px;text-align:center}
+.bellp{position:fixed;inset:0;z-index:60}
+.bp-b{position:absolute;inset:0;background:#0006}
+.bp-c{position:absolute;top:60px;left:8px;right:8px;max-width:420px;margin-left:auto;max-height:75vh;display:flex;flex-direction:column;background:var(--bg);color:var(--tx);border-radius:14px;box-shadow:0 12px 40px #0006;overflow:hidden}
+.bp-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--bd)}.bp-h b{flex:1}
+.bp-x{background:none;border:0;color:var(--mu);font-size:18px;cursor:pointer;padding:4px 8px}
+.bp-l{overflow-y:auto}
+.bp-i{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--bd);padding:12px 14px;font:inherit;color:inherit;cursor:pointer}
+.bp-i.u{background:var(--g2)}.bp-i.u b::before{content:"● ";color:#c0392b}
+.bp-i span{font-size:20px}.bp-i div{min-width:0}.bp-i p{margin:2px 0;font-size:14px;color:var(--mu)}.bp-i small{color:var(--mu);font-size:12px}
+.sw{width:64px!important;height:30px!important;border-radius:15px!important}
+.sw .kn{top:3px!important;width:24px!important;height:24px!important;font:700 9px/24px "Trebuchet MS",sans-serif!important}
+.sw.on .kn{left:37px!important}.sw.off .kn{left:3px!important}
 </style><script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="pwa.js" defer></script></head><body>
 <div id="app"></div>
 <script>
@@ -127,7 +163,83 @@ const pwErr=p=>(R=='a'||R=='g')?(/^\d{4}$/.test(p)?'':'Le mot de passe doit comp
 function pwBox(id,o){o=o||{};const num=(R=='a'||R=='g')&&!o.txt;return`<div class="pw"><input id="${id}" type="password" placeholder="${o.ph||PWP[R]}" autocomplete="${o.ac||'current-password'}"${num?' inputmode="numeric"':''}${num&&o.fix?` maxlength="4" oninput="this.value=this.value.replace(/\\D/g,'')"`:''}><button type="button" class="eye" onclick="pwToggle(this)" aria-label="Afficher le mot de passe">${EYE1}</button></div>`}
 function pwToggle(b){const i=b.parentNode.querySelector('input'),h=i.type=='password';i.type=h?'text':'password';b.innerHTML=h?EYE0:EYE1;b.setAttribute('aria-label',h?'Masquer le mot de passe':'Afficher le mot de passe')}
 function pwKb(){if(R!='a'&&R!='g')return;const el=$('ap');if(!el)return;if(S.mode=='up'){el.inputMode='numeric';return}const u=D.users.find(x=>x.tel==ph($('at').value)&&x.role==R);el.inputMode=(u&&!/^\d{4}$/.test(u.pwd||''))?'text':'numeric'}
-function authFields(up){return`<label>Numéro de téléphone</label><div class="ph"><span class="cc">${FLAG}<span>+224</span></span><input id="at" inputmode="tel" placeholder="6X XXX XX XX" autocomplete="tel-national" oninput="pwKb()"></div><label>Mot de passe</label>${pwBox('ap',{fix:up,ac:up?'new-password':'current-password'})}`}
+function authFields(up){return`<label>Numéro de téléphone</label><div class="ph"><span class="cc">${FLAG}<span>+224</span></span><input id="at" inputmode="tel" placeholder="6XX XX XX XX" autocomplete="tel-national" oninput="pwKb()"></div><label>Mot de passe</label>${pwBox('ap',{fix:up,ac:up?'new-password':'current-password'})}`}
+/* ===== Profil (photo), annonces et cloche de notifications ===== */
+const fmN=v=>String(Math.round(+v||0)).replace(/\B(?=(\d{3})+(?!\d))/g,' '),ndiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+function profilSplit(u){const p=String(u.nom||'').trim().split(/\s+/).filter(Boolean);return{pn:u.pn!=null?u.pn:(p[0]||''),nm:u.nm!=null?u.nm:p.slice(1).join(' ')}}
+function profilDone(u){return !!(u.dn&&u.sx&&u.nat&&u.adr&&u.vil&&u.reg&&u.pn!=null)}
+const pfAv=()=>{const u=S.u,n=profilSplit(u),ini=((n.pn[0]||'')+(n.nm[0]||'')).toUpperCase()||'?';return`<div class="pf-av" onclick="$('pf_ph').click()" role="button" tabindex="0" aria-label="Changer la photo de profil">${u.photo?`<img src="${u.photo}" alt="">`:esc(ini)}<span class="pf-cam" aria-hidden="true">📷</span></div>${u.photo?'<button type="button" class="lnk" onclick="pfRmPhoto()">Retirer la photo</button>':'<small class="mu">Touchez le cercle pour ajouter une photo</small>'}`};
+function profilView(){const u=S.u,n=profilSplit(u),done=profilDone(u),g=u.sx||'';window.PG=g;
+return`<div class="pf"><div id="pf_avw">${pfAv()}</div><input id="pf_ph" type="file" accept="image/*" hidden onchange="pfPhoto(this)"><h2 class="pf-h">${done?'Mon profil':'Complétez votre profil'}</h2>${done?'':`<p class="pf-s">${R=='a'?'Ces informations sont nécessaires pour utiliser votre portefeuille':'Complétez vos informations personnelles.'}</p>`}
+<div class="pf-sec">IDENTITÉ</div><div class="pf-card">
+<label>Prénom</label><div class="pf-f"><span>👤</span><input id="pf_pn" value="${esc(n.pn)}" autocomplete="given-name"></div>
+<label>Nom</label><div class="pf-f"><span>👤</span><input id="pf_nm" value="${esc(n.nm)}" autocomplete="family-name"></div>
+<label>Téléphone</label><div class="pf-f ro"><span>📞</span><input value="+224${esc(u.tel)}" readonly><b class="pf-ok">✓</b></div>
+<label>Date de naissance</label><div class="pf-f"><span>📅</span><input id="pf_dn" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA (ex : 15/05/1992)" value="${esc(u.dn||'')}" oninput="pfDate(this)"></div>
+<label>Genre</label><div class="pf-g"><button type="button" id="pf_gm" class="${g=='m'?'on':''}" onclick="pfGen('m')">♂ Homme</button><button type="button" id="pf_gf" class="${g=='f'?'on':''}" onclick="pfGen('f')">♀ Femme</button></div></div>
+<div class="pf-sec">ADRESSE</div><div class="pf-card">
+<label>Nationalité</label><div class="pf-f"><span>🏳️</span><input id="pf_nat" value="${esc(u.nat||'Guinéenne')}"></div>
+<label>Adresse</label><div class="pf-f"><span>📍</span><input id="pf_adr" placeholder="Quartier, rue..." value="${esc(u.adr||'')}"></div>
+<div class="pf-2"><div><label>Ville</label><div class="pf-f"><input id="pf_vil" value="${esc(u.vil||'Conakry')}"></div></div><div><label>Région</label><div class="pf-f"><input id="pf_reg" value="${esc(u.reg||'Conakry')}"></div></div></div></div>
+<button class="btn pf-b" onclick="pfSave()">Mettre à jour le profil</button></div>`}
+function pfGen(g){window.PG=g;$('pf_gm').classList.toggle('on',g=='m');$('pf_gf').classList.toggle('on',g=='f')}
+function pfDate(el){let d=el.value.replace(/\D/g,'').slice(0,8),o=d;if(d.length>4)o=d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4);else if(d.length>2)o=d.slice(0,2)+'/'+d.slice(2);el.value=o}
+function pfPhoto(inp){const f=inp.files&&inp.files[0];if(!f)return;if(!/^image\//.test(f.type))return alert('Choisissez une image.');const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,256,256);const u=S.u;u.photo=c.toDataURL('image/jpeg',.82);const i=D.users.findIndex(x=>x.id==u.id);if(i>=0)D.users[i]=u;save();$('pf_avw').innerHTML=pfAv()};im.onerror=()=>alert('Image illisible.');im.src=r.result};r.readAsDataURL(f)}
+function pfRmPhoto(){const u=S.u;delete u.photo;const i=D.users.findIndex(x=>x.id==u.id);if(i>=0)D.users[i]=u;save();$('pf_avw').innerHTML=pfAv()}
+function pfSave(){const g=id=>$(id).value.trim(),pn=g('pf_pn'),nm=g('pf_nm'),dn=g('pf_dn');
+if(!pn||!nm)return alert('Renseignez votre prénom et votre nom.');
+if(dn){const m=dn.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return alert('Date de naissance invalide. Format : JJ/MM/AAAA.');const d=+m[1],mo=+m[2],y=+m[3],t=new Date(y,mo-1,d);if(t.getFullYear()!=y||t.getMonth()!=mo-1||t.getDate()!=d||t>new Date()||y<1900)return alert('Date de naissance invalide.')}
+if(!window.PG)return alert('Choisissez votre genre.');
+const u=S.u;Object.assign(u,{pn,nm,nom:(pn+' '+nm).trim(),dn,sx:window.PG,nat:g('pf_nat'),adr:g('pf_adr'),vil:g('pf_vil'),reg:g('pf_reg')});
+const i=D.users.findIndex(x=>x.id==u.id);if(i>=0)D.users[i]=u;save();alert('Profil mis à jour.');dash()}
+/* --- Annonces --- */
+const annLbl={ad:'Admins de tontine',tous:'Tout le monde',g:'Collecteurs',a:'Clients',ga:'Collecteurs et clients'};
+function annVis(){const u=S.u,A=D.ann||[];let L;
+if(R=='sa')L=A.filter(a=>a.arole=='sa');
+else if(R=='ad')L=A.filter(a=>(a.arole=='sa'&&(a.cible=='ad'||a.cible=='tous'))||(a.arole=='ad'&&a.aid==u.id));
+else if(R=='g')L=A.filter(a=>(a.arole=='sa'&&a.cible=='tous')||(a.arole=='ad'&&a.adm==u.adm&&(a.cible=='g'||a.cible=='ga')));
+else{const ad=new Set(D.mem.filter(m=>m.tel==u.tel).map(m=>{const c=D.users.find(x=>x.id==m.mgr);return c&&c.adm}));L=A.filter(a=>(a.arole=='sa'&&a.cible=='tous')||(a.arole=='ad'&&ad.has(a.adm)&&(a.cible=='a'||a.cible=='ga')))}
+return L.slice().sort((x,y)=>y.ts-x.ts)}
+function annView(){const L=annVis(),can=R=='sa'||R=='ad',opts=R=='sa'?[['ad',annLbl.ad],['tous','Tout le monde (admins, collecteurs, clients)']]:[['g','Mes collecteurs'],['a','Mes clients'],['ga',annLbl.ga]];
+return(can?`<h3>Nouvelle annonce</h3><label>Destinataires</label><select id="ao_c">${opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select><label>Titre</label><input id="ao_t" maxlength="80" placeholder="Titre de l'annonce"><label>Message</label><textarea class="ta" id="ao_x" rows="4" maxlength="600" placeholder="Votre message"></textarea><button class="btn" onclick="annPub()">Publier l'annonce</button>`:'')+`<h3 style="margin-top:22px">${can?'Annonces':'Annonces reçues'}</h3>`+(L.length?L.map(a=>`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(a.titre)}</b>${a.aid==S.u.id?` <span class="tag">${annLbl[a.cible]||''}</span>`:''}<p style="margin:6px 0">${esc(a.txt).replace(/\n/g,'<br>')}</p><small class="mu">${a.date} · ${esc(a.nom)}</small>${a.aid==S.u.id?`<div class="row"><button class="btn s r" onclick="annDel('${a.id}')">Supprimer</button></div>`:''}</div>`).join(''):'<p class="mu">Aucune annonce.</p>')}
+function annPub(){const t=$('ao_t').value.trim(),x=$('ao_x').value.trim();if(!t||!x)return alert('Renseignez le titre et le message.');
+const o=(D.org||{})[S.u.id];(D.ann=D.ann||[]).push({id:uid(),aid:S.u.id,arole:R,nom:R=='sa'?'ClickTontine':((o&&o.nom)||S.u.nom),adm:R=='ad'?S.u.id:'',cible:$('ao_c').value,titre:t,txt:x,date:T(),ts:Date.now()});save();alert('Annonce publiée.');dash()}
+function annDel(id){if(!confirm('Supprimer cette annonce ?'))return;D.ann=(D.ann||[]).filter(a=>a.id!=id);save();dash()}
+/* --- Cloche de notifications --- */
+function notifs(){const u=S.u,td=T(),L=[],A=(id,t,x,d,tab,ic)=>L.push({id,t,x:x||'',d:d||td,tab:tab||'',ic:ic||'🔔'});
+(D.notif||[]).filter(n=>n.uid==u.id).forEach(n=>A('n:'+n.id,n.t,n.x,n.d,n.tab,n.ic));
+annVis().forEach(a=>{if(a.aid!=u.id)A('a:'+a.id,'Annonce : '+a.titre,a.txt.length>110?a.txt.slice(0,110)+'…':a.txt,a.date,'ao','📢')});
+const crit=()=>typeof anom=='function'?anom().filter(x=>x.n=='r').length:0,pv=()=>typeof pretVis!='function'||pretVis();
+if(R=='ad'){
+if(u.exp){const j=ndiff(td,u.exp);if(j<0)A('x:exp:'+u.exp,u.essai?'Essai gratuit terminé':'Abonnement expiré','Expiré le '+u.exp+'. Abonnez-vous dans Tarification pour réactiver votre compte.',td,'tf','⏰');else if(u.essai||j<=7)A('x:exp:'+u.exp+(j<=5?':'+j:''),u.essai?'Essai gratuit : '+j+' jour(s) restant(s)':'Abonnement bientôt expiré',u.essai?'Votre essai se termine le '+u.exp+'. Abonnez-vous dans Tarification.':'Il expire dans '+j+' jour(s), le '+u.exp+'.',td,'tf','⏰')}
+const ci=D.users.filter(c=>c.role=='g'&&c.adm==u.id).map(c=>c.id),cl=D.mem.filter(m=>m.statut=='attente'&&ci.includes(m.mgr)).length;if(cl)A('x:cl:'+cl,cl+' clôture(s) en attente de validation','',td,'cl','✅');
+const pd=D.pret.filter(p=>p.adm==u.id&&p.statut=='demande').length;if(pd&&pv())A('x:pd:'+pd,pd+' demande(s) de prêt à traiter','',td,'pr','🤝');
+const ru=(D.rtu||[]).filter(x=>x.adm==u.id&&x.statut=='attente').length;if(ru)A('x:ru:'+ru,ru+' retour(s) UV en attente de validation','',td,'tr','💵');
+const n=crit();if(n)A('x:an:'+n,n+' anomalie(s) critique(s) détectée(s)','',td,'an','🚨')}
+else if(R=='sa'){
+const dp=(D.dpay||[]).filter(x=>x.statut=='attente').length;if(dp)A('x:dp:'+dp,dp+' demande(s) de paiement à valider','',td,'pm','💳');
+const ads=D.users.filter(x=>x.role=='ad'),wa=ads.filter(x=>!x.actif&&!x.exp).length;if(wa)A('x:wa:'+wa,wa+" admin(s) de tontine en attente d'activation",'',td,'at','🏢');
+const ex=ads.filter(x=>x.actif&&x.exp&&ndiff(td,x.exp)<=7).length;if(ex)A('x:ex:'+ex,ex+' abonnement(s) expiré(s) ou expirant sous 7 jours','',td,'at','⏰');
+const n=crit();if(n)A('x:an:'+n,n+' anomalie(s) critique(s) détectée(s)','',td,'an','🚨')}
+else if(R=='g'){
+const mi=D.mem.filter(m=>m.mgr==u.id).map(m=>m.id);
+D.app.filter(x=>x.col==u.id&&ndiff(x.date,td)<=3).forEach(x=>A('x:ap:'+x.id,'UV attribué : '+F(x.montant),'Approvisionnement du '+x.date,x.date,'ca','💵'));
+(D.rtu||[]).filter(x=>x.col==u.id&&x.statut!='attente'&&ndiff(x.date,td)<=7).forEach(x=>A('x:ru:'+x.id+x.statut,'Retour UV '+(x.statut=='ok'?'validé':'refusé'),F(x.montant)+' · '+x.date,x.date,'ca',x.statut=='ok'?'✅':'⚠️'));
+if(pv())D.pret.filter(p=>mi.includes(p.mid)&&p.statut!='demande'&&ndiff(p.dateDem||td,td)<=30).forEach(p=>A('x:p:'+p.id+p.statut,'Prêt '+p.sn+' : '+({accepte:'accepté',refuse:'refusé',solde:'soldé'}[p.statut]||p.statut),'',p.dateDem,'pt','🤝'))}
+else{
+const mi=D.mem.filter(m=>m.tel==u.tel).map(m=>m.id);
+if(pv())D.pret.filter(p=>mi.includes(p.mid)&&p.statut!='demande'&&ndiff(p.dateDem||td,td)<=30).forEach(p=>A('x:p:'+p.id+p.statut,'Votre prêt '+p.sn+' est '+({accepte:'accepté',refuse:'refusé',solde:'soldé'}[p.statut]||p.statut),'',p.dateDem,'pt','🤝'));
+D.ret.filter(r=>mi.includes(r.mid)).forEach(r=>A('x:r:'+r.id,'Votre tontine a été clôturée','Paiement de '+F(r.montant)+' le '+r.date,r.date,'rc','✅'))}
+return L.sort((x,y)=>y.d>x.d?1:y.d<x.d?-1:0).slice(0,60)}
+const unreadN=()=>{try{const rd=new Set((D.nl||{})[S.u.id]||[]);return notifs().filter(n=>!rd.has(n.id)).length}catch(e){return 0}};
+const bellBtn=()=>{const n=unreadN();return`<button class="bell np" onclick="bellOpen()" aria-label="Notifications${n?' ('+n+' non lues)':''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>${n?`<b>${n>99?'99+':n}</b>`:''}</button>`};
+function bellOpen(){bellClose();let L=[];try{L=notifs()}catch(e){}const rd=new Set((D.nl||{})[S.u.id]||[]),el=document.createElement('div');el.id='bellp';el.className='bellp np';
+el.innerHTML=`<div class="bp-b" onclick="bellClose()"></div><div class="bp-c" role="dialog" aria-label="Notifications"><div class="bp-h"><b>Notifications</b><button class="lnk" onclick="bellAll()">Tout marquer comme lu</button><button class="bp-x" onclick="bellClose()" aria-label="Fermer">✕</button></div><div class="bp-l">${L.length?L.map((n,i)=>`<button class="bp-i${rd.has(n.id)?'':' u'}" onclick="bellGo(${i})"><span>${n.ic}</span><div><b>${esc(n.t)}</b>${n.x?`<p>${esc(n.x)}</p>`:''}<small>${n.d}</small></div></button>`).join(''):'<p class="mu" style="padding:18px;text-align:center">Aucune notification.</p>'}</div></div>`;
+document.body.appendChild(el);window._bl=L}
+function bellClose(){const e=document.getElementById('bellp');if(e)e.remove()}
+function bellMark(ids){const m=D.nl||(D.nl={}),a=m[S.u.id]||(m[S.u.id]=[]);ids.forEach(i=>{if(!a.includes(i))a.push(i)});if(a.length>400)a.splice(0,a.length-400);save()}
+function bellGo(i){const n=(window._bl||[])[i];if(!n)return;bellMark([n.id]);bellClose();if(n.tab&&TABS.some(t=>t[0]==n.tab))nav(n.tab);else dash()}
+function bellAll(){bellMark((window._bl||[]).map(n=>n.id));bellOpen();dash()}
 function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu)S.mode='in';if(setup)S.mode='up';const up=S.mode=='up';
 $('app').innerHTML=`<div class="bar"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a></div><div class="au"><div class="af"><div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>${TTL[R]}</h2>
 ${setup?'<p class="mu">Première utilisation : créez le compte administrateur du logiciel.</p>':cu?`<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>`:''}
@@ -141,7 +253,7 @@ else{if(!u||u.pwd!=p)return alert('Téléphone ou mot de passe incorrect.');cons
 try{localStorage.setItem('yt_'+R,u.id)}catch(e){}S.u=u;dash()}
 function out(){try{localStorage.removeItem('yt_'+R)}catch(e){}location.href=R=='sa'?'admin-logiciel.html':'index.html'}
 function dash(){const TL=Object.fromEntries(TABS),I=TI,hid=pretVis()?[]:({ad:['pr'],g:['pt'],a:['pt']}[R]||[]),G=TG.map(([g,ids])=>[g,ids.filter(k=>!hid.includes(k))]).filter(x=>x[1].length),
-bar=`<div class="bar np"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a><div class="usr"><div class="un"><b>${esc(S.u.nom)}</b><small>${roleLbl(S.u)}</small></div><button class="btn o s" onclick="out()">Déconnexion</button></div></div>`;
+bar=`<div class="bar np"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a><div class="usr"><div class="un"><b>${esc(S.u.nom)}</b><small>${roleLbl(S.u)}</small></div>${bellBtn()}<button class="btn o s" onclick="out()">Déconnexion</button></div></div>`;
 if(S.view=='h'){$('app').innerHTML=bar+`<div class="w">${R=='a'?noticeP():''}${G.map(([g,ids])=>`<section class="nv-g"><h3 class="nv-gt">${g}</h3><div class="nv-tiles">${ids.map(k=>`<button class="nv-tile" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span><span>${TL[k]}${bdg(k)}</span></button>`).join('')}</div></section>`).join('')}</div>`;return}
 $('app').innerHTML=bar+`<div class="w"><div class="nv-nav np"><div class="nv-bar"><button class="nv-b" onclick="navHome()">← Accueil</button><h2 class="nv-t">${TL[S.tab]}</h2><button class="nv-b m" aria-expanded="${S.menu}" onclick="S.menu=!S.menu;dash()">Menu ▾</button></div>
 ${S.menu?`<nav class="nv-mnu">${G.map(([g,ids])=>`<h3 class="nv-gt">${g}</h3><div class="nv-mg">${ids.map(k=>`<button class="nv-mi" aria-selected="${k==S.tab}" onclick="nav('${k}')"><span class="nv-ti" aria-hidden="true">${I[k]}</span>${TL[k]}</button>`).join('')}</div>`).join('')}</nav>`:''}</div>${typeof EX!=='undefined'&&EX[S.tab]&&!S.m?`<div class="row np"><button class="btn s y" onclick="exportTab()">⬇ Exporter Excel</button></div>`:''}<div id="v"></div></div>`;
@@ -226,10 +338,10 @@ const dd=a.filter(d=>d.date.slice(0,n)==S.day.slice(0,n)),sd=dd.reduce((s,d)=>s+
 return`<div class="row np"><select style="width:auto" onchange="S.per=this.value;dash()">${[['j','Journalier'],['m','Mensuel'],['a','Annuel']].map(o=>`<option value="${o[0]}" ${S.per==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()"></div>
 <h3>Rapport ${k} (${S.day.slice(0,n)})</h3><div class="st"><div><b>${nm}</b>Mises</div><div><b>${F(sd)}</b>Total déposé</div><div><b>${F(sr)}</b>Retraits remis</div><div><b>${F(mine().filter(m=>m.statut=='attente').reduce((s,m)=>s+owed(m),0))}</b>Reste à payer</div>${pretVis()?`<div><b>${F(dd.reduce((s,d)=>s+(d.rp||0),0))}</b>Remboursements de prêts</div><div><b>${F(D.pret.filter(p=>p.statut=='accepte'&&mine().some(m=>m.id==p.mid)).reduce((s,p)=>s+due(p),0))}</b>Prêts à rembourser</div>`:''}${R=='g'?`<div><b>${F(scc)}</b>Ma commission</div>`:R=='ad'?`<div><b>${F(sc)}</b>Commissions</div><div><b>${F(scc)}</b>Part collecteurs</div><div><b>${F(sc-scc)}</b>Ma part</div>`:''}</div>
 <div class="row np">${R!='a'?'<button class="btn s" onclick="csv()">Exporter CSV (Excel)</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
-const R='sa',TABS=[['ap','Aperçu'],['at','Admins de tontine'],['pm','Paiements'],['an','Anomalies et alertes'],['sv','Sauvegarde']];
-const TI={an:'🚨',sv:'💾',ap:'📊',at:'🏢',pm:'💳'},TG=[['Pilotage',['ap']],['Abonnements',['at','pm']],['Contrôle',['an','sv']]];
+const R='sa',TABS=[['ap','Aperçu'],['at','Admins de tontine'],['pm','Paiements'],['an','Anomalies et alertes'],['sv','Sauvegarde'],['tf','Tarification'],['fc','Facturation'],['ao','Annonces'],['pf','Profil']];
+const TI={tf:'🏷️',fc:'🧾',ao:'📢',pf:'👤',an:'🚨',sv:'💾',ap:'📊',at:'🏢',pm:'💳'},TG=[['Pilotage',['ap']],['Abonnements',['at','pm']],['Contrôle',['an','sv']],['Abonnement',['tf','fc']],['Mon espace',['ao','pf']]];
 const ads=()=>D.users.filter(u=>u.role=='ad'),addMo=(d,n)=>{const x=new Date(d);x.setMonth(x.getMonth()+n);return x.toISOString().slice(0,10)};
-const stA=u=>!u.actif?(u.exp?'Suspendu':"En attente d'activation"):u.exp<T()?'Abonnement expiré':"Actif jusqu'au "+u.exp;
+const stA=u=>!u.actif?(u.exp?'Suspendu':"En attente d'activation"):u.exp<T()?(u.essai?'Essai terminé':'Abonnement expiré'):(u.essai?"Essai gratuit jusqu'au ":"Actif jusqu'au ")+u.exp;
 
 /* ===== Anomalies, alertes et sauvegarde ===== */
 const jd=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5),nz=v=>typeof v=='number'&&isFinite(v),bkKey=()=>'ytbk_'+(R=='sa'?'sa':S.u.id);
@@ -261,9 +373,9 @@ if(u.role=='ad'){
 if(!u.actif&&!u.exp)A('o',CA,"En attente d'activation de l'abonnement",w);
 else if(!u.actif)A('o',CA,"Compte suspendu (abonnement jusqu'au "+u.exp+')',w);
 else if(!u.exp)A('r',CA,"Compte actif sans date d'expiration d'abonnement",w);
-else if(u.exp<td)A('r',CA,'Abonnement expiré le '+u.exp,w);
+else if(u.exp<td)A('r',CA,(u.essai?"Période d'essai terminée le ":'Abonnement expiré le ')+u.exp,w);
 else{const j=jd(td,u.exp);if(j<=7)A('o',CA,'Abonnement expirant dans '+j+' jour(s), le '+u.exp,w)}
-if(s.sa&&u.actif&&!D.abo.some(x=>x.adm==u.id))A('o',CA,"Compte actif sans aucun paiement d'abonnement enregistré",w)}
+if(s.sa&&u.actif&&!u.essai&&!D.abo.some(x=>x.adm==u.id))A('o',CA,"Compte actif sans aucun paiement d'abonnement enregistré",w)}
 if(u.role=='g'){
 if(!D.users.some(a=>a.id==u.adm&&a.role=='ad'))A('r',CA,'Collecteur rattaché à un administrateur introuvable',w);
 if(u.actif===false){const n=D.mem.filter(m=>m.mgr==u.id&&!isCl(m)).length;if(n)A('o',CA,'Collecteur suspendu avec '+n+' tontine(s) non clôturée(s)',w)}}});
@@ -342,7 +454,7 @@ return`<h3>Anomalies et alertes</h3><p class="mu">Contrôle automatique des comp
 ${L.length?CT.map(c=>{const l=L.filter(x=>x.c==c);return l.length?`<h3 style="margin-top:18px">${c} (${l.length})</h3>${l.slice(0,60).map(card).join('')}${l.length>60?`<p class="mu">… et ${l.length-60} autre(s). Exportez en Excel pour la liste complète.</p>`:''}`:''}).join(''):'<div class="card" style="display:block"><b>✅ Aucune anomalie détectée.</b></div>'}
 <div class="row np"><button class="btn s o" onclick="dash()">↻ Relancer le contrôle</button></div><p class="mu">Contrôle du ${T()} à ${new Date().toTimeString().slice(0,5)}.</p>`}
 function svView(){const s=scp(),last=(()=>{try{return localStorage.getItem(bkKey())||''}catch(e){return''}})(),
-rows=[['Comptes',s.users.length],['Tontines (clients)',s.mem.length],['Mises',s.dep.length],['Clôtures et paiements',s.ret.length],['Prêts',s.pret.length],['UV attribués',s.app.length],['Remises de fin de journée',s.rem.length],['Retours UV',s.rtu.length],['Paiements de commissions',s.pcom.length],['Abonnements',s.abo.length]];
+rows=[['Comptes',s.users.length],['Tontines (clients)',s.mem.length],['Mises',s.dep.length],['Clôtures et paiements',s.ret.length],['Prêts',s.pret.length],['UV attribués',s.app.length],['Remises de fin de journée',s.rem.length],['Retours UV',s.rtu.length],['Paiements de commissions',s.pcom.length],['Abonnements',s.abo.length],['Factures',(D.fac||[]).filter(x=>s.sa||x.adm==s.id).length],['Demandes de paiement',(D.dpay||[]).filter(x=>s.sa||x.adm==s.id).length]];
 return`<h3>Sauvegarde</h3><p class="mu">${R=='sa'?'Toutes les données de la plateforme':'Toutes les données de votre tontine'} dans un seul fichier Excel, une feuille par rubrique. Les mots de passe et les photos ne sont pas exportés.</p>
 <div class="tb"><table><tr><th>Rubrique</th><th>Enregistrements</th></tr>${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table></div>
 <p class="mu">Dernière sauvegarde sur cet appareil : <b>${last||'aucune'}</b></p><div class="row np"><button class="btn" onclick="backup()">⬇ Télécharger la sauvegarde Excel</button></div>
@@ -351,7 +463,7 @@ function backup(){if(!window.XLSX)return alert("Module Excel non chargé. Vérif
 const s=scp(),td=T(),mm=id=>D.mem.find(x=>x.id==id)||{},uN=id=>{const u=D.users.find(x=>x.id==id);return u?u.nom:''},cn=m=>((m.prenom||'')+' '+(m.nom||'')).trim(),
 st=m=>m.statut=='normal'?'Clôturé normal':m.statut=='interrompu'?'Clôturé interrompu':m.statut=='attente'?'Clôture en attente de validation':'En cours',
 RL={a:'Client',g:'Collecteur',ad:'Admin de tontine',sa:'Admin du logiciel'},
-cs=u=>u.role=='ad'?(!u.actif?(u.exp?'Suspendu':"En attente d'activation"):(u.exp||'')<td?'Abonnement expiré':'Actif'):u.role=='g'?(u.actif===false?'Suspendu':'Actif'):'Actif',
+cs=u=>u.role=='ad'?(!u.actif?(u.exp?'Suspendu':"En attente d'activation"):(u.exp||'')<td?(u.essai?"Essai gratuit terminé":'Abonnement expiré'):u.essai?'Essai gratuit':'Actif'):u.role=='g'?(u.actif===false?'Suspendu':'Actif'):'Actif',
 PS={demande:'En attente',accepte:'Accepté',refuse:'Refusé',solde:'Soldé'},RS={attente:'En attente',ok:'Validé',refuse:'Refusé'},
 pr=[['Administrateur','Rubrique','Paramètre','Valeur']];
 s.adms.forEach(a=>{const o=(D.org||{})[a.id]||{},c=(D.cfg||{})[a.id]||{};[['nom','Nom'],['adr','Adresse'],['tel','Téléphone'],['mail','E-mail']].forEach(k=>{if(o[k[0]])pr.push([a.nom,'Tontine',k[1],o[k[0]]])});
@@ -368,6 +480,10 @@ const sh=[
 {n:'Retours UV',rows:[['Date','Collecteur','Montant UV (GNF)','État','Date de validation']].concat(s.rtu.map(x=>[x.date||'',uN(x.col),x.montant,RS[x.statut]||x.statut||'',x.dateValid||'']))},
 {n:'Paiements commissions',rows:[['Date','Mois','Collecteur','Montant (GNF)']].concat(s.pcom.map(x=>[x.date||'',x.mois||'',uN(x.col),x.montant]))},
 {n:'Abonnements',rows:[['Date','Administrateur','Mois','Montant (GNF)']].concat(s.abo.map(x=>[x.date||'',uN(x.adm),x.mois,x.montant]))},
+{n:'Factures',rows:[['N° facture','Date','Administrateur','Offre','Durée (mois)','Montant (GNF)','Mode de paiement','Référence','Début','Fin']].concat((D.fac||[]).filter(x=>s.sa||x.adm==s.id).map(x=>[x.num,x.date,uN(x.adm),x.plan,x.mois,x.montant,x.mode||'',x.ref||'',x.du||'',x.au||'']))},
+{n:'Demandes de paiement',rows:[['Date','Administrateur','Offre','Montant (GNF)','Mode','Référence','État','Date de décision','Motif de refus']].concat((D.dpay||[]).filter(x=>s.sa||x.adm==s.id).map(x=>[x.date,uN(x.adm),x.nom,x.montant,x.mode,x.ref,{attente:'En attente',ok:'Validé',refuse:'Refusé'}[x.statut]||x.statut,x.dd||'',x.motif||'']))},
+{n:'Tarifs',rows:[['Offre','Durée (mois)','Prix (GNF)','Visible']].concat((D.tar||[]).map(x=>[x.nom,x.mois,x.prix,x.actif?'Oui':'Non']))},
+{n:'Annonces',rows:[['Date','Destinataires','Titre','Message','Auteur']].concat(annVis().map(a=>[a.date,annLbl[a.cible]||a.cible,a.titre,a.txt,a.nom]))},
 {n:'Paramètres',rows:pr},
 {n:'Anomalies',rows:[['Niveau','Catégorie','Anomalie','Concerné']].concat(an.map(x=>[x.n=='r'?'Critique':'À surveiller',x.c,x.t,x.w]))}],
 lab=R=='sa'?'Toute la plateforme (administrateur du logiciel)':(((D.org||{})[S.u.id]||{}).nom||S.u.nom),
@@ -376,16 +492,62 @@ slug=R=='sa'?'plateforme':String(lab).normalize('NFD').replace(/[\u0300-\u036f]/
 xl([res].concat(sh),'sauvegarde-clicktontine-'+slug+'-'+td);
 try{localStorage.setItem(bkKey(),td)}catch(e){}dash()}
 
-const EX={an:anEx};
-const V={an:anView,sv:svView,
-ap(){const a=ads(),ac=a.filter(u=>u.actif&&u.exp>=T()).length,mo=D.abo.filter(x=>x.date.slice(0,7)==T().slice(0,7)).reduce((s,x)=>s+x.montant,0),tt=D.abo.reduce((s,x)=>s+x.montant,0);
-return`<div class="st"><div><b>${a.length}</b>Admins de tontine</div><div><b>${ac}</b>Abonnements actifs</div><div><b>${a.filter(u=>!u.actif&&!u.exp).length}</b>En attente d'activation</div><div><b>${a.filter(u=>u.actif&&u.exp<T()).length}</b>Expirés</div><div><b>${F(mo)}</b>Encaissé ce mois</div><div><b>${F(tt)}</b>Total encaissé</div></div>`},
+const EX={an:anEx,fc:fcEx};
+const V={an:anView,sv:svView,ao:annView,pf:profilView,tf:tfView,fc:fcView,
+ap(){const a=ads(),ac=a.filter(u=>u.actif&&!u.essai&&u.exp>=T()).length,mo=D.abo.filter(x=>x.date.slice(0,7)==T().slice(0,7)).reduce((s,x)=>s+x.montant,0),tt=D.abo.reduce((s,x)=>s+x.montant,0);
+return`<div class="st"><div><b>${a.length}</b>Admins de tontine</div><div><b>${ac}</b>Abonnements actifs</div><div><b>${a.filter(u=>u.essai&&u.actif&&u.exp>=T()).length}</b>En essai gratuit</div><div><b>${a.filter(u=>!u.actif&&!u.exp).length}</b>En attente d'activation</div><div><b>${a.filter(u=>u.actif&&u.exp<T()).length}</b>Expirés</div><div><b>${F(mo)}</b>Encaissé ce mois</div><div><b>${F(tt)}</b>Total encaissé</div></div>`},
 at(){return`<h3>Administrateurs de tontine</h3>${ads().map(u=>{const nc=D.users.filter(c=>c.role=='g'&&c.adm==u.id).length;
 return`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(u.nom)}</b> <span class="tag">${stA(u)}</span><p class="mu">Tél : ${esc(u.tel)} · ${nc} collecteur(s)</p>
-<div class="row"><select id="mo${u.id}" style="width:auto"><option value="1">1 mois</option><option value="3">3 mois</option><option value="6">6 mois</option><option value="12">12 mois</option></select><input id="mp${u.id}" inputmode="numeric" placeholder="Montant payé" oninput="fmtI(this)" style="width:160px">
+<div class="row"><select id="mo${u.id}" style="width:auto" onchange="tarFill('${u.id}')"><option value="1">1 mois</option><option value="3">3 mois</option><option value="6">6 mois</option><option value="12">12 mois</option></select><input id="mp${u.id}" inputmode="numeric" placeholder="Montant payé" oninput="fmtI(this)" style="width:160px">
 <button class="btn s" onclick="act('${u.id}')">Activer / Renouveler</button><button class="btn s r" onclick="sus('${u.id}')">Suspendre</button></div></div>`}).join('')||'<p class="mu">Aucun administrateur de tontine inscrit pour le moment.</p>'}`},
 pm(){return`<h3>Paiements d'abonnement</h3><div class="tb"><table><tr><th>Date</th><th>Admin</th><th>Durée</th><th>Montant</th></tr>${D.abo.slice().sort((x,y)=>y.date>x.date?1:-1).map(x=>{const u=D.users.find(k=>k.id==x.adm);return`<tr><td>${x.date}</td><td>${u?esc(u.nom):'?'}</td><td>${x.mois} mois</td><td>${F(x.montant)}</td></tr>`}).join('')||'<tr><td colspan=4>Aucun paiement.</td></tr>'}</table></div>`}};
-function act(id){const u=D.users.find(x=>x.id==id),n=+$('mo'+id).value,base=u.exp&&u.exp>T()?u.exp:T();u.actif=true;u.exp=addMo(base,n);D.abo.push({id:uid(),adm:id,date:T(),mois:n,montant:num($('mp'+id).value)});save();dash()}
+/* ===== Tarification, paiements et facturation ===== */
+const tc=()=>Object.assign({emet:'ClickTontine',adr:'',tel:'',instr:''},D.tcfg||{}),PST={attente:'En attente',ok:'Validé',refuse:'Refusé'},
+adN=id=>{const o=(D.org||{})[id],u=D.users.find(x=>x.id==id);return(o&&o.nom)||(u&&u.nom)||'?'};
+function notif(to,t,x,tab,ic){(D.notif=D.notif||[]).push({id:uid(),uid:to,t,x:x||'',d:T(),tab:tab||'',ic:ic||'🔔'});if(D.notif.length>600)D.notif.splice(0,D.notif.length-600)}
+function mkFac(ab,plan,mode,ref,du,au){const y=String(ab.date).slice(0,4),n=(D.fac||[]).filter(f=>f.num.slice(4,8)==y).length+1,f={id:uid(),num:'FAC-'+y+'-'+String(n).padStart(4,'0'),adm:ab.adm,aboId:ab.id,date:ab.date,plan,mois:ab.mois,montant:ab.montant,mode:mode||'',ref:ref||'',du:du||'',au:au||''};(D.fac=D.fac||[]).push(f);return f}
+function encaisse(id,n,mt,plan,mode,ref){const u=D.users.find(x=>x.id==id),base=u.exp&&u.exp>T()?u.exp:T();u.actif=true;u.exp=addMo(base,n);delete u.essai;const ab={id:uid(),adm:id,date:T(),mois:n,montant:mt};D.abo.push(ab);const f=mt>0?mkFac(ab,plan,mode,ref,base,u.exp):null;
+notif(id,'Abonnement activé',"Valable jusqu'au "+u.exp+(f?'. Facture '+f.num+' disponible.':''),f?'fc':'tf','✅');return f}
+/* --- Tarification --- */
+function tfView(){return R=='sa'?tfSa():tfAd()}
+function tfSa(){const P=D.tar||[],c=tc();
+return`<h3>Tarifs d'abonnement des administrateurs de tontine</h3><p class="mu">Ce sont les tarifs que voient les administrateurs de tontine. Seules les offres cochées « visible » leur sont proposées.</p>
+${P.map(p=>`<div class="card" style="display:block;margin-bottom:10px"><label>Nom de l'offre</label><input id="tn_${p.id}" value="${esc(p.nom)}"><div class="g2"><div><label>Durée (mois)</label><input id="tm_${p.id}" type="number" min="1" max="36" value="${p.mois}"></div><div><label>Prix (GNF)</label><input id="tp_${p.id}" inputmode="numeric" value="${fmN(p.prix)}" oninput="fmtI(this)"></div></div><label class="ck"><input type="checkbox" id="ta_${p.id}" ${p.actif?'checked':''}> Visible par les administrateurs</label><div class="row"><button class="btn s" onclick="tarSave('${p.id}')">Enregistrer</button><button class="btn s r" onclick="tarDel('${p.id}')">Supprimer</button></div></div>`).join('')||'<p class="mu">Aucune offre pour le moment.</p>'}
+<h3 style="margin-top:20px">Ajouter une offre</h3><label>Nom de l'offre</label><input id="tn_new" placeholder="Ex : Abonnement 3 mois"><div class="g2"><div><label>Durée (mois)</label><input id="tm_new" type="number" min="1" max="36" value="1"></div><div><label>Prix (GNF)</label><input id="tp_new" inputmode="numeric" placeholder="0" oninput="fmtI(this)"></div></div><button class="btn" onclick="tarAdd()">Ajouter l'offre</button>
+<h3 style="margin-top:24px">Coordonnées de paiement et de facturation</h3><label>Nom de l'émetteur des factures</label><input id="tc_e" value="${esc(c.emet)}"><label>Adresse</label><input id="tc_a" value="${esc(c.adr)}"><label>Téléphone</label><input id="tc_t" value="${esc(c.tel)}"><label>Instructions de paiement (affichées aux administrateurs)</label><textarea class="ta" id="tc_i" rows="3" placeholder="Ex : Orange Money au numéro ... ; MTN MoMo au numéro ...">${esc(c.instr)}</textarea><button class="btn" onclick="tcSave()">Enregistrer</button>`}
+function tarRead(k){const nom=$('tn_'+k).value.trim(),mois=Math.floor(+$('tm_'+k).value),prix=num($('tp_'+k).value);if(!nom)return alert("Donnez un nom à l'offre."),null;if(!(mois>=1&&mois<=36))return alert('La durée doit être comprise entre 1 et 36 mois.'),null;if(!(prix>0))return alert('Saisissez un prix supérieur à 0.'),null;return{nom,mois,prix}}
+function tarAdd(){const r=tarRead('new');if(!r)return;(D.tar=D.tar||[]).push({id:uid(),nom:r.nom,mois:r.mois,prix:r.prix,actif:true});save();dash()}
+function tarSave(id){const r=tarRead(id);if(!r)return;const p=D.tar.find(x=>x.id==id);Object.assign(p,r,{actif:$('ta_'+id).checked});save();alert('Offre enregistrée.');dash()}
+function tarDel(id){if(!confirm('Supprimer cette offre ? Les factures déjà émises ne sont pas modifiées.'))return;D.tar=D.tar.filter(x=>x.id!=id);save();dash()}
+function tcSave(){D.tcfg={emet:$('tc_e').value.trim()||'ClickTontine',adr:$('tc_a').value.trim(),tel:$('tc_t').value.trim(),instr:$('tc_i').value.trim()};save();alert('Coordonnées enregistrées.');dash()}
+const payForm=p=>`<label>Mode de paiement</label><select id="pm_m"><option>Orange Money</option><option>MTN Mobile Money</option><option>Espèces</option><option>Virement</option><option>Autre</option></select><label>Référence de la transaction</label><input id="pm_r" placeholder="Numéro de transaction ou de reçu"><div class="row"><button class="btn s" onclick="tarSend('${p.id}')">Envoyer ma demande de paiement</button><button class="btn s o" onclick="S.tp='';dash()">Annuler</button></div>`;
+function tfAd(){const u=S.u,td=T(),P=(D.tar||[]).filter(p=>p.actif),c=tc(),my=(D.dpay||[]).filter(x=>x.adm==u.id).sort((a,b)=>b.ts-a.ts),pend=my.some(x=>x.statut=='attente'),j=u.exp?ndiff(td,u.exp):null,st=!u.actif?(u.exp?'Suspendu':"En attente d'activation"):j<0?'Expiré':u.essai?'Essai gratuit':'Actif';
+return`<h3>Mon abonnement</h3><div class="st"><div><b>${st}</b>État</div><div><b>${u.exp||'—'}</b>Valable jusqu'au</div><div><b>${j==null?'—':j<0?'Expiré':j+' j'}</b>Jours restants</div></div>
+<h3>Tarifs</h3>${c.instr?`<div class="card" style="display:block;margin-bottom:10px"><b>Comment payer</b><p style="margin:6px 0">${esc(c.instr).replace(/\n/g,'<br>')}</p></div>`:''}
+${pend?"<p class=\"mu\"><b>Une demande de paiement est en attente de validation.</b> Vous pourrez en envoyer une nouvelle dès qu'elle sera traitée.</p>":''}
+${P.map(p=>`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(p.nom)}</b> <span class="tag">${p.mois} mois</span><p style="margin:6px 0;font-size:20px"><b>${F(p.prix)}</b>${p.mois>1?` <span class="mu">(${F(Math.round(p.prix/p.mois))} par mois)</span>`:''}</p>${S.tp==p.id&&!pend?payForm(p):`<button class="btn s" ${pend?'disabled':''} onclick="S.tp='${p.id}';dash()">Souscrire / Renouveler</button>`}</div>`).join('')||"<p class=\"mu\">Aucun tarif n'est publié pour le moment. Contactez l'administration.</p>"}
+<h3 style="margin-top:20px">Mes demandes de paiement</h3>${my.length?`<div class="tb"><table><tr><th>Date</th><th>Offre</th><th>Montant</th><th>État</th></tr>${my.map(x=>`<tr><td>${x.date}</td><td>${esc(x.nom)}</td><td>${F(x.montant)}</td><td>${PST[x.statut]}${x.statut=='refuse'&&x.motif?' — '+esc(x.motif):''}</td></tr>`).join('')}</table></div>`:'<p class="mu">Aucune demande.</p>'}`}
+function tarSend(pid){const u=S.u,p=(D.tar||[]).find(x=>x.id==pid&&x.actif);if(!p)return alert("Cette offre n'est plus disponible.");if((D.dpay||[]).some(x=>x.adm==u.id&&x.statut=='attente'))return alert('Une demande est déjà en attente.');const ref=$('pm_r').value.trim();if(!ref)return alert('Saisissez la référence de la transaction.');
+(D.dpay=D.dpay||[]).push({id:uid(),adm:u.id,tar:p.id,nom:p.nom,mois:p.mois,montant:p.prix,mode:$('pm_m').value,ref,date:T(),ts:Date.now(),statut:'attente'});
+D.users.filter(x=>x.role=='sa').forEach(s=>notif(s.id,'Nouvelle demande de paiement',adN(u.id)+' · '+p.nom+' · '+F(p.prix),'pm','💳'));S.tp='';save();alert("Demande envoyée. Elle sera validée par l'administration.");dash()}
+/* --- Validation des paiements (admin du logiciel) --- */
+function pmPend(){const L=(D.dpay||[]).filter(x=>x.statut=='attente').sort((a,b)=>a.ts-b.ts);
+return`<h3>Demandes de paiement à valider</h3>${L.map(x=>`<div class="card" style="display:block;margin-bottom:10px"><b>${esc(adN(x.adm))}</b> <span class="tag">${esc(x.nom)}</span><p class="mu">Montant : <b>${F(x.montant)}</b> · ${x.mois} mois · ${esc(x.mode)}<br>Référence : <b>${esc(x.ref)}</b> · Demandé le ${x.date}</p><div class="row"><button class="btn s y" onclick="dpOk('${x.id}')">Valider le paiement</button><button class="btn s r" onclick="dpNo('${x.id}')">Refuser</button></div></div>`).join('')||'<p class="mu">Aucune demande en attente.</p>'}`}
+function dpOk(id){const x=(D.dpay||[]).find(k=>k.id==id);if(!x||x.statut!='attente')return;if(!confirm('Confirmer que le paiement de '+F(x.montant)+' a bien été reçu ?'))return;const f=encaisse(x.adm,x.mois,x.montant,x.nom,x.mode,x.ref);x.statut='ok';x.dd=T();x.fac=f?f.num:'';save();dash()}
+function dpNo(id){const x=(D.dpay||[]).find(k=>k.id==id);if(!x||x.statut!='attente')return;const m=prompt("Motif du refus (visible par l'administrateur) :");if(m===null)return;x.statut='refuse';x.dd=T();x.motif=(m||'').trim();notif(x.adm,'Paiement refusé',(x.motif||'Aucun motif précisé')+' · '+x.nom,'tf','⚠️');save();dash()}
+function tarFill(id){const n=+$('mo'+id).value,p=(D.tar||[]).find(t=>t.actif&&t.mois==n);if(p)$('mp'+id).value=fmN(p.prix)}
+/* --- Facturation --- */
+function facList(){return(D.fac||[]).filter(f=>R=='sa'||f.adm==S.u.id).sort((a,b)=>b.num>a.num?1:-1)}
+function fcView(){const L=facList(),tt=L.reduce((s,f)=>s+f.montant,0);
+return`<div class="st"><div><b>${L.length}</b>Factures</div><div><b>${F(tt)}</b>Montant total</div></div>`+(L.length?`<div class="tb"><table><tr><th>N°</th><th>Date</th>${R=='sa'?'<th>Administrateur</th>':''}<th>Offre</th><th>Montant</th><th></th></tr>${L.map(f=>`<tr><td>${f.num}</td><td>${f.date}</td>${R=='sa'?`<td>${esc(adN(f.adm))}</td>`:''}<td>${esc(f.plan)}</td><td>${F(f.montant)}</td><td><button class="btn s" onclick="facPrint('${f.id}')">Voir / Imprimer</button></td></tr>`).join('')}</table></div>`:'<p class="mu">Aucune facture pour le moment. Une facture est créée automatiquement à chaque paiement validé.</p>')}
+function facHtml(f){const c=tc(),u=D.users.find(x=>x.id==f.adm)||{},o=(D.org||{})[f.adm]||{},td='padding:8px;border:1px solid #bbb';
+return`<div style="font-family:Arial,sans-serif;color:#111;padding:8px"><table style="width:100%;border:0"><tr><td style="vertical-align:top"><h1 style="margin:0;font-size:28px">FACTURE</h1><div>N° <b>${esc(f.num)}</b></div><div>Date : ${f.date}</div></td><td style="text-align:right;vertical-align:top"><b style="font-size:18px">${esc(c.emet)}</b><br>${esc(c.adr)}<br>${esc(c.tel)}</td></tr></table><hr style="margin:16px 0"><div><b>Facturé à :</b><br>${esc(o.nom||u.nom||'')}<br>Responsable : ${esc(u.nom||'')}<br>Tél : ${esc(u.tel||'')}</div>
+<table style="width:100%;border-collapse:collapse;margin-top:20px"><tr style="background:#eee"><th style="text-align:left;${td}">Désignation</th><th style="${td}">Période</th><th style="text-align:right;${td}">Montant</th></tr><tr><td style="${td}">${esc(f.plan)} (${f.mois} mois)</td><td style="${td};text-align:center">${f.du||''} → ${f.au||''}</td><td style="${td};text-align:right">${F(f.montant)}</td></tr><tr><td colspan="2" style="${td};text-align:right"><b>TOTAL</b></td><td style="${td};text-align:right"><b>${F(f.montant)}</b></td></tr></table>
+<p style="margin-top:16px">Statut : <b>PAYÉE</b><br>Mode de paiement : ${esc(f.mode||'')}${f.ref?'<br>Référence : '+esc(f.ref):''}</p><p style="margin-top:30px;font-size:12px;color:#555">Merci de votre confiance.</p></div>`}
+function facPrint(id){const f=(D.fac||[]).find(x=>x.id==id);if(f)printDoc(facHtml(f),'A4')}
+function fcEx(){return[{n:'Factures',rows:[['N° facture','Date','Administrateur','Offre','Durée (mois)','Montant','Mode de paiement','Référence','Début','Fin']].concat(facList().map(f=>[f.num,f.date,adN(f.adm),f.plan,f.mois,f.montant,f.mode,f.ref,f.du,f.au]))}]}
+const _pm=V.pm;V.pm=()=>pmPend()+_pm();
+function act(id){const n=+$('mo'+id).value,mt=num($('mp'+id).value);encaisse(id,n,mt||0,'Abonnement '+n+' mois',"Enregistré par l'administration",'');save();dash()}
 function sus(id){if(!confirm('Suspendre cet administrateur et ses collecteurs ?'))return;const u=D.users.find(x=>x.id==id);u.actif=false;if(!u.exp)u.exp=T();save();dash()}
 login('sa','ap');
 </script></body></html>
