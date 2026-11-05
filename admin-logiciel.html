@@ -123,6 +123,34 @@ textarea.ta{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(-
 .sw{width:64px!important;height:30px!important;border-radius:15px!important}
 .sw .kn{top:3px!important;width:24px!important;height:24px!important;font:700 9px/24px "Trebuchet MS",sans-serif!important}
 .sw.on .kn{left:37px!important}.sw.off .kn{left:3px!important}
+.bfx .plat{position:relative;z-index:2;flex:none}
+.bxf{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.bxf::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:40%;background:linear-gradient(100deg,transparent,rgba(249,185,8,.22),transparent);animation:bxsw 5.5s ease-in-out infinite}
+.bxf .bxn{position:absolute;right:0;top:0;height:100%;width:min(320px,100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+.bxn path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bxn .bxl path{stroke:var(--g);stroke-width:1.2;opacity:.22}
+.bxn .bxw path{stroke:var(--y);stroke-width:2.2;stroke-dasharray:7 55;animation:bxfl 3.2s linear infinite}
+.bxn .bxw path:nth-child(2){animation-duration:4.1s;animation-delay:-1s}
+.bxn .bxw path:nth-child(3){animation-duration:2.6s;animation-delay:-.5s}
+.bxn .bxd circle{fill:var(--g);transform-box:fill-box;transform-origin:center;opacity:.55;animation:bxnd 2.4s ease-in-out infinite}
+.bxn .bxd circle:nth-child(2){animation-delay:.4s}.bxn .bxd circle:nth-child(3){animation-delay:.8s}.bxn .bxd circle:nth-child(4){animation-delay:1.2s}.bxn .bxd circle:nth-child(5){animation-delay:1.6s}.bxn .bxd circle:nth-child(6){animation-delay:2s}
+.bxi{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:10px}
+.bxi i{position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 1.5px var(--bd),0 2px 6px rgba(11,74,26,.18);animation:bxfy 3.4s ease-in-out infinite}
+.bxi i:nth-child(2){animation-delay:-.8s}.bxi i:nth-child(3){animation-delay:-1.6s}.bxi i:nth-child(4){animation-delay:-2.4s}
+.bxi svg{width:17px;height:17px;fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bxi i::after{content:"";position:absolute;inset:0;border-radius:50%;animation:bxrg 3.4s ease-out infinite}
+.bxi i:nth-child(2)::after{animation-delay:-.8s}.bxi i:nth-child(3)::after{animation-delay:-1.6s}.bxi i:nth-child(4)::after{animation-delay:-2.4s}
+@keyframes bxfl{to{stroke-dashoffset:-248}}
+@keyframes bxnd{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.9);opacity:1}}
+@keyframes bxfy{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes bxrg{0%{box-shadow:0 0 0 0 rgba(249,185,8,.65)}70%,100%{box-shadow:0 0 0 9px rgba(249,185,8,0)}}
+@keyframes bxsw{0%{left:-40%}60%,100%{left:110%}}
+@media(prefers-reduced-motion:reduce){.bxf::after,.bxn .bxw path,.bxn .bxd circle,.bxi i,.bxi i::after{animation:none}}
+
+.bar.bfx{overflow:hidden}
+
+.rsl{display:block;margin:14px auto 0;padding:8px 12px;background:none;border:0;color:var(--g);font:600 15px "Trebuchet MS",Verdana,sans-serif;text-decoration:underline;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rsl:focus-visible{outline:3px solid var(--y);border-radius:8px}
 </style><script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="pwa.js" defer></script></head><body>
 <div id="app"></div>
 <script>
@@ -240,11 +268,25 @@ function bellClose(){const e=document.getElementById('bellp');if(e)e.remove()}
 function bellMark(ids){const m=D.nl||(D.nl={}),a=m[S.u.id]||(m[S.u.id]=[]);ids.forEach(i=>{if(!a.includes(i))a.push(i)});if(a.length>400)a.splice(0,a.length-400);save()}
 function bellGo(i){const n=(window._bl||[])[i];if(!n)return;bellMark([n.id]);bellClose();if(n.tab&&TABS.some(t=>t[0]==n.tab))nav(n.tab);else dash()}
 function bellAll(){bellMark((window._bl||[]).map(n=>n.id));bellOpen();dash()}
-function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu)S.mode='in';if(setup)S.mode='up';const up=S.mode=='up';
-$('app').innerHTML=`<div class="bar"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a></div><div class="au"><div class="af"><div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>${TTL[R]}</h2>
+function authView(){const cu=R=='a'||R=='ad'||(R=='sa'&&!D.users.some(u=>u.role=='sa')),setup=R=='sa'&&cu;if(!cu&&S.mode!='rs')S.mode='in';if(setup)S.mode='up';const up=S.mode=='up',rs=S.mode=='rs'&&!setup;
+$('app').innerHTML=`<div class="bar bfx"><a class="plat" href="${R=='sa'?'#':'index.html'}"><img src="${LOGO}" alt="ClickTontine"></a><span class="bxf" aria-hidden="true"><svg class="bxn" viewBox="0 0 320 68" preserveAspectRatio="xMaxYMid slice"><g class="bxl"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="bxw"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="bxd"><circle cx="74" cy="14" r="2.6"/><circle cx="146" cy="34" r="2.6"/><circle cx="224" cy="54" r="2.6"/><circle cx="104" cy="46" r="2.6"/><circle cx="184" cy="20" r="2.6"/><circle cx="272" cy="8" r="2.6"/></g></svg><span class="bxi"><i><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M12 3l7 2.6v5.6c0 4.4-3 7.8-7 9.2-4-1.4-7-4.8-7-9.2V5.6z"/><path d="M8.8 12l2.3 2.3 4.2-4.6"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.5 12.8a7.7 7.7 0 0 1 11 0M9.5 16a3.4 3.4 0 0 1 5 0"/><circle cx="12" cy="19" r=".9"/></svg></i></span></span></div><div class="au"><div class="af"><div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>${TTL[R]}</h2>
 ${setup?'<p class="mu">Première utilisation : créez le compte administrateur du logiciel.</p>':cu?`<div class="row"><button class="btn s ${up?'o':''}" onclick="S.mode='in';authView()">Connexion</button><button class="btn s ${up?'':'o'}" onclick="S.mode='up';authView()">Inscription</button></div>`:''}
 ${up?'<label>Nom complet</label><input id="an">'+(R!='sa'?'<label>Genre</label><select id="ag"><option value="m">Homme</option><option value="f">Femme</option></select>':''):''}${authFields(up)}
-<button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre collecteur pour voir vos tontines.</p>':''}${up&&R=='ad'?'<p class="mu">Votre compte sera utilisable après activation de votre abonnement.</p>':''}${R=='g'?'<p class="mu">Votre compte est créé par votre administrateur de tontine.</p>':''}</div></div>`}
+<button class="btn" onclick="go()">${up?'Créer mon compte':'Se connecter'}</button>${!up&&!setup?`<button type="button" class="rsl" onclick="S.mode='rs';S.rs=null;authView()">Mot de passe oublié ?</button>`:''}${up&&R=='a'?'<p class="mu">Utilisez le numéro donné à votre collecteur pour voir vos tontines.</p>':''}${up&&R=='ad'?'<p class="mu">Votre compte sera utilisable après activation de votre abonnement.</p>':''}${R=='g'?'<p class="mu">Votre compte est créé par votre administrateur de tontine.</p>':''}</div></div>`;if(rs)rsFill()}
+const API_BASE='';/* adresse de l'API (ex. https://api.mondomaine.com) à renseigner quand la base OVHcloud sera créée */
+async function rsApi(p,b){if(!API_BASE)throw new Error('nosvc');const r=await fetch(API_BASE+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}),j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.message||'Échec de la demande.');return j}
+const rsErr=e=>e.message=='nosvc'?"L'envoi de SMS n'est pas encore activé. Réessayez plus tard ou contactez votre administrateur.":e.name=='TypeError'?'Connexion impossible. Vérifiez votre connexion internet.':(e.message||'Échec de la demande.');
+function rsFill(){const af=document.querySelector('.af');if(!af)return;const st=S.rs||{},h=`<div class="lgw"><img src="${LOGO}" alt="ClickTontine"></div><h2>Mot de passe oublié</h2>`,back=`<button type="button" class="rsl" onclick="S.mode='in';S.rs=null;authView()">← Retour à la connexion</button>`;
+if(!st.tel){af.innerHTML=h+`<p class="mu">Entrez votre numéro de téléphone : nous vous enverrons par SMS un code à 6 chiffres.</p><label>Numéro de téléphone</label><div class="ph"><span class="cc">${FLAG}<span>+224</span></span><input id="rt" inputmode="tel" placeholder="6XX XX XX XX" autocomplete="tel-national"></div><button class="btn" id="rsb" onclick="rsSend()">Recevoir le code par SMS</button>`+back;return}
+af.innerHTML=h+`<p class="mu">Un code à 6 chiffres a été envoyé par SMS au <b>+224 ${esc(st.tel)}</b>. Entrez-le puis choisissez un nouveau mot de passe.</p><label>Code reçu par SMS</label><input id="rc" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6 chiffres" oninput="this.value=this.value.replace(/\\D/g,'')"><label>Nouveau mot de passe</label>${pwBox('rp1',{fix:1,ac:'new-password'})}<label>Confirmer le nouveau mot de passe</label>${pwBox('rp2',{fix:1,ac:'new-password'})}<button class="btn" id="rsb" onclick="rsGo()">Réinitialiser le mot de passe</button><button type="button" class="rsl" onclick="rsSend(1)">Renvoyer le code</button><button type="button" class="rsl" onclick="S.rs=null;rsFill()">Modifier le numéro</button>`+back}
+async function rsSend(re){const t=re?(S.rs||{}).tel:ph($('rt').value);if(!/^\d{9}$/.test(t||''))return alert('Entrez un numéro de téléphone valide (9 chiffres).');
+if(re&&Date.now()-(S.rsT||0)<60000)return alert('Patientez '+Math.ceil((60000-(Date.now()-S.rsT))/1000)+' secondes avant de redemander un code.');
+const b=$('rsb');if(b)b.disabled=true;
+try{await rsApi('/auth/reset/request',{tel:'+224'+t,role:R});S.rs={tel:t};S.rsT=Date.now();rsFill();if(re)alert('Un nouveau code vient de vous être envoyé.')}catch(e){alert(rsErr(e));if(b)b.disabled=false}}
+async function rsGo(){const st=S.rs||{},c=($('rc').value||'').trim(),p1=$('rp1').value,p2=$('rp2').value;
+if(!/^\d{6}$/.test(c))return alert('Entrez le code à 6 chiffres reçu par SMS.');const pe=pwErr(p1);if(pe)return alert(pe);if(p1!=p2)return alert('Les deux mots de passe ne sont pas identiques.');
+const b=$('rsb');if(b)b.disabled=true;
+try{await rsApi('/auth/reset/confirm',{tel:'+224'+st.tel,role:R,code:c,password:p1});const u=D.users.find(x=>x.tel==st.tel&&x.role==R);if(u){u.pwd=p1;save()}S.rs=null;alert('Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.');S.mode='in';authView()}catch(e){alert(rsErr(e));if(b)b.disabled=false}}
 function go(){const t=ph($('at').value),p=$('ap').value;if(!t||!p)return alert('Renseignez téléphone et mot de passe.');let u=D.users.find(x=>x.tel==t&&x.role==R);
 if(S.mode=='up'){const n=$('an').value.trim();if(!n)return alert('Renseignez votre nom.');const pe=pwErr(p);if(pe)return alert(pe);if(u)return alert('Ce numéro a déjà un compte. Connectez-vous.');if(R=='sa'&&D.users.some(x=>x.role=='sa'))return;
 u={id:uid(),role:R,nom:n,tel:t,pwd:p,sx:($('ag')||{}).value||'m'};if(R=='ad'){u.actif=false;u.exp=''}D.users.push(u);save();
