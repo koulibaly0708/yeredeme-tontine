@@ -197,7 +197,7 @@ const roleLbl=u=>{const f=u.sx=='f';return u.role=='a'?(f?'Cliente':'Client'):u.
 const tIds=a=>[a].concat((D.tont||[]).filter(t=>t.owner==a).map(t=>t.id)),ownerId=k=>{const t=(D.tont||[]).find(x=>x.id==k);return t?t.owner:k};const adm=u=>D.users.find(x=>x.id==ownerId(u.adm));
 function msgU(u){if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?"Abonnement expiré. Contactez l'administrateur du logiciel.":'';
 if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';const a=adm(u);return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}return''}
-function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u))S.u=null;S.tab=start;S.view='h';S.u?dash():authView()}
+function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u))S.u=null;S.tab=start;S.view='h';S.u?dash():location.replace('index.html')}
 /* ===== Champs de connexion : téléphone +224 et mot de passe ===== */
 const FLAG='<svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#CE1126"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#009460"/></svg>',
 EYE1='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',

@@ -171,6 +171,41 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 @media(max-width:760px){dialog.guide-d{margin:auto auto 10px}}
 @media (prefers-color-scheme:dark){.gd i{background:#fff}.gd-tip{background:rgba(249,185,8,.14)}}
 @media(prefers-reduced-motion:reduce){.gd,.gd-b summary::after{transition:none}}
+/* ===== fenêtre de connexion unique ===== */
+.dock.lgd{padding:14px 14px 16px}
+.lg{display:block;margin:0}
+.lg-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;margin:0 0 12px;border-radius:16px;background:rgba(11,74,26,.09)}
+.lg-tabs button{border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--g);font:700 14.5px/1.2 "Trebuchet MS",Verdana,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lg-tabs button.on{color:#fff;background:linear-gradient(135deg,#0b4a1a 0%,#1f8a3a 100%);box-shadow:0 6px 14px rgba(31,138,58,.35)}
+.lg-s{margin:0 0 10px;color:var(--mu);font:500 13.5px/1.4 "Trebuchet MS",Verdana,sans-serif}
+.lg-e{margin:0 0 10px;padding:9px 12px;border-radius:12px;background:#fde8e8;color:#8a1212;font:600 13.5px/1.35 "Trebuchet MS",Verdana,sans-serif}
+.lg-e:empty{display:none}
+.lg-e.ok{background:#e3f4e6;color:#0b4a1a}
+.lg-f{display:flex;align-items:center;gap:10px;min-height:50px;padding:0 12px;margin:0 0 10px;border:1.5px solid var(--bd);border-radius:16px;background:var(--bg)}
+.lg-f:focus-within{border-color:var(--g);box-shadow:0 0 0 3px rgba(31,138,58,.2)}
+.lg-f>svg{width:20px;height:20px;flex:none;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lg-f input,.lg-f select{flex:1;min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--tx);font:500 16px/1.2 "Trebuchet MS",Verdana,sans-serif;padding:13px 0;margin:0;-webkit-appearance:none;appearance:none}
+.lg-f select{cursor:pointer}
+.lg-f input::placeholder{color:var(--mu);opacity:.65}
+.lg-cc{flex:none;color:var(--tx);font:700 15px/1 "Trebuchet MS",Verdana,sans-serif;padding-right:10px;border-right:1.5px solid var(--bd)}
+.lg-eye{display:grid;place-items:center;flex:none;border:0;background:none;padding:6px;margin:0 -6px 0 0;cursor:pointer}
+.lg-eye svg{width:20px;height:20px;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lg-l{display:block;margin:4px 2px 6px;color:var(--mu);font:700 13px/1.2 "Trebuchet MS",Verdana,sans-serif}
+.lg-pf{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 8px}
+.lg-pf button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 8px;border-radius:16px;border:2px solid #0b4a1a;background:var(--bg);color:var(--g);font:700 15px/1.1 "Trebuchet MS",Verdana,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lg-pf button svg{width:19px;height:19px;flex:none;fill:currentColor;stroke:none}
+.lg-pf button.on{color:#fff;background:linear-gradient(135deg,#0b4a1a 0%,#1f8a3a 100%);box-shadow:0 8px 18px rgba(31,138,58,.35)}
+.lg-t{margin:0 0 10px;color:var(--mu);font:500 12.5px/1.4 "Trebuchet MS",Verdana,sans-serif}
+.lg-b{display:block;width:100%;min-height:52px;margin:4px 0 0;border:0;border-radius:16px;color:#fff;background:linear-gradient(135deg,#0b4a1a 0%,#1f8a3a 100%);box-shadow:0 12px 26px rgba(31,138,58,.4),inset 0 -3px 0 rgba(0,0,0,.12);font:700 16px/1.2 "Trebuchet MS",Verdana,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lg-b:active{transform:translateY(1px)}
+.lg-b:disabled{opacity:.6;cursor:wait}
+.lg-b.alt{color:var(--g);background:var(--g2);box-shadow:none;border:1.5px solid var(--bd);margin-top:8px}
+.lg-a{display:block;margin:8px auto 0;padding:6px 8px;border:0;background:none;color:var(--g);font:700 14px/1.3 "Trebuchet MS",Verdana,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.lg-h{margin:0 0 8px;color:var(--g);font:700 17px/1.25 Georgia,"Times New Roman",serif}
+.lg :focus-visible{outline:3px solid var(--y);outline-offset:2px}
+@media (max-width:760px){.hero .in{padding-bottom:64px}}
+@media (prefers-color-scheme:dark){.lg-tabs{background:rgba(255,255,255,.07)}.lg-e{background:rgba(255,90,90,.16);color:#ffb4b4}.lg-e.ok{background:rgba(111,207,127,.16);color:#bff0c6}.lg-b.alt{border-color:var(--bd)}}
+@media (prefers-reduced-motion:reduce){.lg-b:active{transform:none}}
 </style></head><body>
 <div class="bar"><span class="plat"><img data-logo alt="ClickTontine"></span><span class="fx" aria-hidden="true"><svg class="net" viewBox="0 0 320 68" preserveAspectRatio="xMaxYMid slice"><g class="ln"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="fl"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="nd"><circle cx="74" cy="14" r="2.6"/><circle cx="146" cy="34" r="2.6"/><circle cx="224" cy="54" r="2.6"/><circle cx="104" cy="46" r="2.6"/><circle cx="184" cy="20" r="2.6"/><circle cx="272" cy="8" r="2.6"/></g></svg><span class="ic"><i><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M12 3l7 2.6v5.6c0 4.4-3 7.8-7 9.2-4-1.4-7-4.8-7-9.2V5.6z"/><path d="M8.8 12l2.3 2.3 4.2-4.6"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.5 12.8a7.7 7.7 0 0 1 11 0M9.5 16a3.4 3.4 0 0 1 5 0"/><circle cx="12" cy="19" r=".9"/></svg></i></span></span></div>
 <main class="hero"><div class="hs-wrap" aria-hidden="true"><div class="hs hs1"></div><div class="hs hs2"></div></div>
@@ -181,15 +216,10 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 <div class="hsl"><p>Administrateur, collecteurs et clients : chacun son espace, ses données, ses reçus.</p></div>
 <div class="hsl"><p>Chaque mise, chaque détail, sous contrôle, même hors connexion.</p></div>
 </div>
-<div class="dock"><div class="cta tiles">
-<a class="tile t2" href="collecteur.html"><span class="face"><span class="ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="14.5" r="1.2"/></svg></span><span>Je suis collecteur</span></span></a>
-<a class="tile t3" href="adherent.html"><span class="face"><span class="ring"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span>Je suis client</span></span></a>
-</div>
-</div>
+<div class="dock lgd"><form class="lg" id="lg" novalidate></form><noscript><div class="lg-e">Activez JavaScript pour vous connecter.</div></noscript></div>
 </div>
 <img class="hl" data-logo width="290" height="290" alt="ClickTontine">
 </div>
-<a class="adm" href="admin-tontine.html" aria-label="Espace administrateur"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
 <div class="dkl"><a class="gd" href="#guide" id="guideL" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/><path d="M9 7h7M9 11h5"/></svg></i><span>Guide</span></a><a class="aide" href="#aide" id="aideL" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.7v.5h6v-.5c0-.7.3-1.3.8-1.7A6.5 6.5 0 0 0 12 2.5z"/></svg></i><span>Aide</span></a></div>
 <div class="hd" id="hd" role="group" aria-label="Choisir le message"><button type="button" class="on" aria-label="Message 1" aria-current="true"></button><button type="button" aria-label="Message 2" aria-current="false"></button><button type="button" aria-label="Message 3" aria-current="false"></button></div>
 </main>
@@ -197,9 +227,9 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 <dialog class="aide-d" id="aide" aria-labelledby="aideT">
 <div class="aide-h"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.7v.5h6v-.5c0-.7.3-1.3.8-1.7A6.5 6.5 0 0 0 12 2.5z"/></svg></i><div><b id="aideT">Besoin d'aide ?</b><small>Démarrer en quelques secondes</small></div></div>
 <div class="aide-b">
-<div><em>1</em><span><strong>Collecteur</strong> : touchez « Je suis collecteur », puis connectez-vous avec votre numéro et votre mot de passe à 4 chiffres.</span></div>
-<div><em>2</em><span><strong>Client</strong> : touchez « Je suis client » et utilisez le numéro donné par votre collecteur pour voir vos tontines.</span></div>
-<div><em>3</em><span><strong>Administrateur</strong> : utilisez l'icône cadenas en bas à gauche pour vous inscrire et profiter de 15 jours d'essai gratuit.</span></div>
+<div><em>1</em><span><strong>Connexion</strong> : entrez votre numéro et votre mot de passe. Votre espace (collecteur, client ou administrateur) s'ouvre automatiquement.</span></div>
+<div><em>2</em><span><strong>Client</strong> : touchez « Créer un compte », choisissez <strong>Client</strong> et utilisez le numéro donné par votre collecteur pour voir vos tontines.</span></div>
+<div><em>3</em><span><strong>Gestionnaire</strong> : touchez « Créer un compte », choisissez <strong>Gestionnaire</strong> et profitez de 15 jours d'essai gratuit. Les collecteurs sont créés par leur administrateur.</span></div>
 </div>
 <div class="aide-f"><a href="tel:+224621109847"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Appeler l'assistance</a><button type="button" id="aideX">Fermer</button></div>
 </dialog>
@@ -213,9 +243,9 @@ x.addEventListener("click",c);d.addEventListener("click",function(e){if(e.target
 <details open><summary><em>1</em>À quoi sert ClickTontine ?</summary><div class="gd-c"><p>ClickTontine remplace le cahier et les calculs. Chaque mise est enregistrée, chaque client a sa fiche de 31 cases, et la clôture se fait avec un reçu.</p><p>Chacun a son espace : l’administrateur, les collecteurs et les clients voient seulement ce qui les concerne.</p></div></details>
 <details><summary><em>2</em>Qui fait quoi ?</summary><div class="gd-c"><ul><li><b>Administrateur de tontine</b> : crée ses collecteurs, leur remet l’UV chaque matin, valide les clôtures, les prêts et les retours UV, paie les commissions et suit la trésorerie.</li><li><b>Collecteur</b> : ajoute les clients, enregistre les mises, demande les clôtures et les prêts, et rend l’UV en fin de journée.</li><li><b>Client</b> : consulte ses tontines, ses reçus et ses prêts avec son numéro de téléphone.</li></ul></div></details>
 <details><summary><em>3</em>Les mots à connaître</summary><div class="gd-c"><ul><li><b>Mise</b> : la somme versée par le client à chaque passage du collecteur.</li><li><b>Fiche de 31 cases</b> : chaque mise payée remplit une case. Le cumul et le nombre de cases payées sont toujours visibles.</li><li><b>Tontine particulier ou groupe</b> : le collecteur peut ouvrir une tontine pour un client seul, ou une tontine de groupe avec un tour de rôle (chaque membre reçoit à son tour).</li><li><b>UV</b> : la valeur remise par l’administrateur au collecteur en début de journée. Le collecteur la rend le soir (<b>retour UV</b>), et l’administrateur la valide.</li><li><b>Mon portefeuille</b> : le solde du collecteur. Il augmente avec les approvisionnements, baisse avec les mises et les retours UV, et revient à zéro quand tout est restitué.</li><li><b>Commission</b> : la part du collecteur sur les tontines. Elle est payée par l’administrateur à la fin du mois, puis le solde revient à zéro.</li></ul></div></details>
-<details><summary><em>4</em>Premiers pas : administrateur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez le <b>cadenas</b> en bas à gauche, puis <b>Inscription</b>.</li><li>Renseignez nom, genre, téléphone et mot de passe (6 caractères minimum). Vous profitez de <b>15 jours d’essai gratuit</b>.</li><li>Ouvrez <b>Paramètres</b> pour régler votre tontine et les règles des prêts.</li><li>Dans <b>Collecteurs</b>, créez chaque collecteur : son numéro et un mot de passe de 4 chiffres, que vous lui communiquez.</li><li>Chaque matin, dans <b>Approvisionnement</b>, attribuez l’UV du jour à chaque collecteur.</li></ol></div></details>
-<details><summary><em>5</em>Premiers pas : collecteur</summary><div class="gd-c"><ol><li>Touchez <b>Je suis collecteur</b>.</li><li>Connectez-vous avec le numéro et le mot de passe à 4 chiffres donnés par votre administrateur.</li><li>Dans <b>Clients</b>, ajoutez chaque client : nom, numéro, quartier et mise par jour.</li><li>Dans <b>Mise</b>, enregistrez chaque versement. Un reçu et un ticket de tontine sont disponibles.</li><li>En fin de journée, faites votre <b>retour UV</b> pour que l’administrateur le valide.</li></ol></div></details>
-<details><summary><em>6</em>Premiers pas : client</summary><div class="gd-c"><ol><li>Touchez <b>Je suis client</b>.</li><li>Entrez le numéro de téléphone donné à votre collecteur.</li><li>Vous voyez vos tontines, vos reçus, vos prêts et les annonces. Pour demander un prêt, adressez-vous à votre collecteur.</li></ol></div></details>
+<details><summary><em>4</em>Premiers pas : administrateur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Créer un compte</b>, puis choisissez <b>Gestionnaire</b>.</li><li>Renseignez nom, genre, téléphone et mot de passe (6 caractères minimum). Vous profitez de <b>15 jours d’essai gratuit</b>.</li><li>Ouvrez <b>Paramètres</b> pour régler votre tontine et les règles des prêts.</li><li>Dans <b>Collecteurs</b>, créez chaque collecteur : son numéro et un mot de passe de 4 chiffres, que vous lui communiquez.</li><li>Chaque matin, dans <b>Approvisionnement</b>, attribuez l’UV du jour à chaque collecteur.</li></ol></div></details>
+<details><summary><em>5</em>Premiers pas : collecteur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Connexion</b>.</li><li>Connectez-vous avec le numéro et le mot de passe à 4 chiffres donnés par votre administrateur.</li><li>Dans <b>Clients</b>, ajoutez chaque client : nom, numéro, quartier et mise par jour.</li><li>Dans <b>Mise</b>, enregistrez chaque versement. Un reçu et un ticket de tontine sont disponibles.</li><li>En fin de journée, faites votre <b>retour UV</b> pour que l’administrateur le valide.</li></ol></div></details>
+<details><summary><em>6</em>Premiers pas : client</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Créer un compte</b> et choisissez <b>Client</b> (ou connectez-vous si vous avez déjà un compte).</li><li>Entrez le numéro de téléphone donné à votre collecteur.</li><li>Vous voyez vos tontines, vos reçus, vos prêts et les annonces. Pour demander un prêt, adressez-vous à votre collecteur.</li></ol></div></details>
 <details><summary><em>7</em>Une journée type</summary><div class="gd-c"><ol><li><b>Matin</b> : l’administrateur attribue l’UV du jour à chaque collecteur.</li><li><b>Journée</b> : le collecteur passe chez ses clients et enregistre chaque mise.</li><li><b>Soir</b> : le collecteur rend l’UV et les espèces, et l’administrateur valide le retour.</li><li><b>Contrôle</b> : le rapport, la trésorerie et l’onglet des anomalies permettent de vérifier que tout est juste.</li></ol></div></details>
 <details><summary><em>8</em>Clôtures et prêts</summary><div class="gd-c"><ul><li><b>Clôture</b> : quand la tontine d’un client se termine, le collecteur la clôture. Elle reste en attente jusqu’à ce que l’administrateur la valide, puis l’argent est remis avec un reçu. Une clôture peut aussi être interrompue et payée avant la fin.</li><li><b>Prêt</b> : le collecteur envoie la demande, l’administrateur donne son avis et accepte ou refuse. Le montant maximum, la durée et le nombre de mises minimum se règlent dans les Paramètres.</li></ul></div></details>
 <details><summary><em>9</em>Abonnement</summary><div class="gd-c"><p>L’administrateur a <b>15 jours d’essai gratuit</b>. Ensuite, il choisit une offre dans <b>Tarification</b> et envoie sa demande de paiement. Une fois le paiement validé, le compte est activé et une facture est créée.</p><p>Si l’abonnement expire, le compte est bloqué jusqu’au renouvellement.</p></div></details>
@@ -237,6 +267,120 @@ function play(){stop();if(!rm.matches&&!document.hidden)t=setInterval(function()
 D.forEach(function(d,k){d.addEventListener('click',function(){go(k);play()})});
 hx.addEventListener('mouseenter',stop);hx.addEventListener('mouseleave',play);hx.addEventListener('focusin',stop);hx.addEventListener('focusout',play);
 document.addEventListener('visibilitychange',function(){document.hidden?stop():play()});play()})();
+</script>
+<script>(function(){
+var API_BASE='';/* adresse de l'API (ex. https://api.mondomaine.com) à renseigner quand la base OVHcloud sera créée */
+var PAGE={a:'adherent.html',g:'collecteur.html',ad:'admin-tontine.html',sa:'admin-logiciel.html'},
+RL={a:'Client',g:'Collecteur',ad:'Administrateur de tontine',sa:'Administrateur du logiciel'},ESSAI=15,
+f=document.getElementById('lg');if(!f)return;
+var $=function(i){return document.getElementById(i)},
+T=function(){return new Date().toISOString().slice(0,10)},
+esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})},
+ph=function(s){var d=String(s||'').replace(/\D/g,'');if(d.indexOf('00224')===0)d=d.slice(5);else if(d.indexOf('224')===0&&d.length>=12)d=d.slice(3);return d},
+addD=function(d,n){return new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10)},
+uid=function(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+function rd(){try{var d=JSON.parse(localStorage.getItem('yt')||'{}');return d&&typeof d==='object'?d:{}}catch(e){return{}}}
+function users(){return rd().users||[]}
+/* mêmes règles de compte que dans les pages collecteur, client et administrateur */
+function msgU(u,self){var d=rd();
+if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?(self?'':"Abonnement expiré. Contactez l'administrateur du logiciel."):'';
+if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';
+var tn=d.tont||[],t=tn.filter(function(x){return x.id==u.adm})[0],oid=t?t.owner:u.adm,a=users().filter(function(x){return x.id==oid})[0];
+return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}
+return ''}
+function pwErr(role,p){if(role=='a'||role=='g')return /^\d{4}$/.test(p)?'':'Le mot de passe doit comporter exactement 4 chiffres.';
+if(role=='ad')return p.length>=6?'':'Le mot de passe doit comporter au moins 6 caractères.';
+if(role=='sa')return p.length>=8?'':'Le mot de passe doit comporter au moins 8 caractères.';
+return p.length>=4?'':'Le mot de passe est trop court.'}
+var IC={
+user:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>',
+phone:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+lock:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+eye:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+eyeoff:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 4.2-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+cli:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>',
+gest:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v3H2V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2zm1.5 3h3V6h-3z"/><path d="M2 14h8v1.5h4V14h8v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/></svg>'};
+var st={mode:'in',pf:'a',tel:'',nom:'',sx:'m',err:'',ok:'',pick:null,rs:null,rsT:0,busy:false};
+function field(icon,inner){return'<div class="lg-f">'+icon+inner+'</div>'}
+function fTel(){return field(IC.phone,'<span class="lg-cc">+224</span><input id="lgT" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="6XX XX XX XX" value="'+esc(st.tel)+'" aria-label="Numéro de téléphone">')}
+function fPw(id,label,ac,fix){return field(IC.lock,'<input id="'+id+'" type="password" autocomplete="'+ac+'" placeholder="'+label+'" aria-label="'+label+'"'+(fix?' inputmode="numeric" maxlength="4"':'')+'><button type="button" class="lg-eye" data-a="eye" aria-label="Afficher le mot de passe">'+IC.eye+'</button>')}
+function msg(){return'<div class="lg-e'+(st.ok?' ok':'')+'" id="lgE" role="alert">'+esc(st.err||st.ok)+'</div>'}
+function tabs(){return'<div class="lg-tabs" role="tablist"><button type="button" role="tab" data-a="tab:in" class="'+(st.mode=='in'?'on':'')+'" aria-selected="'+(st.mode=='in')+'">Connexion</button><button type="button" role="tab" data-a="tab:up" class="'+(st.mode=='up'?'on':'')+'" aria-selected="'+(st.mode=='up')+'">Créer un compte</button></div>'}
+function pfHint(){return st.pf=='ad'?'Mot de passe de 6 caractères minimum. Essai gratuit de '+ESSAI+' jours.':'Mot de passe à 4 chiffres. Utilisez le numéro donné à votre collecteur pour voir vos tontines.'}
+function render(){var h='';
+if(st.pick){h='<div class="lg-h">Choisissez votre espace</div><div class="lg-s">Plusieurs espaces correspondent à ces identifiants.</div>'+st.pick.map(function(u,i){return'<button type="button" class="lg-b'+(i?' alt':'')+'" data-a="pick:'+i+'">'+esc(RL[u.role]||u.role)+' · '+esc(u.nom||'')+'</button>'}).join('')+'<button type="button" class="lg-a" data-a="back">← Retour</button>'}
+else if(st.mode=='in'){h=tabs()+'<div class="lg-s">Entrez votre numéro et votre mot de passe : votre espace (client, collecteur ou administrateur) s\'ouvre automatiquement.</div>'+msg()+fTel()+fPw('lgP','Mot de passe','current-password',false)+'<button class="lg-b" type="submit" id="lgB">Se connecter</button><button type="button" class="lg-a" data-a="rs">Mot de passe oublié ?</button>'}
+else if(st.mode=='up'){h=tabs()+'<div class="lg-s">Choisissez votre profil, puis remplissez vos informations.</div>'+msg()+
+field(IC.user,'<input id="lgN" autocomplete="name" placeholder="Nom complet (ex : Saran Koulibaly)" value="'+esc(st.nom)+'" aria-label="Nom complet">')+fTel()+
+field(IC.user,'<select id="lgG" aria-label="Genre"><option value="m"'+(st.sx=='m'?' selected':'')+'>Homme</option><option value="f"'+(st.sx=='f'?' selected':'')+'>Femme</option></select>')+
+'<span class="lg-l" id="lgPl">Vous êtes :</span><div class="lg-pf" role="group" aria-labelledby="lgPl"><button type="button" data-a="pf:a" class="'+(st.pf=='a'?'on':'')+'" aria-pressed="'+(st.pf=='a')+'">'+IC.cli+'Client</button><button type="button" data-a="pf:ad" class="'+(st.pf=='ad'?'on':'')+'" aria-pressed="'+(st.pf=='ad')+'">'+IC.gest+'Gestionnaire</button></div>'+
+fPw('lgP',st.pf=='ad'?'Mot de passe (6 caractères minimum)':'Mot de passe (4 chiffres)','new-password',st.pf=='a')+'<div class="lg-t" id="lgH">'+pfHint()+'</div><div class="lg-t">Collecteur : votre compte est créé par votre administrateur de tontine, connectez-vous simplement avec votre numéro.</div>'+
+'<button class="lg-b" type="submit" id="lgB">Créer mon compte</button><button type="button" class="lg-a" data-a="tab:in">Vous avez déjà un compte ? Se connecter</button>'}
+else if(st.mode=='rs'){var s=st.rs;
+if(!s){h='<div class="lg-h">Mot de passe oublié</div><div class="lg-s">Entrez votre numéro de téléphone : nous vous enverrons par SMS un code à 6 chiffres.</div>'+msg()+fTel()+'<button class="lg-b" type="submit" id="lgB">Recevoir le code par SMS</button><button type="button" class="lg-a" data-a="tab:in">← Retour à la connexion</button>'}
+else if(s.ask){h='<div class="lg-h">Mot de passe oublié</div><div class="lg-s">Plusieurs espaces utilisent le <b>+224 '+esc(s.tel)+'</b>. Pour lequel voulez-vous un nouveau mot de passe ?</div>'+s.ask.map(function(r,i){return'<button type="button" class="lg-b'+(i?' alt':'')+'" data-a="rsrole:'+r+'">'+esc(RL[r]||r)+'</button>'}).join('')+'<button type="button" class="lg-a" data-a="tab:in">← Retour à la connexion</button>'}
+else{h='<div class="lg-h">Mot de passe oublié</div><div class="lg-s">Un code à 6 chiffres a été envoyé par SMS au <b>+224 '+esc(s.tel)+'</b>. Entrez-le puis choisissez un nouveau mot de passe.</div>'+msg()+
+field(IC.lock,'<input id="lgC" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Code reçu (6 chiffres)" aria-label="Code reçu par SMS">')+
+fPw('lgP1','Nouveau mot de passe','new-password',s.role=='a'||s.role=='g')+fPw('lgP2','Confirmer le mot de passe','new-password',s.role=='a'||s.role=='g')+
+'<button class="lg-b" type="submit" id="lgB">Réinitialiser le mot de passe</button><button type="button" class="lg-a" data-a="rsend">Renvoyer le code</button><button type="button" class="lg-a" data-a="rsedit">Modifier le numéro</button><button type="button" class="lg-a" data-a="tab:in">← Retour à la connexion</button>'}}
+f.innerHTML=h;kb()}
+function kb(){var t=$('lgT'),p=$('lgP');if(!t||!p||st.mode!='in')return;var d=ph(t.value),m=users().filter(function(u){return ph(u.tel)==d});p.inputMode=m.some(function(u){return !/^\d{4}$/.test(u.pwd||'')})?'text':'numeric'}
+function keep(){var t=$('lgT'),n=$('lgN'),g=$('lgG');if(t)st.tel=t.value;if(n)st.nom=n.value;if(g)st.sx=g.value}
+function err(m){st.err=m;st.ok='';var e=$('lgE');if(e){e.className='lg-e';e.textContent=m}else render();return false}
+function openSp(u){if(!PAGE[u.role])return err('Profil inconnu.');
+try{localStorage.setItem('yt_'+u.role,u.id)}catch(e){return err("Impossible d'ouvrir la session sur cet appareil.")}
+location.href=PAGE[u.role]}
+function doIn(){keep();var t=ph($('lgT').value),p=$('lgP').value;if(!t||!p)return err('Renseignez téléphone et mot de passe.');
+var us=users().filter(function(u){return ph(u.tel)==t&&u.pwd==p});if(!us.length)return err('Téléphone ou mot de passe incorrect.');
+var ok=[],m0='';us.forEach(function(u){var m=msgU(u,u.role=='ad');if(m){m0=m0||m}else ok.push(u)});
+if(!ok.length)return err(m0);if(ok.length==1)return openSp(ok[0]);st.pick=ok;render()}
+function doUp(){keep();var n=$('lgN').value.trim(),t=ph($('lgT').value),p=$('lgP').value,role=st.pf;
+if(!n)return err('Renseignez votre nom complet.');
+if(!/^\d{9}$/.test(t))return err('Entrez un numéro de téléphone valide (9 chiffres).');
+var pe=pwErr(role,p);if(pe)return err(pe);
+var d=rd();d.users=d.users||[];
+if(d.users.some(function(u){return ph(u.tel)==t&&u.role==role})){st.mode='in';st.tel=t;st.err='Ce numéro a déjà un compte avec ce profil. Connectez-vous.';render();return false}
+var u={id:uid(),role:role,nom:n,tel:t,pwd:p,sx:$('lgG').value||'m'};
+if(role=='ad'){u.actif=true;u.essai=true;u.exp=addD(T(),ESSAI)}
+d.users.push(u);try{localStorage.setItem('yt',JSON.stringify(d))}catch(e){return err("Enregistrement impossible : espace plein.")}
+if(role=='ad')alert("Compte créé. Vous bénéficiez de "+ESSAI+" jours d'essai gratuit, jusqu'au "+u.exp+".");
+openSp(u)}
+/* réinitialisation du mot de passe par SMS (comme dans les pages) */
+function rsApi(p,b){if(!API_BASE)return Promise.reject(new Error('nosvc'));return fetch(API_BASE+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){if(!r.ok)throw new Error(j.message||'Échec de la demande.');return j})})}
+function rsErr(e){return e.message=='nosvc'?"L'envoi de SMS n'est pas encore activé. Réessayez plus tard ou contactez votre administrateur.":e.name=='TypeError'?'Connexion impossible. Vérifiez votre connexion internet.':(e.message||'Échec de la demande.')}
+function rsSend(t,role,re){if(re&&Date.now()-st.rsT<60000)return err('Patientez '+Math.ceil((60000-(Date.now()-st.rsT))/1000)+' secondes avant de redemander un code.');
+var b=$('lgB');if(b)b.disabled=true;
+rsApi('/auth/reset/request',{tel:'+224'+t,role:role}).then(function(){st.rs={tel:t,role:role};st.rsT=Date.now();st.err='';st.ok=re?'Un nouveau code vient de vous être envoyé.':'';render()}).catch(function(e){if(b)b.disabled=false;st.rs=null;err(rsErr(e))})}
+function doRs(){keep();var s=st.rs;
+if(!s){var t=ph($('lgT').value);if(!/^\d{9}$/.test(t))return err('Entrez un numéro de téléphone valide (9 chiffres).');
+var roles=[];users().forEach(function(u){if(ph(u.tel)==t&&roles.indexOf(u.role)<0)roles.push(u.role)});
+if(roles.length>1){st.rs={tel:t,ask:roles};st.err='';render();return false}
+return rsSend(t,roles[0])}
+var c=($('lgC').value||'').trim(),p1=$('lgP1').value,p2=$('lgP2').value;
+if(!/^\d{6}$/.test(c))return err('Entrez le code à 6 chiffres reçu par SMS.');
+var pe=pwErr(s.role,p1);if(pe)return err(pe);if(p1!=p2)return err('Les deux mots de passe ne sont pas identiques.');
+var b=$('lgB');if(b)b.disabled=true;
+rsApi('/auth/reset/confirm',{tel:'+224'+s.tel,role:s.role,code:c,password:p1}).then(function(){var d=rd();(d.users||[]).forEach(function(u){if(ph(u.tel)==s.tel&&(!s.role||u.role==s.role))u.pwd=p1});try{localStorage.setItem('yt',JSON.stringify(d))}catch(e){}
+st.rs=null;st.mode='in';st.tel=s.tel;st.err='';st.ok='Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.';render()}).catch(function(e){if(b)b.disabled=false;err(rsErr(e))})}
+f.addEventListener('submit',function(e){e.preventDefault();if(st.pick)return;if(st.mode=='in')doIn();else if(st.mode=='up')doUp();else doRs()});
+f.addEventListener('input',function(e){var t=e.target;
+if(t.id=='lgT'&&st.mode=='in')kb();
+if(t.id=='lgC')t.value=t.value.replace(/\D/g,'');
+if(t.maxLength==4&&t.type!='tel'&&t.getAttribute('inputmode')=='numeric')t.value=t.value.replace(/\D/g,'')});
+f.addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b)return;var a=b.getAttribute('data-a').split(':'),k=a[0],v=a[1];
+if(k=='eye'){var i=b.parentNode.querySelector('input'),h=i.type=='password';i.type=h?'text':'password';b.innerHTML=h?IC.eyeoff:IC.eye;b.setAttribute('aria-label',h?'Masquer le mot de passe':'Afficher le mot de passe');return}
+if(k=='tab'){keep();st.mode=v;st.err='';st.ok='';st.pick=null;st.rs=null;render();return}
+if(k=='back'){st.pick=null;render();return}
+if(k=='pick'){openSp(st.pick[+v]);return}
+if(k=='pf'){keep();st.pf=v;st.err='';var p=$('lgP');
+Array.prototype.forEach.call(f.querySelectorAll('.lg-pf button'),function(x){var on=x.getAttribute('data-a')=='pf:'+v;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)});
+if(p){var n=v=='a';p.placeholder=n?'Mot de passe (4 chiffres)':'Mot de passe (6 caractères minimum)';p.setAttribute('aria-label',p.placeholder);if(n){p.setAttribute('inputmode','numeric');p.maxLength=4;p.value=p.value.replace(/\D/g,'').slice(0,4)}else{p.removeAttribute('inputmode');p.removeAttribute('maxlength')}}
+$('lgH').textContent=pfHint();return}
+if(k=='rs'){keep();st.mode='rs';st.err='';st.ok='';st.rs=null;render();return}
+if(k=='rsrole'){rsSend(st.rs.tel,v);return}
+if(k=='rsend'){rsSend(st.rs.tel,st.rs.role,1);return}
+if(k=='rsedit'){st.tel=st.rs.tel;st.rs=null;st.err='';st.ok='';render()}});
+render()})();
 </script>
 <script src="pwa.js" defer></script>
 </body></html>

@@ -201,7 +201,7 @@ if(j<0)return`<div class="card" style="display:block;margin-bottom:12px;border-c
 if(u.essai)return`<div class="card" style="display:block;margin-bottom:12px;border-color:var(--y)"><b>🎁 Essai gratuit : ${j} jour(s) restant(s)</b><p style="margin:6px 0">Votre essai se termine le ${u.exp}. Abonnez-vous pour continuer sans interruption.</p><button class="btn s y" onclick="nav('tf')">Voir les tarifs et m'abonner</button></div>`;return''}
 function msgU(u,self){if(u.role=='ad')return !u.actif?"Compte en attente d'activation par l'administrateur du logiciel.":(u.exp||'')<T()?(self?'':"Abonnement expiré. Contactez l'administrateur du logiciel."):'';
 if(u.role=='g'){if(u.actif===false)return 'Compte suspendu par votre administrateur.';const a=adm(u);return a?msgU(a):"Compte non rattaché à un administrateur de tontine."}return''}
-function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u,1))S.u=null;S.tab=start;S.view='h';S.u?dash():authView()}
+function login(r,start){try{S.u=D.users.find(x=>x.id==localStorage.getItem('yt_'+r))||null}catch(e){}if(S.u&&msgU(S.u,1))S.u=null;S.tab=start;S.view='h';S.u?dash():location.replace('index.html')}
 /* ===== Champs de connexion : téléphone +224 et mot de passe ===== */
 const FLAG='<svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#CE1126"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#009460"/></svg>',
 EYE1='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
