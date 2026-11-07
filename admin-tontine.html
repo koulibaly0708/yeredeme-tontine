@@ -329,7 +329,12 @@ const intr=(a,mt)=>{const c=cfg(a);return c.pm=='fix'?c.pv:Math.round(mt*c.pv/10
 const loanOf=m=>D.pret.find(p=>p.mid==m.id&&p.statut=='accepte');
 const mises=m=>D.dep.filter(d=>d.mid==m.id).reduce((a,d)=>a+(d.n||0),0);
 const lnTerms=(a,mise,P,dur)=>{const c=cfg(a),fg=c.pfm=='fix'?c.pfv:Math.round(P*c.pfv/100),serv=dur*mise,it=c.pm=='fix'?c.pv*dur:Math.round(P*c.pv/100*dur);return{fg,net:P-fg,serv,interet:it,total:P+serv+it,nb:Math.max(1,Math.ceil((P+serv)/mise)),max:30*mise*dur}};
-const penUpd=p=>{if(p.statut!='accepte'||!p.fin||T()<=p.fin)return;const c=cfg(p.adm),ml=Math.ceil(Math.floor((new Date(T())-new Date(p.fin))/864e5)/31),base=Math.max(0,p.total-p.rembourse),pen=c.ppm=='fix'?c.ppv*ml:Math.round(base*c.ppv/100*ml);if(pen>(p.pen||0))p.pen=pen};
+/* échéance au 31e jour : on compte à partir de la date de la première mise (pas du mois civil) */
+const addJ=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10),
+loanFin=p=>{if(p.statut!='accepte'||!p.dateDec||(p.pen||0)>0)return;const f=D.dep.filter(d=>d.mid==p.mid&&d.date>=p.dateDec).map(d=>d.date).sort()[0]||p.dateDec,n=addJ(f,31*(p.dur||1)-1);if(p.fin!=n)p.fin=n},
+ficheFin=m=>{const L=D.dep.filter(d=>d.mid==m.id).map(d=>d.date).sort();return L.length?`<br>1re mise : ${L[0]} · 31 mises à terminer au plus tard le ${addJ(L[0],30)}`:''};
+const penUpd=p=>{loanFin(p);if(p.statut!='accepte'||!p.fin||T()<=p.fin)return;const c=cfg(p.adm),ml=Math.ceil(Math.floor((new Date(T())-new Date(p.fin))/864e5)/31),base=Math.max(0,p.total-p.rembourse),pen=c.ppm=='fix'?c.ppv*ml:Math.round(base*c.ppv/100*ml);if(pen>(p.pen||0))p.pen=pen};
+D.pret.forEach(p=>loanFin(p));
 const due=p=>{penUpd(p);return Math.max(0,p.total+(p.pen||0)-p.rembourse)};
 const instAmt=(p,i)=>i<p.nb?p.mise:i==p.nb?p.total+(p.pen||0)-(p.nb-1)*p.mise:p.mise;
 const lnPlan=(m,n)=>{const p=loanOf(m);if(!p)return null;let k=p.k||0,left=due(p),rep=0;for(let i=1;i<=n&&left>0;i++){k++;const a=Math.min(Math.max(1,instAmt(p,k)),left);rep+=a;left-=a}
@@ -470,7 +475,7 @@ const docHead=m=>{const o=orgOf(m),inf=[o.adr,o.tel&&'Tél : '+o.tel,o.mail].fil
 function rec(id){const d=D.dep.find(x=>x.id==id),m=D.mem.find(x=>x.id==d.mid);box(`<div class="a6w">${docHead(m)}<h3 style="text-align:center;margin:6px 0">${d.montant>0?'Reçu de mise':'Reçu de règlement de prêt'}</h3><p>Reçu N° ${d.id.slice(-6).toUpperCase()}<br>Tontine N° : <b>${m.sn}</b><br>Date : ${d.date}<br>Client : <b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)}<br>${d.montant>0?`Nombre de mises : <b>${d.n||Math.round(d.montant/m.mise)}</b> × ${F(m.mise)}<br>Montant : <b>${F(d.montant)}</b><br>`:''}${d.rp?`Remboursement prêt : <b>${F(d.rp)}</b> · Reste : ${F(d.rr)}<br>Total encaissé : <b>${F(d.montant+d.rp)}</b><br>`:''}Cumul : ${F(tot(m))} (${carr(m)}/31 cases)</p></div>`,'A6','rec',id)}
 function tick(id){const m=D.mem.find(x=>x.id==id);box(`<div class="tkw">${docHead(m)}<h3 style="text-align:center;margin:6px 0">Ticket de tontine</h3><p>Tontine N° : <b>${m.sn}</b><br><b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)}<br>Quartier : ${esc(m.q)}<br>Mise : ${F(m.mise)} par jour<br>Cases payées : ${carr(m)}/31<br>Collecté : ${F(tot(m))}<br>État : ${stt(m)}</p></div>`,'T','tick',id)}
 const f31=(c,cl)=>`<div class="f31">${Array.from({length:31},(_,i)=>`<i class="${i<c?'p':cl?'x':''}">${i+1}</i>`).join('')}</div>`;
-const ficheHTML=id=>{const m=D.mem.find(x=>x.id==id),c=carr(m);return`${docHead(m)}<h2 style="text-align:center;margin:8px 0 12px">Fiche de tontine</h2><p>Tontine N° : <b>${m.sn}</b><br><b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)}<br>Mise journalière : ${F(m.mise)} · Ouverte le ${m.date}<br>État : ${stt(m)}</p>${ban(m)}${f31(c,isCl(m))}<p>Cases payées : <b>${c}/31</b><br>Total collecté : <b>${F(tot(m))}</b></p>`};
+const ficheHTML=id=>{const m=D.mem.find(x=>x.id==id),c=carr(m);return`${docHead(m)}<h2 style="text-align:center;margin:8px 0 12px">Fiche de tontine</h2><p>Tontine N° : <b>${m.sn}</b><br><b>${esc(m.prenom+' '+m.nom)}</b><br>Tél : ${esc(m.tel)} · Quartier : ${esc(m.q)}<br>Mise journalière : ${F(m.mise)} · Ouverte le ${m.date}${ficheFin(m)}<br>État : ${stt(m)}</p>${ban(m)}${f31(c,isCl(m))}<p>Cases payées : <b>${c}/31</b><br>Total collecté : <b>${F(tot(m))}</b></p>`};
 const imgInfo=src=>new Promise(r=>{const i=new Image();i.onload=()=>{try{const c=document.createElement('canvas');c.width=i.naturalWidth;c.height=i.naturalHeight;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0);r({d:c.toDataURL('image/jpeg',.92),w:i.naturalWidth,h:i.naturalHeight})}catch(e){r(null)}};i.onerror=()=>r(null);i.src=src});
 async function pdfDoc(kind,id){if(!window.jspdf)return alert('Module PDF non chargé. Vérifiez votre connexion internet puis réessayez.');if(kind=='grec')return gPdf(id);
 const J=window.jspdf.jsPDF,d=kind=='rec'?D.dep.find(x=>x.id==id):null,rt=kind=='rec'&&!d?D.ret.find(x=>x.id==id):null,m=D.mem.find(x=>x.id==(d?d.mid:rt?rt.mid:id)),o=orgOf(m),c=carr(m),nm=m.prenom+' '+m.nom;
@@ -504,14 +509,108 @@ const dd=a.filter(d=>d.date.slice(0,n)==S.day.slice(0,n)),sd=dd.reduce((s,d)=>s+
 return`<div class="row np"><select style="width:auto" onchange="S.per=this.value;dash()">${[['j','Journalier'],['m','Mensuel'],['a','Annuel']].map(o=>`<option value="${o[0]}" ${S.per==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()"></div>
 <h3>Rapport ${k} (${S.day.slice(0,n)})</h3><div class="st"><div><b>${nm}</b>Mises</div><div><b>${F(sd)}</b>Total déposé</div><div><b>${F(sr)}</b>Retraits remis</div><div><b>${F(mine().filter(m=>m.statut=='attente').reduce((s,m)=>s+owed(m),0))}</b>Reste à payer</div>${pretVis()?`<div><b>${F(dd.reduce((s,d)=>s+(d.rp||0),0))}</b>Remboursements de prêts</div><div><b>${F(D.pret.filter(p=>p.statut=='accepte'&&mine().some(m=>m.id==p.mid)).reduce((s,p)=>s+due(p),0))}</b>Prêts à rembourser</div>`:''}${R=='g'?`<div><b>${F(scc)}</b>Ma commission</div>`:R=='ad'?`<div><b>${F(sc)}</b>Commissions</div><div><b>${F(scc)}</b>Part collecteurs</div><div><b>${F(sc-scc)}</b>Ma part</div>`:''}</div>
 <div class="row np">${R!='a'?'<button class="btn s" onclick="csv()">Exporter CSV</button>':''}<button class="btn s o" onclick="window.print()">Imprimer / PDF</button></div>`}
-const R='ad',TABS=[['ap','Aperçu'],['co','Collecteurs'],['av','Approvision­nement'],['pw','Mon portefeuille'],['cl','Clôtures'],['am','Clients'],['pr','Prêts'],['gr','Tontine groupe'],['rp','Rapport'],['cx','Commissions'],['tr','Trésorerie'],['pa','Paramètres'],['an','Anomalies et alertes'],['sv','Sauvegarde'],['tf','Tarification'],['fc','Facturation'],['ao','Annonces'],['pf','Profil']];
-const TI={gr:'🔄',pw:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 9h-5a3 3 0 0 0 0 6h5V9z"/><circle cx="16.5" cy="12" r=".7"/></svg>',tf:'🏷️',fc:'🧾',ao:'📢',pf:'👤',an:'🚨',sv:'💾',ap:'📊',co:'🧑‍💼',av:'💵',cl:'✅',am:'👥',pr:'🤝',rp:'📈',cx:'💸',tr:'🏦',pa:'⚙️'},TG=[['Profil',['pf']],['Pilotage',['ap','pw','rp','cx','tr']],['Collecteurs',['co','av']],['Tontines',['cl','am','pr','gr']],['Réglages',['pa']],['Contrôle',['an','sv']],['Abonnement',['tf','fc']],['Annonces',['ao']]];
+const R='ad',TABS=[['ap','Aperçu'],['co','Collecteurs'],['av','Approvision­nement'],['pw','Mon portefeuille'],['cl','Clôtures'],['am','Clients'],['pr','Prêts'],['gr','Tontine groupe'],['rp','Rapport'],['cx','Commissions'],['tr','Trésorerie'],['rb','Rapprochement bancaire'],['sp','Performance des agents'],['pa','Paramètres'],['an','Anomalies et alertes'],['sv','Sauvegarde'],['tf','Tarification'],['fc','Facturation'],['ao','Annonces'],['pf','Profil']];
+const TI={gr:'🔄',pw:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 9h-5a3 3 0 0 0 0 6h5V9z"/><circle cx="16.5" cy="12" r=".7"/></svg>',tf:'🏷️',fc:'🧾',ao:'📢',pf:'👤',an:'🚨',sv:'💾',ap:'📊',co:'🧑‍💼',av:'💵',cl:'✅',am:'👥',pr:'🤝',rp:'📈',cx:'💸',tr:'🏦',rb:'🔁',sp:'🏆',pa:'⚙️'},TG=[['Profil',['pf']],['Pilotage',['ap','pw','rp','cx','tr','rb']],['Collecteurs',['co','av','sp']],['Tontines',['cl','am','pr','gr']],['Réglages',['pa']],['Contrôle',['an','sv']],['Abonnement',['tf','fc']],['Annonces',['ao']]];
 const nmC=id=>{const u=D.users.find(x=>x.id==id);return u?esc(u.nom):'?'};
 const copts=()=>colls().filter(c=>c.actif!==false).map(c=>`<option value="${c.id}">${esc(c.nom)}</option>`).join('');
 const cmFilter=()=>{const ids=mine().map(m=>m.id),n={j:10,m:7,a:4}[S.cper];return D.ret.filter(r=>ids.includes(r.mid)&&(!n||r.date.slice(0,n)==S.day.slice(0,n))).concat(gRetMine().filter(r=>!n||r.date.slice(0,n)==S.day.slice(0,n)))};
 const cmBar=()=>`<div class="row np"><select style="width:auto" onchange="S.cper=this.value;dash()">${[['all','Tout'],['j','Jour'],['m','Mois'],['a','Année']].map(o=>`<option value="${o[0]}" ${S.cper==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>${S.cper!='all'?`<input type="date" style="width:auto" value="${S.day}" onchange="S.day=this.value;dash()">`:''}</div>`;
 const memOf=x=>D.mem.find(k=>k.id==x.mid)||x.pm;
 
+/* ===== Rapprochement bancaire automatique ===== */
+D.rb=D.rb||{};
+const rbSt=()=>{const k=SC();D.rb[k]=D.rb[k]||{tol:3,lines:[],nom:'',date:''};return D.rb[k]},
+rbD=(a,b)=>Math.abs(Math.round((new Date(b)-new Date(a))/864e5)),
+rbIso=(y,m,d)=>{y=+y;if(y<100)y+=2000;const t=new Date(Date.UTC(y,+m-1,+d));return t.getUTCFullYear()==y&&t.getUTCMonth()==+m-1&&t.getUTCDate()==+d?t.toISOString().slice(0,10):''};
+function rbDate(v){if(v instanceof Date&&!isNaN(v))return rbIso(v.getFullYear(),v.getMonth()+1,v.getDate());
+if(typeof v=='number'&&v>20000&&v<80000)return new Date(Math.round((v-25569)*864e5)).toISOString().slice(0,10);
+const t=String(v==null?'':v).trim();let m=t.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);if(m)return rbIso(m[1],m[2],m[3]);
+m=t.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/);return m?rbIso(m[3],m[2],m[1]):''}
+function rbNum(v){if(typeof v=='number')return isFinite(v)?Math.round(v):null;let t=String(v==null?'':v).replace(/[\s\u00A0\u202F]/g,'').replace(/GNF|FG|GF/gi,'');if(!t)return null;
+const neg=/^\(.*\)$/.test(t)||/^-/.test(t)||/-$/.test(t);t=t.replace(/[()\-+]/g,'');if(!/^[\d.,]+$/.test(t))return null;
+const ls=Math.max(t.lastIndexOf(','),t.lastIndexOf('.'));
+if(ls>=0){const dec=t.length-ls-1;t=(dec>0&&dec<=2)?t.slice(0,ls).replace(/[.,]/g,'')+'.'+t.slice(ls+1):t.replace(/[.,]/g,'')}
+const n=parseFloat(t);return isNaN(n)?null:Math.round(neg?-n:n)}
+function rbCsv(txt){txt=String(txt).replace(/^\uFEFF/,'');const L=txt.split(/\r?\n/).filter(x=>x.trim());if(!L.length)return[];
+const cnt=c=>L.slice(0,8).reduce((a,l)=>a+(l.split(c).length-1),0),d=[';','\t','|',','].map(c=>[c,cnt(c)]).sort((a,b)=>b[1]-a[1])[0][0];
+return L.map(l=>{const r=[];let cur='',q=false;for(let i=0;i<l.length;i++){const ch=l[i];if(ch=='"'){if(q&&l[i+1]=='"'){cur+='"';i++}else q=!q}else if(ch==d&&!q){r.push(cur);cur=''}else cur+=ch}r.push(cur);return r.map(x=>x.trim())})}
+function rbRows(rows){let h=-1;for(let i=0;i<Math.min(rows.length,10);i++){if(rows[i].some(c=>/date/i.test(String(c)))&&!rows[i].some(c=>rbDate(c))){h=i;break}}
+const H=h>=0?rows[h].map(c=>String(c).toLowerCase()):[],ix=re=>H.findIndex(c=>re.test(c)),data=rows.slice(h+1);
+let cd=ix(/date/),cl=ix(/lib|desc|d[ée]tail|op[ée]ration|motif|r[ée]f|nature/),cdb=ix(/d[ée]bit|sortie|retrait/),ccr=ix(/cr[ée]dit|entr[ée]e|d[ée]p[oô]t|versement/),cm=ix(/montant|amount|valeur/);
+if(h<0){const s=data[0]||[],n=s.length;cd=s.findIndex(c=>rbDate(c));if(cd<0)cd=0;cl=cd+1;if(n-cl>=3){cdb=n-2;ccr=n-1}else cm=n-1}
+if(cd<0)return{err:'Colonne « Date » introuvable dans le relevé.'};
+if(cdb<0&&ccr<0&&cm<0)return{err:'Colonnes de montant introuvables (Montant, ou Débit et Crédit).'};
+const out=[];let bad=0;
+data.forEach(r=>{const d=rbDate(r[cd]);let m=null;
+if(cdb>=0||ccr>=0){const db=cdb>=0?rbNum(r[cdb]):null,cr=ccr>=0?rbNum(r[ccr]):null;if(db!=null||cr!=null)m=(cr||0)-Math.abs(db||0)}else m=rbNum(r[cm]);
+if(!d||m==null||m==0){if(r.some(c=>String(c).trim()))bad++;return}
+out.push({d,l:String(r[cl>=0?cl:cd+1]||'').slice(0,80),m})});
+return{lines:out,bad}}
+function rbAdd(rows,nom){const r=rbRows(rows);if(r.err)return alert(r.err);if(!r.lines.length)return alert('Aucune ligne exploitable dans ce relevé. Format attendu : Date ; Libellé ; Débit ; Crédit (ou Date ; Libellé ; Montant).');
+const st=rbSt(),have={};st.lines.forEach(b=>{const k=b.d+'|'+b.m+'|'+b.l;have[k]=(have[k]||0)+1});let add=0,dup=0;
+r.lines.forEach(b=>{const k=b.d+'|'+b.m+'|'+b.l;if(have[k]>0){have[k]--;dup++}else{st.lines.push({id:uid(),d:b.d,l:b.l,m:b.m});add++}});
+st.nom=nom||st.nom;st.date=T();save();dash();alert(add+' ligne(s) importée(s), '+dup+' déjà présente(s), '+r.bad+' ignorée(s).')}
+function rbFile(inp){const f=inp.files&&inp.files[0];if(!f)return;const ex=/\.(xlsx|xlsm|xls)$/i.test(f.name),rd=new FileReader();
+rd.onerror=()=>alert('Fichier illisible.');
+if(ex){if(!window.XLSX){inp.value='';return alert('Module Excel non chargé. Vérifiez votre connexion internet ou importez un fichier CSV.')}
+rd.onload=()=>{try{const wb=XLSX.read(rd.result,{type:'array',cellDates:true}),ws=wb.Sheets[wb.SheetNames[0]];rbAdd(XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''}),f.name)}catch(e){alert('Fichier Excel illisible.')}inp.value=''};rd.readAsArrayBuffer(f)}
+else{rd.onload=()=>{rbAdd(rbCsv(rd.result),f.name);inp.value=''};rd.readAsText(f)}}
+function rbPaste(){const t=($('rbt')||{}).value||'';if(!t.trim())return alert('Collez d\'abord les lignes du relevé.');rbAdd(rbCsv(t),'Relevé collé')}
+function rbClear(){if(!rbSt().lines.length)return;if(!confirm('Vider tout le relevé importé ? Le journal de la tontine n\'est pas touché.'))return;const st=rbSt();st.lines=[];st.nom='';save();dash()}
+function rbTol(v){rbSt().tol=+v;save();dash()}
+function rbJust(id){const b=rbSt().lines.find(x=>x.id==id);if(!b)return;const n=prompt('Motif de la justification (ex : frais bancaires)','Frais bancaires');if(n===null)return;b.j=n.trim()||'Justifié';save();dash()}
+function rbUnjust(id){const b=rbSt().lines.find(x=>x.id==id);if(b){delete b.j;save();dash()}}
+function rbJ(){const pc=S.cper;S.cper='all';let L;try{L=journal()}finally{S.cper=pc}return L.map((x,i)=>({i,d:x.d,v:x.r-x.s,l:x.l,p:x.p})).filter(x=>x.v!=0&&x.d)}
+function rbMatch(){const st=rbSt(),tol=+st.tol||0,B=st.lines.slice().sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
+if(!B.length)return{M:[],ub:[],uj:[],jb:[],sug:{},B,J:[]};
+const lo=addJ(B[0].d,-tol),hi=addJ(B[B.length-1].d,tol),J=rbJ().filter(x=>x.d>=lo&&x.d<=hi),used={},M=[],sug={},done={};
+const near=(b,f)=>J.filter(x=>!used[x.i]&&Math.sign(x.v)==Math.sign(b.m)&&rbD(b.d,x.d)<=tol&&f(x)).sort((p,q)=>rbD(b.d,p.d)-rbD(b.d,q.d)||p.i-q.i);
+B.forEach(b=>{if(b.j)return;const c=near(b,x=>x.v==b.m)[0];if(c){used[c.i]=1;done[b.id]=1;const g=rbD(b.d,c.d);M.push({b,js:[c],t:g?'Exact · date décalée de '+g+' j':'Exact'})}});
+const sub=(c,t)=>{let best=null;const go=(k,s,ch)=>{if(best)return;if(s==t&&ch.length>1){best=ch.slice();return}if(k>=c.length||Math.abs(s)>Math.abs(t))return;go(k+1,s+c[k].v,ch.concat(c[k]));go(k+1,s,ch)};go(0,0,[]);return best};
+B.forEach(b=>{if(b.j||done[b.id])return;const c=near(b,()=>true).slice(0,16),g=c.length>1?sub(c,b.m):null;if(g){g.forEach(x=>used[x.i]=1);done[b.id]=1;M.push({b,js:g,t:'Regroupé ('+g.length+' écritures)'})}});
+B.forEach(b=>{if(b.j||done[b.id])return;const c=near(b,x=>Math.abs(x.v-b.m)<=Math.max(1000,Math.abs(b.m)*.02)).sort((p,q)=>Math.abs(p.v-b.m)-Math.abs(q.v-b.m))[0];if(c)sug[b.id]=c});
+return{M,ub:B.filter(b=>!b.j&&!done[b.id]),uj:J.filter(x=>!used[x.i]),jb:B.filter(b=>b.j),sug,B,J}}
+function rbTable(h,rows,empty){return`<div class="tb"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.slice(0,200).join('')||`<tr><td colspan="${h.length}">${empty}</td></tr>`}</table></div>${rows.length>200?`<p class="mu">200 premières lignes affichées sur ${rows.length}. Exportez en Excel pour tout voir.</p>`:''}`}
+function rbView(){const st=rbSt(),X=rbMatch(),sb=a=>a.reduce((s,b)=>s+b.m,0),sj=a=>a.reduce((s,x)=>s+x.v,0),ok=X.M.length+X.jb.length,pc=X.B.length?Math.round(ok/X.B.length*100):0,ec=sb(X.B)-sj(X.J),
+neg=v=>`<b style="color:${v<0?'#b3261e':'inherit'}">${F(v)}</b>`;
+return`<h3>Rapprochement bancaire</h3><p class="mu">Importez le relevé de votre banque ou de votre compte Mobile Money (CSV ou Excel). Chaque ligne est rapprochée automatiquement des mouvements du journal de trésorerie : un crédit correspond à une recette, un débit à une sortie. Format attendu : <b>Date ; Libellé ; Débit ; Crédit</b> (ou Date ; Libellé ; Montant, les sorties en négatif).</p>
+<div class="card" style="display:block;margin-bottom:12px"><label>Importer un fichier (.csv, .txt, .xlsx)</label><input type="file" accept=".csv,.txt,.xlsx,.xls,.xlsm,text/csv" onchange="rbFile(this)"><label>Ou collez les lignes du relevé</label><textarea id="rbt" rows="3" placeholder="07/11/2026;Dépôt agence;;1 250 000&#10;08/11/2026;Frais de tenue de compte;5 000;" style="width:100%"></textarea><div class="row np"><button class="btn s y" onclick="rbPaste()">Importer le texte</button><button class="btn s r" onclick="rbClear()">Vider le relevé</button></div><label>Tolérance sur la date (la banque date souvent un jour plus tard)</label><select style="width:auto" onchange="rbTol(this.value)">${[0,1,2,3,5,7].map(n=>`<option value="${n}" ${(+st.tol||0)==n?'selected':''}>${n==0?'Même jour uniquement':'± '+n+' jour'+(n>1?'s':'')}</option>`).join('')}</select>${st.nom?`<p class="mu">Dernier import : ${esc(st.nom)} · ${st.date}</p>`:''}</div>
+${X.B.length?`<div class="st"><div><b>${X.B.length}</b>Lignes du relevé</div><div><b>${ok}</b>Rapprochées (${pc} %)</div><div><b>${X.ub.length}</b>Relevé sans écriture : ${F(sb(X.ub))}</div><div><b>${X.uj.length}</b>Écritures sans relevé : ${F(sj(X.uj))}</div><div>${neg(sb(X.B))}Solde du relevé</div><div>${neg(sj(X.J))}Solde du journal (même période)</div><div>${neg(ec)}Écart relevé − journal</div></div>
+<h3>Relevé sans écriture au journal</h3><p class="mu">Lignes de la banque introuvables dans la tontine. Une suggestion apparaît quand un montant très proche existe. Justifiez les lignes normales (frais, agios).</p>${rbTable(['Date','Libellé','Montant','Suggestion',''],X.ub.map(b=>{const s=X.sug[b.id];return`<tr><td>${b.d}</td><td>${esc(b.l)}</td><td>${neg(b.m)}</td><td>${s?esc(s.p+' · '+s.l)+' : '+F(s.v)+' (écart '+F(b.m-s.v)+')':'—'}</td><td><button class="btn s o np" onclick="rbJust('${b.id}')">Justifier</button></td></tr>`}),'Toutes les lignes du relevé sont rapprochées.')}
+<h3 style="margin-top:20px">Écritures du journal sans ligne de relevé</h3><p class="mu">Mouvements enregistrés dans la tontine mais absents du relevé sur la période : retrait ou dépôt oublié, ou mouvement en espèces hors banque.</p>${rbTable(['Date','Pièce','Libellé','Montant'],X.uj.map(x=>`<tr><td>${x.d}</td><td>${esc(x.p)}</td><td>${esc(x.l)}</td><td>${neg(x.v)}</td></tr>`),'Aucune écriture non rapprochée.')}
+<h3 style="margin-top:20px">Lignes rapprochées</h3>${rbTable(['Date','Libellé du relevé','Montant','Écritures du journal','Rapprochement'],X.M.map(x=>`<tr><td>${x.b.d}</td><td>${esc(x.b.l)}</td><td>${neg(x.b.m)}</td><td>${x.js.map(j=>esc(j.p+' · '+j.l)).join('<br>')}</td><td>${x.t}</td></tr>`),'Aucune ligne rapprochée.')}
+${X.jb.length?`<h3 style="margin-top:20px">Lignes justifiées</h3>${rbTable(['Date','Libellé','Montant','Motif',''],X.jb.map(b=>`<tr><td>${b.d}</td><td>${esc(b.l)}</td><td>${neg(b.m)}</td><td>${esc(b.j)}</td><td><button class="btn s o np" onclick="rbUnjust('${b.id}')">Annuler</button></td></tr>`),'')}`:''}`:'<p class="mu">Aucun relevé importé pour le moment.</p>'}`}
+function rbSheets(){const X=rbMatch();return[{n:'Synthèse',rows:[['Indicateur','Valeur'],['Lignes du relevé',X.B.length],['Rapprochées',X.M.length],['Justifiées',X.jb.length],['Relevé sans écriture',X.ub.length],['Écritures sans relevé',X.uj.length],['Solde du relevé (GNF)',X.B.reduce((s,b)=>s+b.m,0)],['Solde du journal (GNF)',X.J.reduce((s,x)=>s+x.v,0)]]},
+{n:'Rapprochées',rows:[['Date','Libellé relevé','Montant (GNF)','Écritures du journal','Type']].concat(X.M.map(x=>[x.b.d,x.b.l,x.b.m,x.js.map(j=>j.p+' '+j.l).join(' + '),x.t]))},
+{n:'Relevé sans écriture',rows:[['Date','Libellé','Montant (GNF)']].concat(X.ub.map(b=>[b.d,b.l,b.m]))},
+{n:'Écritures sans relevé',rows:[['Date','Pièce','Libellé','Montant (GNF)']].concat(X.uj.map(x=>[x.d,x.p,x.l,x.v]))},
+{n:'Justifiées',rows:[['Date','Libellé','Montant (GNF)','Motif']].concat(X.jb.map(b=>[b.d,b.l,b.m,b.j]))}]}
+/* ===== Statistiques de performance des agents (collecteurs) ===== */
+const spRange=()=>{const k=S.spp||'30',t=T();return k=='all'?['0000-00-00','9999-99-99']:k=='m'?[t.slice(0,7)+'-01',t]:[addJ(t,-(+k-1)),t]},
+spDays=()=>{const k=S.spp||'30';if(k=='m')return +T().slice(8);if(k!='all')return +k;const ds=D.dep.map(d=>d.date).filter(Boolean).sort();return ds.length?Math.max(1,rbD(ds[0],T())+1):30};
+function spStats(){const[f,t]=spRange(),inR=d=>!!d&&d>=f&&d<=t,nd=spDays();
+const L=colls().map(c=>{const ms=D.mem.filter(m=>m.mgr==c.id),ids=ms.map(m=>m.id),dep=D.dep.filter(d=>ids.includes(d.mid)&&inR(d.date)),
+gdep=[].concat(...D.grp.filter(g=>g.mgr==c.id).map(g=>g.dep.filter(d=>inR(d.date)).map(d=>({date:d.date,v:gAmt(g,d)})))),
+col=dep.reduce((a,d)=>a+d.montant,0),gcol=gdep.reduce((a,d)=>a+d.v,0),ds=new Set(dep.map(d=>d.date).concat(gdep.map(d=>d.date))),ja=ds.size,
+ret=D.ret.filter(r=>ids.includes(r.mid)&&inR(r.date)).concat(D.gret.filter(r=>r.mgr==c.id&&inR(r.date))),
+pr=D.pret.filter(p=>ids.includes(p.mid)),rem=D.rem.filter(r=>r.col==c.id&&inR(r.date)),
+man=rem.filter(r=>r.ecart>0).reduce((a,r)=>a+r.ecart,0);
+return{c,nom:c.nom,act:ms.filter(m=>m.statut=='cours').length,nouv:ms.filter(m=>inR(m.date)).length,col,gcol,tcol:col+gcol,ja,nd,moy:ja?Math.round((col+gcol)/ja):0,
+cl:ret.length,clN:ret.filter(r=>r.type=='normal').length,comC:ret.reduce((a,r)=>a+(r.comCol||0),0),
+pAcc:pr.filter(p=>(p.statut=='accepte'||p.statut=='solde')&&inR(p.dateDec)).length,pLate:pr.filter(p=>p.statut=='accepte'&&due(p)>0&&p.fin&&p.fin<T()).length,
+man,sansRem:[...ds].filter(d=>!D.rem.find(r=>r.col==c.id&&r.date==d)).length}});
+const mx=k=>Math.max(1,...L.map(x=>x[k]));
+L.forEach(x=>{const fiab=Math.max(0,1-(x.tcol?x.man/x.tcol*10:0))*(x.ja?1-x.sansRem/x.ja*.5:1);
+x.sc=Math.round(40*x.tcol/mx('tcol')+20*Math.min(1,x.ja/x.nd)+25*fiab+10*x.act/mx('act')+5*x.nouv/mx('nouv'))});
+return L.sort((a,b)=>b.sc-a.sc||b.tcol-a.tcol)}
+function spView(){const L=spStats(),tot=L.reduce((a,x)=>a+x.tcol,0),mxc=Math.max(1,...L.map(x=>x.tcol)),med=['🥇','🥈','🥉'];
+const opt=[['7','7 derniers jours'],['30','30 derniers jours'],['m','Ce mois'],['all','Depuis le début']];
+return`<h3>Performance des agents</h3><div class="row np"><select style="width:auto" onchange="S.spp=this.value;dash()">${opt.map(o=>`<option value="${o[0]}" ${(S.spp||'30')==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+${L.length?`<div class="st"><div><b>${F(tot)}</b>Total collecté</div><div><b>${L.filter(x=>x.ja).length}/${L.length}</b>Agents actifs</div><div><b>${L.reduce((a,x)=>a+x.cl,0)}</b>Clôtures payées</div><div><b>${F(L.reduce((a,x)=>a+x.man,0))}</b>Manquants de caisse</div></div>
+<p class="mu">Indice sur 100 pour comparer vos agents entre eux : collecte 40 %, régularité (jours avec mises) 20 %, fiabilité de caisse 25 % (manquants et journées sans remise), clients actifs 10 %, nouveaux clients 5 %.</p>
+${L.map((x,i)=>`<div class="card" style="display:block;margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><b>${med[i]||(i+1)+'.'} ${esc(x.nom)}</b><b>${x.sc}/100</b></div><div style="height:8px;background:var(--bd);border-radius:4px;margin:8px 0"><div style="height:100%;width:${Math.round(x.tcol/mxc*100)}%;background:var(--g);border-radius:4px"></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:14px"><span>Collecte</span><b>${F(x.tcol)}</b><span>Dont groupes</span><b>${F(x.gcol)}</b><span>Moyenne par jour actif</span><b>${F(x.moy)}</b><span>Jours avec mises</span><b>${x.ja}/${x.nd}</b><span>Clients actifs</span><b>${x.act}${x.nouv?' (+'+x.nouv+')':''}</b><span>Clôtures payées</span><b>${x.cl} (${x.clN} normales)</b><span>Prêts accordés</span><b>${x.pAcc}${x.pLate?' · '+x.pLate+' en retard':''}</b><span>Commission de l'agent</span><b>${F(x.comC)}</b><span>Manquants de caisse</span><b style="color:${x.man?'#b3261e':'inherit'}">${F(x.man)}</b><span>Journées sans remise</span><b style="color:${x.sansRem?'#b3261e':'inherit'}">${x.sansRem}</b></div></div>`).join('')}`:'<p class="mu">Aucun collecteur pour le moment. Créez-en dans l\'onglet Collecteurs.</p>'}`}
+function spSheets(){const L=spStats(),per=(S.spp||'30');return[{n:'Performance',rows:[['Agent','Indice /100','Collecte (GNF)','Dont groupes (GNF)','Jours avec mises','Jours de la période','Moyenne par jour actif (GNF)','Clients actifs','Nouveaux clients','Clôtures payées','Dont normales','Prêts accordés','Prêts en retard','Commission agent (GNF)','Manquants (GNF)','Journées sans remise']].concat(L.map(x=>[x.nom,x.sc,x.tcol,x.gcol,x.ja,x.nd,x.moy,x.act,x.nouv,x.cl,x.clN,x.pAcc,x.pLate,x.comC,x.man,x.sansRem])),},{n:'Période',rows:[['Période',({7:'7 derniers jours',30:'30 derniers jours',m:'Ce mois',all:'Depuis le début'})[per]],['Édité le',T()]]}]}
 /* ===== Anomalies, alertes et sauvegarde ===== */
 const jd=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5),nz=v=>typeof v=='number'&&isFinite(v),bkKey=()=>'ytbk_'+(R=='sa'?'sa':S.u.id);
 function scp(){const sa=R=='sa',id=S.u.id,tid=sa?'':SC(),
@@ -579,7 +678,7 @@ s.pret.forEach(p=>{const m=D.mem.find(x=>x.id==p.mid),w='Prêt '+p.sn+' · '+mL(
 if(!m)A('r',CP,'Prêt rattaché à une tontine introuvable',w);
 if(ps[p.sn].length>1&&ps[p.sn][0]===p)A('r',CP,'Numéro de prêt en double ('+p.sn+')',w);
 if(nz(p.total)&&nz(p.rembourse)&&p.rembourse>p.total+(p.pen||0)+0.5)A('r',CP,'Montant remboursé ('+F(p.rembourse)+') supérieur au total dû ('+F(p.total)+')',w);
-if(p.statut=='accepte'){const fin=p.fin||p.ech;
+if(p.statut=='accepte'){penUpd(p);const fin=p.fin||p.ech;
 if(reste>0&&fin&&fin<td)A('r',CP,'Prêt en retard depuis le '+fin+' : reste '+F(reste),w);
 if(reste<=0&&p.total>0)A('o',CP,'Prêt entièrement remboursé mais non marqué « soldé »',w);
 if(m&&isCl(m)&&reste>0)A('o',CP,'Prêt non soldé alors que la tontine est clôturée : vérifier le paiement',w)}
@@ -661,7 +760,7 @@ slug=R=='sa'?'plateforme':String(lab).normalize('NFD').replace(/[\u0300-\u036f]/
 xl([res].concat(sh),'sauvegarde-clicktontine-'+slug+'-'+td);
 try{localStorage.setItem(bkKey(),td)}catch(e){}dash()}
 
-const V={gr:gViewA,an:anView,sv:svView,ao:annView,pf:profilView,tf:tfView,fc:fcView,
+const V={rb:rbView,sp:spView,gr:gViewA,an:anView,sv:svView,ao:annView,pf:profilView,tf:tfView,fc:fcView,
 ap(){const cs=colls(),ms=mine(),att=ms.filter(m=>m.statut=='attente').length,tc=ms.reduce((a,m)=>a+tot(m),0),sc=D.rem.filter(r=>r.adm==SC()).reduce((a,r)=>a+r.ecart,0);
 return`<div class="st"><div><b>${cs.length}</b>Collecteurs</div><div><b>${ms.filter(m=>m.statut=='cours').length}</b>Clients actifs</div><div><b>${F(tc)}</b>Total collecté</div><div><b>${att}</b>Clôtures à valider</div>${pretOn(SC())?`<div><b>${D.pret.filter(p=>p.adm==SC()&&p.statut=='demande').length}</b>Prêts à valider</div>`:''}<div><b>${F(sc)}</b>Écarts cumulés (manquants)</div></div><p class="mu">Abonnement actif jusqu'au ${S.u.exp}.</p>`},
 co(){return`<h3>Nouveau collecteur</h3><label>Nom complet</label><input id="cn" placeholder="Ex : Saran Koulibaly"><label>Téléphone (sans +224)</label><input id="ct" placeholder="Ex : 621 00 00 00" inputmode="tel"><label>Genre</label><select id="cg"><option value="m">Homme</option><option value="f">Femme</option></select><label>Mot de passe du collecteur (4 chiffres)</label><input id="cp" inputmode="numeric" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/\\D/g,'')"><button class="btn" onclick="addC()">Créer le collecteur</button>
@@ -777,7 +876,7 @@ return[{n:'Journal',rows:[['Date','Pièce','Libellé','Catégorie','Recette (GNF
 function csvJournal(){const L=journal(),rows=['Date;Pièce;Libellé;Catégorie;Recette;Sortie'].concat(L.map(x=>[x.d,x.p,x.l,x.c,x.r,x.s].join(';')));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.join('\n')],{type:'text/csv'}));a.download='journal-comptable-'+T()+'.csv';a.click()}
 function payCom(cid){const rows=comPayable(D.users.find(u=>u.id==cid));if(!rows.length)return alert("Aucune commission payable : le paiement des commissions se fait à la fin du mois.");const sum=rows.reduce((a,r)=>a+r.comCol,0);
 if(!confirm('Payer '+F(sum)+' de commission à '+nm2(cid)+' ? Son solde commission sera remis à zéro.'))return;const id=uid();D.pcom.push({id,adm:SC(),col:cid,date:T(),mois:[...new Set(rows.map(r=>r.date.slice(0,7)))].sort().join(', '),montant:sum,n:rows.length});rows.forEach(r=>r.pay=id);save();alert('Commission payée : '+F(sum)+'. Solde commission : '+F(comSolde(D.users.find(u=>u.id==cid)))+'.');dash()}
-const EX={gr:()=>[{n:'Groupes',rows:[['Groupe','N°','Collecteur','Ordre','Membre','Téléphone','Mise par jour (GNF)','Cases du mois','Reçu']].concat(...gMine().map(x=>x.mem.map((h,i)=>[x.nom,x.sn||'',(D.users.find(u=>u.id==x.mgr)||{}).nom||'',i+1,h.prenom+' '+h.nom,h.tel,h.montant,gCases(x,h),x.done.includes(h.id)?'Oui':'Non'])))}],pw:()=>[{n:'Portefeuille UV',rows:[['Collecteur','Approvisionnement','Mises','Retours UV validés','Restitué','Portefeuille']].concat(colls().map(c=>{const w=wal(c);return[c.nom,w.ap,w.mi,w.rt,w.rm,w.so]}))}],
+const EX={rb:()=>rbSheets(),sp:()=>spSheets(),gr:()=>[{n:'Groupes',rows:[['Groupe','N°','Collecteur','Ordre','Membre','Téléphone','Mise par jour (GNF)','Cases du mois','Reçu']].concat(...gMine().map(x=>x.mem.map((h,i)=>[x.nom,x.sn||'',(D.users.find(u=>u.id==x.mgr)||{}).nom||'',i+1,h.prenom+' '+h.nom,h.tel,h.montant,gCases(x,h),x.done.includes(h.id)?'Oui':'Non'])))}],pw:()=>[{n:'Portefeuille UV',rows:[['Collecteur','Approvisionnement','Mises','Retours UV validés','Restitué','Portefeuille']].concat(colls().map(c=>{const w=wal(c);return[c.nom,w.ap,w.mi,w.rt,w.rm,w.so]}))}],
 co:()=>[{n:'Collecteurs',rows:[['Nom','Téléphone','Statut','Clients','Solde commission (GNF)']].concat(colls().map(c=>[c.nom,c.tel,c.actif===false?'Suspendu':'Actif',D.mem.filter(m=>m.mgr==c.id).length,comSolde(c)]))}],
 av:()=>[{n:'UV attribués',rows:[['Date','Collecteur','Montant UV (GNF)']].concat(D.app.filter(x=>x.adm==SC()).map(x=>[x.date,nm2(x.col),x.montant]))},{n:'Remises',rows:[['Date','Collecteur','UV attribué','Espèces','UV restitué','Écart']].concat(D.rem.filter(x=>x.adm==SC()).map(x=>[x.date,nm2(x.col),x.appro,x.cash,x.uv,x.ecart]))}],
 cl:()=>{const ids=mine().map(m=>m.id);return[{n:'Paiements de clôtures',rows:[['Date','N° tontine','Client','Type','Payé (GNF)','Commission (GNF)','Part collecteur (GNF)']].concat(D.ret.filter(r=>ids.includes(r.mid)).map(r=>{const m=memOf(r);return[r.date,m.sn,m.prenom+' '+m.nom,r.type,r.montant,r.com,r.comCol||0]}))}]},
