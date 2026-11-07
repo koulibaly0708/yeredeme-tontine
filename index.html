@@ -171,6 +171,32 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 @media(max-width:760px){dialog.guide-d{margin:auto auto 10px}}
 @media (prefers-color-scheme:dark){.gd i{background:#fff}.gd-tip{background:rgba(249,185,8,.14)}}
 @media(prefers-reduced-motion:reduce){.gd,.gd-b summary::after{transition:none}}
+</style><style>
+/* ===== lien et simulateur Tarifs ===== */
+.dkt{right:auto;left:8px}
+.sim-q{margin:6px 4px 10px;font:700 21px/1.25 Georgia,"Times New Roman",serif;color:var(--tx)}
+.sim-ctl{display:flex;align-items:center;gap:10px;margin:4px 0}
+.sim-ctl button{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:0;background:var(--g2);color:var(--g);font:700 28px/1 "Trebuchet MS",Verdana,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sim-ctl button:active{transform:scale(.93)}
+.sim-ctl button:focus-visible,.sim-pay:focus-visible,.sim-lg:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.sim-ctl input{flex:1;min-width:0;height:12px;margin:0;-webkit-appearance:none;appearance:none;border-radius:999px;outline:0;background:linear-gradient(90deg,var(--g) var(--p,0%),var(--bd) var(--p,0%))}
+.sim-ctl input::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--y);border:4px solid var(--g);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sim-ctl input::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--y);border:4px solid var(--g)}
+.sim-ends{display:flex;justify-content:space-between;margin:2px 4px 12px;font:600 13px/1.2 "Trebuchet MS",Verdana,sans-serif;color:var(--mu)}
+.sim-card{margin:0 0 12px;padding:14px;border:1px solid var(--bd);border-radius:18px;background:var(--g2)}
+.sim-card div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:15px}
+.sim-card div:last-of-type{border-bottom:0}
+.sim-card span{color:var(--mu)}
+.sim-card b{font:700 19px/1.2 Georgia,"Times New Roman",serif;color:var(--tx);text-align:right}
+.sim-tot{margin-top:6px;padding:12px 10px;border-radius:14px;background:var(--bg);text-align:center}
+.sim-tot small{display:block;font:600 13px/1.3 "Trebuchet MS",Verdana,sans-serif;color:var(--mu)}
+.sim-tot strong{display:block;margin-top:2px;font:700 30px/1.15 Georgia,"Times New Roman",serif;color:var(--g)}
+.sim-tot em{display:block;margin-top:2px;font:600 12.5px/1.3 "Trebuchet MS",Verdana,sans-serif;font-style:normal;color:var(--mu)}
+.sim-pay,.sim-lg{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:14px;text-decoration:none;font:700 16px/1.2 "Trebuchet MS",Verdana,sans-serif}
+.sim-pay{color:#fff;background:linear-gradient(135deg,#0b4a1a,#1f8a3a);box-shadow:0 8px 18px rgba(31,138,58,.35)}
+.sim-note{margin:6px 4px 12px;font-size:13px;line-height:1.4;color:var(--mu);text-align:center}
+.tf-an{margin:4px 0 10px;padding:12px 14px;border-radius:16px;background:rgba(249,185,8,.16);border-left:4px solid var(--y);font-size:14.5px;line-height:1.45}
+.sim-lg{margin-top:10px;color:var(--g);background:var(--bg);border:2px solid var(--g)}
 /* ===== fenêtre de connexion unique ===== */
 .dock.lgd{padding:14px 14px 16px}
 .lg{display:block;margin:0}
@@ -206,7 +232,8 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 @media (max-width:760px){.hero .in{padding-bottom:64px}}
 @media (prefers-color-scheme:dark){.lg-tabs{background:rgba(255,255,255,.07)}.lg-e{background:rgba(255,90,90,.16);color:#ffb4b4}.lg-e.ok{background:rgba(111,207,127,.16);color:#bff0c6}.lg-b.alt{border-color:var(--bd)}}
 @media (prefers-reduced-motion:reduce){.lg-b:active{transform:none}}
-</style></head><body>
+</style>
+</head><body>
 <div class="bar"><span class="plat"><img data-logo alt="ClickTontine"></span><span class="fx" aria-hidden="true"><svg class="net" viewBox="0 0 320 68" preserveAspectRatio="xMaxYMid slice"><g class="ln"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="fl"><path d="M0 34H60L74 14H130L146 34H210L224 54H320"/><path d="M30 60H90L104 46H170L184 20H260L272 8H320"/><path d="M0 12H40L52 26H100"/></g><g class="nd"><circle cx="74" cy="14" r="2.6"/><circle cx="146" cy="34" r="2.6"/><circle cx="224" cy="54" r="2.6"/><circle cx="104" cy="46" r="2.6"/><circle cx="184" cy="20" r="2.6"/><circle cx="272" cy="8" r="2.6"/></g></svg><span class="ic"><i><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M12 3l7 2.6v5.6c0 4.4-3 7.8-7 9.2-4-1.4-7-4.8-7-9.2V5.6z"/><path d="M8.8 12l2.3 2.3 4.2-4.6"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i><i><svg viewBox="0 0 24 24"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.5 12.8a7.7 7.7 0 0 1 11 0M9.5 16a3.4 3.4 0 0 1 5 0"/><circle cx="12" cy="19" r=".9"/></svg></i></span></span></div>
 <main class="hero"><div class="hs-wrap" aria-hidden="true"><div class="hs hs1"></div><div class="hs hs2"></div></div>
 <div class="in"><div>
@@ -221,6 +248,7 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 <img class="hl" data-logo width="290" height="290" alt="ClickTontine">
 </div>
 <div class="dkl"><a class="gd" href="#guide" id="guideL" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/><path d="M9 7h7M9 11h5"/></svg></i><span>Guide</span></a><a class="aide" href="#aide" id="aideL" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.7v.5h6v-.5c0-.7.3-1.3.8-1.7A6.5 6.5 0 0 0 12 2.5z"/></svg></i><span>Aide</span></a></div>
+<div class="dkl dkt"><a class="gd" href="#tarifs" id="tarifL" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></i><span>Tarifs</span></a></div>
 <div class="hd" id="hd" role="group" aria-label="Choisir le message"><button type="button" class="on" aria-label="Message 1" aria-current="true"></button><button type="button" aria-label="Message 2" aria-current="false"></button><button type="button" aria-label="Message 3" aria-current="false"></button></div>
 </main>
 <footer class="ft"><small>© <span id="yr">2026</span> ClickTontine. Tous droits réservés.</small></footer>
@@ -229,7 +257,7 @@ dialog.guide-d::backdrop{background:rgba(5,30,10,.6);-webkit-backdrop-filter:blu
 <div class="aide-b">
 <div><em>1</em><span><strong>Connexion</strong> : entrez votre numéro et votre mot de passe. Votre espace (collecteur, client ou administrateur) s'ouvre automatiquement.</span></div>
 <div><em>2</em><span><strong>Client</strong> : touchez « Créer un compte », choisissez <strong>Client</strong> et utilisez le numéro donné par votre collecteur pour voir vos tontines.</span></div>
-<div><em>3</em><span><strong>Gestionnaire</strong> : touchez « Créer un compte », choisissez <strong>Gestionnaire</strong> et profitez de 15 jours d'essai gratuit. Les collecteurs sont créés par leur administrateur.</span></div>
+<div><em>3</em><span><strong>Gestionnaire</strong> : touchez « Créer un compte » et choisissez <strong>Gestionnaire</strong>. Après activation de votre compte par l'administrateur du logiciel, vous profitez de 30 jours d'essai gratuit (20 clients maximum).</span></div>
 </div>
 <div class="aide-f"><a href="tel:+224621109847"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Appeler l'assistance</a><button type="button" id="aideX">Fermer</button></div>
 </dialog>
@@ -243,17 +271,53 @@ x.addEventListener("click",c);d.addEventListener("click",function(e){if(e.target
 <details open><summary><em>1</em>À quoi sert ClickTontine ?</summary><div class="gd-c"><p>ClickTontine remplace le cahier et les calculs. Chaque mise est enregistrée, chaque client a sa fiche de 31 cases, et la clôture se fait avec un reçu.</p><p>Chacun a son espace : l’administrateur, les collecteurs et les clients voient seulement ce qui les concerne.</p></div></details>
 <details><summary><em>2</em>Qui fait quoi ?</summary><div class="gd-c"><ul><li><b>Administrateur de tontine</b> : crée ses collecteurs, leur remet l’UV chaque matin, valide les clôtures, les prêts et les retours UV, paie les commissions et suit la trésorerie.</li><li><b>Collecteur</b> : ajoute les clients, enregistre les mises, demande les clôtures et les prêts, et rend l’UV en fin de journée.</li><li><b>Client</b> : consulte ses tontines, ses reçus et ses prêts avec son numéro de téléphone.</li></ul></div></details>
 <details><summary><em>3</em>Les mots à connaître</summary><div class="gd-c"><ul><li><b>Mise</b> : la somme versée par le client à chaque passage du collecteur.</li><li><b>Fiche de 31 cases</b> : chaque mise payée remplit une case. Le cumul et le nombre de cases payées sont toujours visibles.</li><li><b>Tontine particulier ou groupe</b> : le collecteur peut ouvrir une tontine pour un client seul, ou une tontine de groupe avec un tour de rôle (chaque membre reçoit à son tour).</li><li><b>UV</b> : la valeur remise par l’administrateur au collecteur en début de journée. Le collecteur la rend le soir (<b>retour UV</b>), et l’administrateur la valide.</li><li><b>Mon portefeuille</b> : le solde du collecteur. Il augmente avec les approvisionnements, baisse avec les mises et les retours UV, et revient à zéro quand tout est restitué.</li><li><b>Commission</b> : la part du collecteur sur les tontines. Elle est payée par l’administrateur à la fin du mois, puis le solde revient à zéro.</li></ul></div></details>
-<details><summary><em>4</em>Premiers pas : administrateur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Créer un compte</b>, puis choisissez <b>Gestionnaire</b>.</li><li>Renseignez nom, genre, téléphone et mot de passe (6 caractères minimum). Vous profitez de <b>15 jours d’essai gratuit</b>.</li><li>Ouvrez <b>Paramètres</b> pour régler votre tontine et les règles des prêts.</li><li>Dans <b>Collecteurs</b>, créez chaque collecteur : son numéro et un mot de passe de 4 chiffres, que vous lui communiquez.</li><li>Chaque matin, dans <b>Approvisionnement</b>, attribuez l’UV du jour à chaque collecteur.</li></ol></div></details>
+<details><summary><em>4</em>Premiers pas : administrateur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Créer un compte</b>, puis choisissez <b>Gestionnaire</b>.</li><li>Renseignez nom, genre, téléphone et mot de passe (6 caractères minimum). Votre compte est ensuite activé par l’administrateur du logiciel : vous profitez de <b>30 jours d’essai gratuit</b> (20 clients maximum).</li><li>Ouvrez <b>Paramètres</b> pour régler votre tontine et les règles des prêts.</li><li>Dans <b>Collecteurs</b>, créez chaque collecteur : son numéro et un mot de passe de 4 chiffres, que vous lui communiquez.</li><li>Chaque matin, dans <b>Approvisionnement</b>, attribuez l’UV du jour à chaque collecteur.</li></ol></div></details>
 <details><summary><em>5</em>Premiers pas : collecteur</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Connexion</b>.</li><li>Connectez-vous avec le numéro et le mot de passe à 4 chiffres donnés par votre administrateur.</li><li>Dans <b>Clients</b>, ajoutez chaque client : nom, numéro, quartier et mise par jour.</li><li>Dans <b>Mise</b>, enregistrez chaque versement. Un reçu et un ticket de tontine sont disponibles.</li><li>En fin de journée, faites votre <b>retour UV</b> pour que l’administrateur le valide.</li></ol></div></details>
 <details><summary><em>6</em>Premiers pas : client</summary><div class="gd-c"><ol><li>Sur l’accueil, touchez <b>Créer un compte</b> et choisissez <b>Client</b> (ou connectez-vous si vous avez déjà un compte).</li><li>Entrez le numéro de téléphone donné à votre collecteur.</li><li>Vous voyez vos tontines, vos reçus, vos prêts et les annonces. Pour demander un prêt, adressez-vous à votre collecteur.</li></ol></div></details>
 <details><summary><em>7</em>Une journée type</summary><div class="gd-c"><ol><li><b>Matin</b> : l’administrateur attribue l’UV du jour à chaque collecteur.</li><li><b>Journée</b> : le collecteur passe chez ses clients et enregistre chaque mise.</li><li><b>Soir</b> : le collecteur rend l’UV et les espèces, et l’administrateur valide le retour.</li><li><b>Contrôle</b> : le rapport, la trésorerie et l’onglet des anomalies permettent de vérifier que tout est juste.</li></ol></div></details>
 <details><summary><em>8</em>Clôtures et prêts</summary><div class="gd-c"><ul><li><b>Clôture</b> : quand la tontine d’un client se termine, le collecteur la clôture. Elle reste en attente jusqu’à ce que l’administrateur la valide, puis l’argent est remis avec un reçu. Une clôture peut aussi être interrompue et payée avant la fin.</li><li><b>Prêt</b> : le collecteur envoie la demande, l’administrateur donne son avis et accepte ou refuse. Le montant maximum, la durée et le nombre de mises minimum se règlent dans les Paramètres.</li></ul></div></details>
-<details><summary><em>9</em>Abonnement</summary><div class="gd-c"><p>L’administrateur a <b>15 jours d’essai gratuit</b>. Ensuite, il choisit une offre dans <b>Tarification</b> et envoie sa demande de paiement. Une fois le paiement validé, le compte est activé et une facture est créée.</p><p>Si l’abonnement expire, le compte est bloqué jusqu’au renouvellement.</p></div></details>
+<details><summary><em>9</em>Abonnement</summary><div class="gd-c"><p>L’administrateur a <b>30 jours d’essai gratuit</b> (20 clients maximum), une fois son compte activé par l’administrateur du logiciel. Ensuite, il choisit une offre dans <b>Tarification</b> et envoie sa demande de paiement. Une fois le paiement validé, le compte est activé et une facture est créée.</p><p>Si l’abonnement expire, le compte est bloqué jusqu’au renouvellement.</p></div></details>
 <details><summary><em>10</em>Bons réflexes</summary><div class="gd-c"><ul><li>Notez bien le mot de passe : en cas d’oubli, utilisez « Mot de passe oublié ? » sur l’écran de connexion.</li><li>Les données sont enregistrées sur l’appareil utilisé. L’administrateur doit faire régulièrement une <b>Sauvegarde</b> et garder le fichier en lieu sûr (e-mail, clé USB, autre téléphone).</li><li>Servez-vous des annonces pour informer vos collecteurs ou vos clients.</li></ul><div class="gd-tip">Besoin d’un coup de main ? Touchez le bouton « Aide » ou appelez l’assistance au 224 621 10 98 47.</div></div></details>
 </div>
 <div class="gd-f"><a href="tel:+224621109847"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Appeler l’assistance</a><button type="button" id="guideX">Fermer</button></div>
 </dialog>
 <script>(function(){var l=document.getElementById("guideL"),d=document.getElementById("guide"),x=document.getElementById("guideX");if(!l||!d)return;
+l.addEventListener("click",function(e){e.preventDefault();if(d.showModal)d.showModal();else d.setAttribute("open","");var b=d.querySelector(".gd-b");if(b)b.scrollTop=0});
+function c(){if(d.close)d.close();else d.removeAttribute("open")}
+x.addEventListener("click",c);d.addEventListener("click",function(e){if(e.target===d)c()})})();</script>
+<dialog class="guide-d" id="tarifs" aria-labelledby="tarifT">
+<div class="aide-h"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></i><div><b id="tarifT">Tarifs</b><small>Simulateur d’abonnement</small></div></div>
+<div class="gd-b">
+<p class="sim-q">Mon équipe compte :</p>
+<div class="sim-ctl"><button type="button" id="simM" aria-label="Un collecteur de moins">−</button><input type="range" id="simR" min="1" max="50" step="1" value="1" aria-label="Nombre de collecteurs"><button type="button" id="simP" aria-label="Un collecteur de plus">+</button></div>
+<div class="sim-ends"><span>1</span><span>50 collecteurs</span></div>
+<div class="sim-card" aria-live="polite">
+<div><span>Collecteurs</span><b id="simN">1</b></div>
+<div><span>Clients</span><b id="simC">100 maximum</b></div>
+<div><span>Prix par collecteur</span><b id="simU">80 000 GNF</b></div>
+<div class="sim-tot"><small>Abonnement par mois</small><strong id="simT">80 000 GNF</strong></div>
+</div>
+<a class="sim-pay" href="admin-tontine.html">Payer</a>
+<p class="sim-note">Le paiement se fait depuis votre espace administrateur.</p>
+<div class="tf-an"><b>Abonnement annuel : 2 mois offerts.</b><br><span id="simA"></span><br>Connectez-vous pour souscrire à l’abonnement annuel.</div>
+<a class="sim-lg" href="admin-tontine.html">Se connecter</a>
+</div>
+<div class="gd-f"><a href="tel:+224621109847"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Nous contacter</a><button type="button" id="tarifX">Fermer</button></div>
+</dialog>
+<script>(function(){var l=document.getElementById("tarifL"),d=document.getElementById("tarifs"),x=document.getElementById("tarifX");if(!l||!d)return;
+var r=document.getElementById("simR"),m=document.getElementById("simM"),p=document.getElementById("simP");
+function f(v){return String(v).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" GNF"}
+function u(){var n=+r.value,pu=n==1?80000:n<=5?60000:45000,t=pu*n;
+r.style.setProperty("--p",((n-1)/(+r.max-1)*100)+"%");
+document.getElementById("simN").textContent=n;
+document.getElementById("simC").textContent=n==1?"100 maximum":"Illimités";
+document.getElementById("simU").textContent=f(pu);
+document.getElementById("simT").textContent=f(t);
+document.getElementById("simA").textContent=f(t*10)+" au lieu de "+f(t*12)+" (vous économisez "+f(t*2)+")."}
+r.addEventListener("input",u);
+m.addEventListener("click",function(){r.value=Math.max(+r.min,+r.value-1);u()});
+p.addEventListener("click",function(){r.value=Math.min(+r.max,+r.value+1);u()});
+u();
 l.addEventListener("click",function(e){e.preventDefault();if(d.showModal)d.showModal();else d.setAttribute("open","");var b=d.querySelector(".gd-b");if(b)b.scrollTop=0});
 function c(){if(d.close)d.close();else d.removeAttribute("open")}
 x.addEventListener("click",c);d.addEventListener("click",function(e){if(e.target===d)c()})})();</script>
@@ -271,7 +335,7 @@ document.addEventListener('visibilitychange',function(){document.hidden?stop():p
 <script>(function(){
 var API_BASE='';/* adresse de l'API (ex. https://api.mondomaine.com) à renseigner quand la base OVHcloud sera créée */
 var PAGE={a:'adherent.html',g:'collecteur.html',ad:'admin-tontine.html',sa:'admin-logiciel.html'},
-RL={a:'Client',g:'Collecteur',ad:'Administrateur de tontine',sa:'Administrateur du logiciel'},ESSAI=15,
+RL={a:'Client',g:'Collecteur',ad:'Administrateur de tontine',sa:'Administrateur du logiciel'},ESSAI=30,
 f=document.getElementById('lg');if(!f)return;
 var $=function(i){return document.getElementById(i)},
 T=function(){return new Date().toISOString().slice(0,10)},
@@ -306,7 +370,7 @@ function fTel(){return field(IC.phone,'<span class="lg-cc">+224</span><input id=
 function fPw(id,label,ac,fix){return field(IC.lock,'<input id="'+id+'" type="password" autocomplete="'+ac+'" placeholder="'+label+'" aria-label="'+label+'"'+(fix?' inputmode="numeric" maxlength="4"':'')+'><button type="button" class="lg-eye" data-a="eye" aria-label="Afficher le mot de passe">'+IC.eye+'</button>')}
 function msg(){return'<div class="lg-e'+(st.ok?' ok':'')+'" id="lgE" role="alert">'+esc(st.err||st.ok)+'</div>'}
 function tabs(){return'<div class="lg-tabs" role="tablist"><button type="button" role="tab" data-a="tab:in" class="'+(st.mode=='in'?'on':'')+'" aria-selected="'+(st.mode=='in')+'">Connexion</button><button type="button" role="tab" data-a="tab:up" class="'+(st.mode=='up'?'on':'')+'" aria-selected="'+(st.mode=='up')+'">Créer un compte</button></div>'}
-function pfHint(){return st.pf=='ad'?'Mot de passe de 6 caractères minimum. Essai gratuit de '+ESSAI+' jours.':'Mot de passe à 4 chiffres. Utilisez le numéro donné à votre collecteur pour voir vos tontines.'}
+function pfHint(){return st.pf=='ad'?'Mot de passe de 6 caractères minimum. Compte activé par l\'administrateur du logiciel : '+ESSAI+' jours d\'essai gratuit (20 clients maximum).':'Mot de passe à 4 chiffres. Utilisez le numéro donné à votre collecteur pour voir vos tontines.'}
 function render(){var h='';
 if(st.pick){h='<div class="lg-h">Choisissez votre espace</div><div class="lg-s">Plusieurs espaces correspondent à ces identifiants.</div>'+st.pick.map(function(u,i){return'<button type="button" class="lg-b'+(i?' alt':'')+'" data-a="pick:'+i+'">'+esc(RL[u.role]||u.role)+' · '+esc(u.nom||'')+'</button>'}).join('')+'<button type="button" class="lg-a" data-a="back">← Retour</button>'}
 else if(st.mode=='in'){h=tabs()+'<div class="lg-s">Entrez votre numéro et votre mot de passe : votre espace (client, collecteur ou administrateur) s\'ouvre automatiquement.</div>'+msg()+fTel()+fPw('lgP','Mot de passe','current-password',false)+'<button class="lg-b" type="submit" id="lgB">Se connecter</button><button type="button" class="lg-a" data-a="rs">Mot de passe oublié ?</button>'}
@@ -341,9 +405,9 @@ var pe=pwErr(role,p);if(pe)return err(pe);
 var d=rd();d.users=d.users||[];
 if(d.users.some(function(u){return ph(u.tel)==t&&u.role==role})){st.mode='in';st.tel=t;st.err='Ce numéro a déjà un compte avec ce profil. Connectez-vous.';render();return false}
 var u={id:uid(),role:role,nom:n,tel:t,pwd:p,sx:$('lgG').value||'m'};
-if(role=='ad'){u.actif=true;u.essai=true;u.exp=addD(T(),ESSAI)}
+if(role=='ad')u.actif=false;
 d.users.push(u);try{localStorage.setItem('yt',JSON.stringify(d))}catch(e){return err("Enregistrement impossible : espace plein.")}
-if(role=='ad')alert("Compte créé. Vous bénéficiez de "+ESSAI+" jours d'essai gratuit, jusqu'au "+u.exp+".");
+if(role=='ad'){st.mode='in';st.tel=t;st.err='';st.ok="Compte créé. Il sera utilisable après activation par l'administrateur du logiciel : "+ESSAI+" jours d'essai gratuit (20 clients maximum), puis abonnement.";render();return false}
 openSp(u)}
 /* réinitialisation du mot de passe par SMS (comme dans les pages) */
 function rsApi(p,b){if(!API_BASE)return Promise.reject(new Error('nosvc'));return fetch(API_BASE+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){if(!r.ok)throw new Error(j.message||'Échec de la demande.');return j})})}
