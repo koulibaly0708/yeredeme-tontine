@@ -1,1 +1,32 @@
-{"name":"ClickTontine","short_name":"ClickTontine","description":"Gestion de tontine : collecteurs, clients, mises, reçus et rapports.","lang":"fr","start_url":"index.html","scope":"./","display":"standalone","orientation":"portrait","background_color":"#ffffff","theme_color":"#0b4a1a","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
+{
+  "name": "Kuliba Digital Hub",
+  "short_name": "Kuliba",
+  "description": "Design, digital, médias, traduction et formation en Guinée.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF9F2",
+  "theme_color": "#2F5FE0",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
